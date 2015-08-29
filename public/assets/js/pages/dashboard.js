@@ -105,14 +105,14 @@ $( document ).ready(function() {
                 color: "rgba(220,220,220,1)",
                 lines: {
                     show: true,
-                    fill: 0.2,
+                    fill: 0.2
                 },
-                shadowSize: 0,
+                shadowSize: 0
             }, {
                 data: data,
                 color: "#fff",
                 lines: {
-                    show: false,
+                    show: false
                 },
                 points: {
                     show: true,
@@ -122,7 +122,7 @@ $( document ).ready(function() {
                     lineWidth: 2
                 },
                 curvedLines: {
-                    apply: false,
+                    apply: false
                 },
                 shadowSize: 0
             }, {
@@ -130,17 +130,17 @@ $( document ).ready(function() {
                 color: "rgba(34,186,160,1)",
                 lines: {
                     show: true,
-                    fill: 0.2,
+                    fill: 0.2
                 },
-                shadowSize: 0,
+                shadowSize: 0
             },{
                 data: data2,
                 color: "#fff",
                 lines: {
-                    show: false,
+                    show: false
                 },
                 curvedLines: {
-                    apply: false,
+                    apply: false
                 },
                 points: {
                     show: true,
@@ -169,7 +169,7 @@ $( document ).ready(function() {
                 }
             },
             xaxis: {
-                ticks: ticks,
+                ticks: ticks
             },
             legend: {
                 show: false
@@ -185,7 +185,4 @@ $( document ).ready(function() {
     };
     
     flot1();
-    
-    $(".live-tile").liveTile();
-    
 });

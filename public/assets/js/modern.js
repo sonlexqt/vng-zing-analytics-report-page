@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+$(document).ready(function() {
     
     // Toggle Search
     $('.show-search').click(function(){
@@ -51,44 +51,12 @@ $( document ).ready(function() {
     elems.forEach(function(html) {
         var switchery = new Switchery(html, { color: '#23B7E5' });
     });
-    
-    // Element Blocking
-    function blockUI(item) {    
-        $(item).block({
-            message: '<img src="assets/images/reload.gif" width="20px" alt="">',
-            css: {
-                border: 'none',
-                padding: '0px',
-                width: '20px',
-                height: '20px',
-                backgroundColor: 'transparent'
-            },
-            overlayCSS: {
-                backgroundColor: '#fff',
-                opacity: 0.9,
-                cursor: 'wait'
-            }
-        });
-    }
-    
-    function unblockUI(item) {
-        $(item).unblock();
-    }  
-    
+
     // Panel Control
     $('.panel-collapse').click(function(){
         $(this).closest(".panel").children('.panel-body').slideToggle('fast');
     });
-    
-    $('.panel-reload').click(function() { 
-        var el = $(this).closest(".panel").children('.panel-body');
-        blockUI(el);
-        window.setTimeout(function () {
-            unblockUI(el);
-        }, 1000);
-    
-    }); 
-    
+
     $('.panel-remove').click(function(){
         $(this).closest(".panel").hide();
     });
