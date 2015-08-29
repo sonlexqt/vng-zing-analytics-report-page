@@ -4044,135 +4044,10 @@ body:not(.page-horizontal-bar):not(.small-sidebar) .menu.accordion-menu a {
     width: 100%;
 }
 
-.server-load > .server-stat {
-    display: inline-block;
-    margin-right: 5px;
-    margin-bottom: 20px;
-}
-
-.server-load .server-stat span {
-    font-size: 11px;
-    margin-bottom: 3px;
-}
-
-.server-load .server-stat p {
-    font-weight: 600;
-    font-size: 16px;
-    margin-bottom: 3px;
-}
-
-.weather-current {
-    overflow: hidden;
-}
-
-.weather-current p {
-    font-size: 12px;
-    margin: 5px 0 0 0;
-    float: left;
-    color: #8e8e8e;
-}
-
-.weather-current p span {
-    font-size: 42px;
-    clear: both;
-    margin-top: 15px;
-    display: block;
-    color: #4E5E6A;
-    font-weight: 300;
-}
-
-.weather-current p span sup {
-    font-size: 25px;
-}
-
-.weather-current .weather-icon {
-    font-size: 40px;
-    display: block;
-    float: left;
-    margin: 15px 15px 0 0;
-}
-
-.weather-day {
-    margin: 0;
-    font-weight: 600;
-    text-align: right;
-    font-size: 22px;
-}
-
-.weather-day small {
-    font-size: 11px;
-    color: #8e8e8e;
-    margin: 0;
-}
-
-.weather-info {
-    width: 100%;
-    display: block;
-    overflow: hidden;
-}
-
-.weather-info li {
-    padding: 8px 0;
-}
-
-.weather-top {
-    border-bottom: 1px solid #f1f1f1;
-    overflow: hidden;
-    padding: 0 0 15px 0;
-    margin: 0 0 15px 0;
-}
-
-.weather-days {
-    margin: 15px 0 0 0 ;
-    padding: 15px 0 0 0;
-    border-top: 1px solid #f1f1f1;
-}
-
-.weather-days li span {
-    display: block;
-    text-align: center;
-}
-
-.weather-days li i {
-    display: block;
-    font-size: 22px;
-    text-align: center;
-    margin: 10px 0 10px 0;
-}
-
 @media (max-width: 768px) {
     .weather-days li {
         margin-bottom: 15px;
     }
-}
-
-.live-tile {
-    width: 100%;
-    margin: 0;
-    height: 155.5px;
-}
-
-.twitter-box {
-    background: #5EA9DD;
-}
-
-.facebook-box {
-    background: #3B5998;
-}
-
-.twitter-box i,
-.facebook-box i {
-    position: absolute;
-    right: 10px;
-    bottom: 0;
-    font-size: 50px;
-    color: rgba(255,255,255,0.3);
-}
-
-.tile-date {
-    display: block;
-    margin-top: 15px;
-    color: rgba(255,255,255,0.7);
 }
 
 .inbox-widget {
@@ -4233,11 +4108,6 @@ body:not(.page-horizontal-bar):not(.small-sidebar) .menu.accordion-menu a {
     margin: 0 -22px -25px -20px;
     height: 100px;
 }
-
-.project-stats .progress {
-    margin: 3px 0 0 0;
-}
-
 
 /* Profile */
 
