@@ -4731,3 +4731,9 @@ body:not(.small-sidebar):not(.page-horizontal-bar) .menu.accordion-menu,
     color: #fff !important;
     font-size: 15px;
 }
+
+#app-id-selector{
+    border-radius: 5px !important;
+    height: 40px;
+    margin-top: -10px;
+}

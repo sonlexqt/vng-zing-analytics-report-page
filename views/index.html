@@ -138,8 +138,17 @@
 
                             <ul class="nav navbar-nav navbar-right">
                                 <!-- Messages notifications -->
+                                <li>
+                                    <a href="javascript:void(0);">
+                                        <select id="app-id-selector" class="form-control">
+                                            <option>Zing MP3</option>
+                                            <option>Zing TV</option>
+                                            <option>Zing News</option>
+                                        </select>
+                                    </a>
+                                </li>
                                 <li ng-controller="DatepickerController">
-                                    <a href="javascript:void(0);" class="za-date-range-picker">
+                                    <a href="javascript:void(0);" class="za-date-range-picker waves-effect waves-button waves-classic">
                                         <span id="za-date-range-picker-span">Select Date Range</span>
                                     </a>
                                 </li>
@@ -375,8 +384,9 @@
         <script src="/assets/plugins/flot/jquery.flot.tooltip.min.js"></script>
         <script src="/assets/plugins/curvedlines/curvedLines.js"></script>
 
-        <script src="/assets/plugins/pace-master/pace.min.js"></script>
         <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+        <script src="/assets/plugins/pace-master/pace.min.js"></script>
         <script src="/assets/plugins/switchery/switchery.min.js"></script>
         <script src="/assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
         <script src="/assets/plugins/offcanvasmenueffects/js/classie.js"></script>
