@@ -1,0 +1,1 @@
+var filtersModule = angular.module('zaApp.Filters', []);

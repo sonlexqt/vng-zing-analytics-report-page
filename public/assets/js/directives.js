@@ -1,0 +1,1 @@
+var directivesModule = angular.module('zaApp.Directives', []);
