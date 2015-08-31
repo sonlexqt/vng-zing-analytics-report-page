@@ -23,12 +23,11 @@
         <link href="/assets/plugins/jquery-daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css"/>
 
         <!-- Theme Styles -->
-        <link href="/assets/css/modern.css" rel="stylesheet" type="text/css"/>
-        <link href="/assets/css/themes/white.css" class="theme-color" rel="stylesheet" type="text/css"/>
         <link href="/assets/css/custom.css" rel="stylesheet" type="text/css"/>
+        <link href="/assets/css/themes/white.css" class="theme-color" rel="stylesheet" type="text/css"/>
     </head>
 
-    <body class="page-header-fixed">
+    <body ng-controller="ZAAppController" class="page-header-fixed">
         <div class="overlay"></div>
         <!-- Chat List -->
         <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s1">
@@ -120,7 +119,7 @@
                         </a>
                     </div>
                     <div class="logo-box">
-                        <a href="#/" class="logo-text"><span>ZAnalytics</span></a>
+                        <a href="#/" class="logo-text"><span>ZANALYTICS</span></a>
                     </div><!-- Logo Box -->
                     <div class="topmenu-outer">
                         <div class="top-menu">
@@ -138,16 +137,14 @@
 
                             <ul class="nav navbar-nav navbar-right">
                                 <!-- Messages notifications -->
-                                <li>
+                                <li class="za-select-product" ng-show="currentTab == 'reporting'">
                                     <a href="javascript:void(0);">
                                         <select id="app-id-selector" class="form-control">
-                                            <option>Zing MP3</option>
-                                            <option>Zing TV</option>
-                                            <option>Zing News</option>
+                                            <option ng-repeat="app in userApps" value="{[{app['app_id']}]}">{[{app.name}]}</option>
                                         </select>
                                     </a>
                                 </li>
-                                <li ng-controller="DatepickerController">
+                                <li ng-controller="DatepickerController" ng-show="currentTab == 'reporting'">
                                     <a href="javascript:void(0);" class="za-date-range-picker waves-effect waves-button waves-classic">
                                         <span id="za-date-range-picker-span">Select Date Range</span>
                                     </a>

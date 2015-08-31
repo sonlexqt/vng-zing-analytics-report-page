@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="zaApp">
+<head>
+    <!-- start: Meta -->
+    <meta charset="utf-8">
+    <title>Fresher ZA Report</title>
+    <!-- end: Meta -->
+    <!-- start: Mobile Specific -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- end: Mobile Specific -->
+
+    <!-- start: CSS -->
+    <link id="bootstrap-style" href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /*
+         * General styles
+         */
+        body, html {
+            height: 100%;
+            font-family: 'Roboto', sans-serif !important;
+            background: -webkit-linear-gradient(90deg, #606c88 10%, #3f4c6b 90%); /* Chrome 10+, Saf5.1+ */
+            background:    -moz-linear-gradient(90deg, #606c88 10%, #3f4c6b 90%); /* FF3.6+ */
+            background:     -ms-linear-gradient(90deg, #606c88 10%, #3f4c6b 90%); /* IE10 */
+            background:      -o-linear-gradient(90deg, #606c88 10%, #3f4c6b 90%); /* Opera 11.10+ */
+            background:         linear-gradient(90deg, #606c88 10%, #3f4c6b 90%); /* W3C */
+        }
+
+        .container-fluid.login-container {
+            margin-top: 70px;
+        }
+
+        .card-container.card {
+            max-width: 350px;
+            padding: 40px 40px;
+        }
+
+        /*
+         * Card component
+         */
+        .card {
+            background-color: #F7F7F7;
+            /* just in case there no content*/
+            padding: 20px 25px 30px;
+            margin: 0 auto 25px;
+            /* shadows and rounded borders */
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-img-card {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 10px;
+            display: block;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            border-radius: 50%;
+        }
+
+        /*
+         * Form styles
+         */
+        .profile-name-card {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0 0;
+            min-height: 1em;
+        }
+
+        .reauth-email {
+            display: block;
+            color: #404040;
+            line-height: 2;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .form-signin #username-input,
+        .form-signin #password-input {
+            direction: ltr;
+            height: 44px;
+            font-size: 16px;
+        }
+
+        .form-signin input[type=email],
+        .form-signin input[type=password],
+        .form-signin input[type=text],
+        .form-signin button {
+            width: 100%;
+            display: block;
+            margin-bottom: 10px;
+            z-index: 1;
+            position: relative;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .form-signin .form-control:focus {
+            border-color: rgb(104, 145, 162);
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgb(104, 145, 162);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgb(104, 145, 162);
+        }
+
+        .btn {
+            font-weight: 700;
+            height: 36px;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+            cursor: default;
+        }
+
+        .forgot-password {
+            color: rgb(104, 145, 162);
+        }
+
+        .forgot-password:hover,
+        .forgot-password:active,
+        .forgot-password:focus{
+            color: rgb(12, 97, 33);
+        }
+
+        #za-login {
+            color: white;
+            font-weight: 100;
+        }
+
+        #za-title {
+            color: white;
+            font-weight: 300;
+        }
+    </style>
+    <!-- end: CSS -->
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900' rel='stylesheet' type='text/css'>
+
+    <!-- start: Favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
+    <!-- end: Favicon -->
+</head>
+
+<body>
+<div class="container-fluid login-container">
+    <div class="row-fluid text-center">
+        <h1><strong id="za-title">ZANALYTICS</strong> <span id="za-login">Login</span></h1>
+    </div>
+    <div class="card card-container">
+        <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+        <p id="profile-name" class="profile-name-card"></p>
+        <form class="form-signin" action="/login" method="POST">
+            <span id="reauth-email" class="reauth-email"></span>
+            <input name="username" type="text" id="username-input" class="form-control" placeholder="Email address" required autofocus>
+            <input name="password" type="password" id="password-input" class="form-control" placeholder="Password" required>
+            <div id="remember" class="checkbox">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <button class="btn btn-primary" type="submit">Sign in</button>
+        </form><!-- /form -->
+        <a href="#" class="forgot-password">
+            Forgot the password?
+        </a>
+    </div><!-- /card-container -->
+</div><!-- /container-fluid -->
+
+</body>
+</html>
