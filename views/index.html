@@ -3,32 +3,28 @@
     <head>
         
         <!-- Title -->
-        <title>Modern | Admin Dashboard Template</title>
+        <title>ZAnalytics | Report</title>
         
         <meta content="width=device-width, initial-scale=1" name="viewport"/>
         <meta charset="UTF-8">
 
         <!-- Styles -->
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
-        <link href="assets/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet"/>
-        <link href="assets/plugins/uniform/css/uniform.default.min.css" rel="stylesheet"/>
-        <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="assets/plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
-        <link href="assets/plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css"/>	
-        <link href="assets/plugins/offcanvasmenueffects/css/menu_cornerbox.css" rel="stylesheet" type="text/css"/>	
-        <link href="assets/plugins/waves/waves.min.css" rel="stylesheet" type="text/css"/>	
-        <link href="assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css"/>
-        <link href="assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css"/>
-        <link href="assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
-        <link href="assets/plugins/toastr/toastr.min.css" rel="stylesheet" type="text/css"/>	
+        <link href="/assets/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet"/>
+        <link href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/assets/plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
+        <link href="/assets/plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css"/>
+        <link href="/assets/plugins/offcanvasmenueffects/css/menu_cornerbox.css" rel="stylesheet" type="text/css"/>
+        <link href="/assets/plugins/waves/waves.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css"/>
+        <link href="/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+        <link href="/assets/plugins/toastr/toastr.min.css" rel="stylesheet" type="text/css"/>
         	
         <!-- Theme Styles -->
-        <link href="assets/css/modern.css" rel="stylesheet" type="text/css"/>
-        <link href="assets/css/themes/white.css" class="theme-color" rel="stylesheet" type="text/css"/>
-        <link href="assets/css/custom.css" rel="stylesheet" type="text/css"/>
-        
-        <script src="assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
-        <script src="assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
+        <link href="/assets/css/modern.css" rel="stylesheet" type="text/css"/>
+        <link href="/assets/css/themes/white.css" class="theme-color" rel="stylesheet" type="text/css"/>
+        <link href="/assets/css/custom.css" rel="stylesheet" type="text/css"/>
     </head>
 
     <body class="page-header-fixed">
@@ -120,7 +116,7 @@
                         </a>
                     </div>
                     <div class="logo-box">
-                        <a href="index.html" class="logo-text"><span>Modern</span></a>
+                        <a href="index.html" class="logo-text"><span>ZAnalytics</span></a>
                     </div><!-- Logo Box -->
                     <div class="topmenu-outer">
                         <div class="top-menu">
@@ -288,6 +284,7 @@
             </div><!-- Page Sidebar -->
 
             <div class="page-inner">
+
                 <div class="page-title">
                     <h3>Dashboard</h3>
                     <div class="page-breadcrumb">
@@ -297,94 +294,162 @@
                         </ol>
                     </div>
                 </div>
-                <div id="main-wrapper">
+                <div class="main-wrapper">
                     <!-- Badges -->
                     <div class="row">
-                        <div class="col-lg-2 col-md-6">
-                            <div class="panel info-box panel-white">
-                                <div class="panel-body">
-                                    <div class="info-box-stats">
-                                        <p class="counter">107,200</p>
-                                        <span class="info-box-title">Sessions</span>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="panel panel-white">
+                                <div class="visitors-chart">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Visitors</h4>
                                     </div>
-                                    <div class="info-box-icon">
-                                        <i class="icon-directions"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-6">
-                            <div class="panel info-box panel-white">
-                                <div class="panel-body">
-                                    <div class="info-box-stats">
-                                        <p class="counter">47,500</p>
-                                        <span class="info-box-title">Users</span>
-                                    </div>
-                                    <div class="info-box-icon">
-                                        <i class="icon-users"></i>
+                                    <div class="panel-body">
+                                        <div id="flotchart1"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-6">
-                            <div class="panel info-box panel-white">
-                                <div class="panel-body">
-                                    <div class="info-box-stats">
-                                        <p class="counter">340,230</p>
-                                        <span class="info-box-title">Pageviews</span>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="panel panel-white">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="panel info-box panel-white">
+                                        <div class="panel-body">
+                                            <div class="info-box-stats">
+                                                <p class="counter">107,200</p>
+                                                <span class="info-box-title">Sessions</span>
+                                            </div>
+                                            <div class="info-box-icon">
+                                                <i class="icon-directions"></i>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="info-box-icon">
-                                        <i class="icon-eye"></i>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="panel info-box panel-white">
+                                        <div class="panel-body">
+                                            <div class="info-box-stats">
+                                                <p class="counter">47,500</p>
+                                                <span class="info-box-title">Users</span>
+                                            </div>
+                                            <div class="info-box-icon">
+                                                <i class="icon-users"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="panel info-box panel-white">
+                                        <div class="panel-body">
+                                            <div class="info-box-stats">
+                                                <p class="counter">340,230</p>
+                                                <span class="info-box-title">Pageviews</span>
+                                            </div>
+                                            <div class="info-box-icon">
+                                                <i class="icon-eye"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="panel info-box panel-white">
+                                        <div class="panel-body">
+                                            <div class="info-box-stats">
+                                                <p>$<span class="counter">653,000</span></p>
+                                                <span class="info-box-title">Avg. Session Duration</span>
+                                            </div>
+                                            <div class="info-box-icon">
+                                                <i class="icon-clock"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="panel info-box panel-white">
+                                        <div class="panel-body">
+                                            <div class="info-box-stats">
+                                                <p class="counter">47,500</p>
+                                                <span class="info-box-title">Bounce Rate</span>
+                                            </div>
+                                            <div class="info-box-icon">
+                                                <i class="icon-bar-chart"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="panel info-box panel-white">
+                                        <div class="panel-body">
+                                            <div class="info-box-stats">
+                                                <p class="counter">47,500</p>
+                                                <span class="info-box-title">% New Visits</span>
+                                            </div>
+                                            <div class="info-box-icon">
+                                                <i class="icon-graph"></i>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-6">
-                            <div class="panel info-box panel-white">
-                                <div class="panel-body">
-                                    <div class="info-box-stats">
-                                        <p>$<span class="counter">653,000</span></p>
-                                        <span class="info-box-title">Avg. Session Duration</span>
-                                    </div>
-                                    <div class="info-box-icon">
-                                        <i class="icon-clock"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-6">
-                            <div class="panel info-box panel-white">
-                                <div class="panel-body">
-                                    <div class="info-box-stats">
-                                        <p class="counter">47,500</p>
-                                        <span class="info-box-title">Bounce Rate</span>
-                                    </div>
-                                    <div class="info-box-icon">
-                                        <i class="icon-bar-chart"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-6">
-                            <div class="panel info-box panel-white">
-                                <div class="panel-body">
-                                    <div class="info-box-stats">
-                                        <p class="counter">47,500</p>
-                                        <span class="info-box-title">% New Visits</span>
-                                    </div>
-                                    <div class="info-box-icon">
-                                        <i class="icon-graph"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- Row --> <!-- END Badges -->
-
-                    <div class="row">
-                        <!--TODO charts go here -->
-                    </div>
-
+                    </div><!-- Row --> <!-- END Metrics -->
                 </div><!-- Main Wrapper -->
+
+                <div class="page-title">
+                    <h3>Demographics</h3>
+                </div>
+                <div class="main-wrapper">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <div class="panel panel-white">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Language</h4>
+                                </div>
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="panel panel-white">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">City</h4>
+                                </div>
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-title">
+                    <h3>System</h3>
+                </div>
+                <div class="main-wrapper">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <div class="panel panel-white">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Browsers</h4>
+                                </div>
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="panel panel-white">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Operating Systems</h4>
+                                </div>
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="page-footer">
                     <p class="no-s">2015 &copy; Modern by Steelcoders.</p>
                 </div>
@@ -452,26 +517,33 @@
 	
 
         <!-- Javascripts -->
-        <script src="assets/plugins/jquery/jquery-2.1.3.min.js"></script>
-        <script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
-        <script src="assets/plugins/pace-master/pace.min.js"></script>
-        <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-        <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-        <script src="assets/plugins/switchery/switchery.min.js"></script>
-        <script src="assets/plugins/uniform/jquery.uniform.min.js"></script>
-        <script src="assets/plugins/offcanvasmenueffects/js/classie.js"></script>
-        <script src="assets/plugins/offcanvasmenueffects/js/main.js"></script>
-        <script src="assets/plugins/waves/waves.min.js"></script>
-        <script src="assets/plugins/3d-bold-navigation/js/main.js"></script>
-        <script src="assets/plugins/toastr/toastr.min.js"></script>
-        <script src="assets/plugins/flot/jquery.flot.min.js"></script>
-        <script src="assets/plugins/flot/jquery.flot.time.min.js"></script>
-        <script src="assets/plugins/flot/jquery.flot.symbol.min.js"></script>
-        <script src="assets/plugins/flot/jquery.flot.resize.min.js"></script>
-        <script src="assets/plugins/flot/jquery.flot.tooltip.min.js"></script>
-        <script src="assets/plugins/curvedlines/curvedLines.js"></script>
-        <script src="assets/js/modern.js"></script>
-        <script src="assets/js/pages/dashboard.js"></script>
-        
+        <!-- LIBS -->
+        <script src="/assets/plugins/jquery/jquery-2.1.3.min.js"></script>
+        <script src="/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+        <script src="/assets/plugins/pace-master/pace.min.js"></script>
+        <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+        <script src="/assets/plugins/switchery/switchery.min.js"></script>
+        <script src="/assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
+        <script src="/assets/plugins/offcanvasmenueffects/js/classie.js"></script>
+        <script src="/assets/plugins/offcanvasmenueffects/js/main.js"></script>
+        <script src="/assets/plugins/waves/waves.min.js"></script>
+        <script src="/assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
+        <script src="/assets/plugins/3d-bold-navigation/js/main.js"></script>
+        <script src="/assets/plugins/toastr/toastr.min.js"></script>
+        <script src="/assets/plugins/flot/jquery.flot.min.js"></script>
+        <script src="/assets/plugins/flot/jquery.flot.time.min.js"></script>
+        <script src="/assets/plugins/flot/jquery.flot.symbol.min.js"></script>
+        <script src="/assets/plugins/flot/jquery.flot.resize.min.js"></script>
+        <script src="/assets/plugins/flot/jquery.flot.tooltip.min.js"></script>
+        <script src="/assets/plugins/curvedlines/curvedLines.js"></script>
+        <!-- CUSTOM SCRIPTS -->
+        <script src="/assets/js/modern.js"></script>
+        <script src="/assets/js/pages/dashboard.js"></script>
+        <script src="/assets/js/pages/charts-chartjs.js"></script>
+        <script src="/assets/js/pages/form-wizard.js"></script>
+        <script src="/assets/js/pages/form-x-editable.js"></script>
+        <script src="/assets/js/pages/notifications.js"></script>
+        <script src="/assets/js/pages/table-data.js"></script>
     </body>
 </html>

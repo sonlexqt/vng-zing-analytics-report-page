@@ -3791,7 +3791,7 @@ body:not(.page-horizontal-bar):not(.small-sidebar) .menu.accordion-menu a {
 
 /* Main Wrapper */
 
-#main-wrapper {
+.main-wrapper {
     margin: 20px;
     padding: 0px;
 }
@@ -4476,7 +4476,7 @@ body:not(.page-horizontal-bar):not(.small-sidebar) .menu.accordion-menu a {
 
 /* Extra */
 
-.page-error #main-wrapper {
+.page-error .main-wrapper {
     margin: 5%;
 }
 
@@ -4498,10 +4498,10 @@ body:not(.page-horizontal-bar):not(.small-sidebar) .menu.accordion-menu a {
 
 /* Login */
 
-.page-login #main-wrapper,
-.page-register #main-wrapper,
-.page-forgot #main-wrapper,
-.page-lock-screen #main-wrapper {
+.page-login .main-wrapper,
+.page-register .main-wrapper,
+.page-forgot .main-wrapper,
+.page-lock-screen .main-wrapper {
     margin: 5%;
 }
 
