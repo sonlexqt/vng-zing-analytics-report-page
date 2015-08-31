@@ -5,7 +5,18 @@
             <div class="panel panel-white">
                 <div class="visitors-chart">
                     <div class="panel-heading">
-                        <h4 class="panel-title">Sessions</h4>
+                        <h4 class="panel-title">
+                            <span id="dashboard-overview-current-chart">
+                                {[{currentChart.chartLabel}]}
+                            </span>
+                            &nbsp;
+                            vs.
+                            &nbsp;
+                            <a id="btn-select-second-chart" class="btn btn-success hvr-icon-spin" data-toggle="modal" data-target="#select-second-chart-modal">
+                                {[{secondChart.chartLabel}]}
+                            </a>
+                        </h4>
+
                     </div>
                     <div class="panel-body">
                         <div id="dashboard-summary-chart" style="height: 300px;">
@@ -18,7 +29,7 @@
             <div class="panel panel-white total-metrics">
                 <div class="col-lg-6 col-md-6">
                     <div class="panel info-box panel-white">
-                        <div class="panel-body active" data-chart-label="Sessions" data-field-name="sessions">
+                        <div class="panel-body active" data-chart-label="Sessions" data-field-name="sessions" ng-click="handleMetricBadgesClick($event)">
                             <div class="info-box-stats">
                                 <p class="counter">{[{sumOfSessions}]}</p>
                                 <span class="info-box-title">Sessions</span>
@@ -31,7 +42,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="panel info-box panel-white">
-                        <div class="panel-body" data-chart-label="Users" data-field-name="users">
+                        <div class="panel-body" data-chart-label="Users" data-field-name="users" ng-click="handleMetricBadgesClick($event)">
                             <div class="info-box-stats">
                                 <p class="counter">{[{sumOfUsers}]}</p>
                                 <span class="info-box-title">Users</span>
@@ -44,7 +55,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="panel info-box panel-white">
-                        <div class="panel-body" data-chart-label="Pageviews" data-field-name="pageviews">
+                        <div class="panel-body" data-chart-label="Pageviews" data-field-name="pageviews" ng-click="handleMetricBadgesClick($event)">
                             <div class="info-box-stats">
                                 <p class="counter">{[{sumOfPageviews}]}</p>
                                 <span class="info-box-title">Pageviews</span>
@@ -57,7 +68,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="panel info-box panel-white">
-                        <div class="panel-body" data-chart-label="Avg. Session Duration" data-field-name="avgSessionDuration">
+                        <div class="panel-body" data-chart-label="Avg. Session Duration" data-field-name="avgSessionDuration" ng-click="handleMetricBadgesClick($event)">
                             <div class="info-box-stats">
                                 <p><span class="counter">{[{avgSessionDuration}]}</span></p>
                                 <span class="info-box-title">Avg. Session Duration</span>
@@ -70,7 +81,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="panel info-box panel-white">
-                        <div class="panel-body" data-chart-label="Bounce Rate" data-field-name="bounceRate">
+                        <div class="panel-body" data-chart-label="Bounce Rate" data-field-name="bounceRate" ng-click="handleMetricBadgesClick($event)">
                             <div class="info-box-stats">
                                 <p class="counter">{[{sumOfBounceRate}]}%</p>
                                 <span class="info-box-title">Bounce Rate</span>
@@ -83,7 +94,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="panel info-box panel-white">
-                        <div class="panel-body" data-chart-label="% New Visits" data-field-name="percentNewVists">
+                        <div class="panel-body" data-chart-label="% New Visits" data-field-name="percentNewVists" ng-click="handleMetricBadgesClick($event)">
                             <div class="info-box-stats">
                                 <p class="counter">{[{sumOfPercentNewVists}]}%</p>
                                 <span class="info-box-title">% New Visits</span>
@@ -97,4 +108,27 @@
             </div>
         </div>
     </div><!-- Row --> <!-- END Metrics -->
+</div>
+
+<div class="modal fade" id="select-second-chart-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="mySmallModalLabel">Select a metric for comparison</h4>
+            </div>
+            <div class="modal-body">
+                <div class="radio" ng-repeat="secondChart in secondChartsArray">
+                    <label>
+                        <input name="select-second-chart-radio" type="radio" value="{[{secondChart.fieldName}]}">
+                        <span>{[{secondChart.chartLabel}]}</span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="clear-charts-comparison" type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearSecondChartValue($event)">Clear Comparison</button>
+                <button id="set-charts-comparison" type="button" class="btn btn-success" ng-click="getSecondChartValue($event)">Set</button>
+            </div>
+        </div>
+    </div>
 </div>

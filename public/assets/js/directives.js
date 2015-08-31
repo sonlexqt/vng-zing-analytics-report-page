@@ -3,8 +3,8 @@ var directivesModule = angular.module('zaApp.Directives', []);
 /**
  * Helper Functions
  */
-var LINE_CHART_MAIN_COLOR = "rgba(34,186,160,1)";
-var LINE_CHART_SUB_COLOR = "rgba(220,220,220,1)";
+var LINE_CHART_MAIN_COLOR = "rgba(34, 186, 160, 1)";
+var LINE_CHART_SUB_COLOR = "rgba(63, 127, 191, 1)";
 
 function getLineChartData(_data, _label, _color){
     return [
@@ -136,11 +136,22 @@ function drawLineChart(elementSelector, dataset){
 
 }
 
+function removeElementFromArray(array, search_field, search_term){
+    var res = array;
+    for (var i = res.length-1; i>=0; i--) {
+        if (res[i][search_field] === search_term) {
+            res.splice(i, 1);
+            break;       //<-- Uncomment  if only the first term has to be removed
+        }
+    }
+    return res;
+}
+
 /**
  * DIRECTIVES
  */
 
-directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope', function($http, $rootScope) {
+directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope', '$timeout', function($http, $rootScope, $timeout) {
     return {
         restrict: 'E',
         templateUrl: '/views/reporting/reporting-dashboard-overview.html',
@@ -148,6 +159,11 @@ directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope',
             scope.dashboardSummaryData = null;
             scope.currentChart = null;
             scope.chartDataset = [];
+            scope.secondChartsArray = [];
+            scope.secondChart = {
+                fieldName: "none",
+                chartLabel: "None"
+            };
 
             function renderDashboardOverview(){
                 var dateFrom = $rootScope.dateFrom.getTime();
@@ -183,32 +199,139 @@ directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope',
                     scope.avgSessionDuration = date.toISOString().substr(11, 8);
 
                     // By default, the 'Sessions' chart is the current chart
-                    scope.currentChart = "sessions";
+                    scope.currentChart = {
+                        fieldName: "sessions",
+                        chartLabel: "Sessions"
+                    };
+                    scope.secondChart = {
+                        fieldName: "none",
+                        chartLabel: "None"
+                    };
+                    // Render the chart
                     var sessionsData = getArrayOfArraysForLineChart(scope.dashboardSummaryData, "date", "sessions", true);
                     var chartData = getLineChartData(sessionsData, "Sessions", LINE_CHART_MAIN_COLOR);
                     scope.chartDataset = [];
                     scope.chartDataset.push(chartData[0]);
                     scope.chartDataset.push(chartData[1]);
                     drawLineChart("#dashboard-summary-chart", scope.chartDataset);
+                    // Modify the second charts array (for comparison)
+                    var chartsList = [
+                        {
+                            fieldName: "sessions",
+                            chartLabel: "Sessions"
+                        },
+                        {
+                            fieldName: "users",
+                            chartLabel: "Users"
+                        },
+                        {
+                            fieldName: "pageviews",
+                            chartLabel: "Pageviews"
+                        },
+                        {
+                            fieldName: "avgSessionDuration",
+                            chartLabel: "Avg. Sessions Duration"
+                        },
+                        {
+                            fieldName: "bounceRate",
+                            chartLabel: "Bounce Rate"
+                        },
+                        {
+                            fieldName: "percentNewVists",
+                            chartLabel: "% New Visits"
+                        }
+                    ];
+                    scope.secondChartsArray = removeElementFromArray(chartsList, "fieldName", "sessions");
+                    // Reset 'active' class to the Sessions chart
+                    angular.element(".total-metrics .panel-body").each(function(){
+                        angular.element(this).removeClass("active");
+                    });
+                    angular.element(".total-metrics .panel-body").first().addClass("active");
                 });
             }
 
-            $(".total-metrics .panel-body").unbind();
-            $(".total-metrics .panel-body").click(function(event){
-                $(this).parent().parent().parent().find(".panel-body").each(function(){
-                    $(this).removeClass("active");
+            scope.handleMetricBadgesClick = function($event){
+                var thisBadge = angular.element($event.currentTarget);
+                thisBadge.parent().parent().parent().find(".panel-body").each(function(){
+                    angular.element(this).removeClass("active");
                 });
-                $(this).addClass("active");
-                var chartLabel = $(this).data("chart-label");
-                var fieldname = $(this).data("field-name");
-                scope.currentChart = fieldname;
-                var currentChartData = getArrayOfArraysForLineChart(scope.dashboardSummaryData, "date", fieldname, true);
+                thisBadge.addClass("active");
+                var chartLabel = thisBadge.data("chart-label");
+                var fieldName = thisBadge.data("field-name");
+                scope.currentChart = {
+                    fieldName: fieldName,
+                    chartLabel: chartLabel
+                };
+                scope.secondChart = {
+                    fieldName: "none",
+                    chartLabel: "None"
+                };
+                var currentChartData = getArrayOfArraysForLineChart(scope.dashboardSummaryData, "date", fieldName, true);
                 var chartData = getLineChartData(currentChartData, chartLabel, LINE_CHART_MAIN_COLOR);
                 scope.chartDataset = [];
                 scope.chartDataset.push(chartData[0]);
                 scope.chartDataset.push(chartData[1]);
                 drawLineChart("#dashboard-summary-chart", scope.chartDataset);
-            });
+
+                var chartsList = [
+                    {
+                        fieldName: "sessions",
+                        chartLabel: "Sessions"
+                    },
+                    {
+                        fieldName: "users",
+                        chartLabel: "Users"
+                    },
+                    {
+                        fieldName: "pageviews",
+                        chartLabel: "Pageviews"
+                    },
+                    {
+                        fieldName: "avgSessionDuration",
+                        chartLabel: "Avg. Sessions Duration"
+                    },
+                    {
+                        fieldName: "bounceRate",
+                        chartLabel: "Bounce Rate"
+                    },
+                    {
+                        fieldName: "percentNewVists",
+                        chartLabel: "% New Visits"
+                    }
+                ];
+                scope.secondChartsArray = removeElementFromArray(chartsList, "fieldName", scope.currentChart.fieldName);
+            };
+
+            scope.getSecondChartValue = function($event){
+                var selectedVal = "";
+                var selected = $("input[type='radio'][name='select-second-chart-radio']:checked");
+                if (selected.length > 0) {
+                    var selectedFieldName = selected.val();
+                    var selectedChartLabel = selected.parent().find("span").text();
+                    scope.secondChart = {
+                        fieldName: selectedFieldName,
+                        chartLabel: selectedChartLabel
+                    };
+                    $('#select-second-chart-modal').modal('toggle');
+                    var currentChartArrayData = getArrayOfArraysForLineChart(scope.dashboardSummaryData, "date", scope.currentChart.fieldName, true);
+                    var currentChartData = getLineChartData(currentChartArrayData, scope.currentChart.chartLabel, LINE_CHART_MAIN_COLOR);
+                    var secondChartArrayData = getArrayOfArraysForLineChart(scope.dashboardSummaryData, "date", scope.secondChart.fieldName, true);
+                    var secondChartData = getLineChartData(secondChartArrayData, scope.secondChart.chartLabel, LINE_CHART_SUB_COLOR);
+                    scope.chartDataset = [];
+                    scope.chartDataset.push(currentChartData[0]);
+                    scope.chartDataset.push(currentChartData[1]);
+                    scope.chartDataset.push(secondChartData[0]);
+                    scope.chartDataset.push(secondChartData[1]);
+                    drawLineChart("#dashboard-summary-chart", scope.chartDataset);
+                }
+            };
+
+            scope.clearSecondChartValue = function($event){
+                scope.secondChart = {
+                    fieldName: "none",
+                    chartLabel: "None"
+                };
+            };
 
             $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
                 if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){

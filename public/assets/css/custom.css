@@ -1547,9 +1547,9 @@ h5 {
     padding: 0!important;
 }
 
-.modal-backdrop {
-    z-index: 999999;
-}
+/*.modal-backdrop {*/
+    /*z-index: 999999;*/
+/*}*/
 
 /* Pagination */
 
@@ -3961,6 +3961,10 @@ body:not(.page-horizontal-bar):not(.small-sidebar) .menu.accordion-menu a {
     color: #fff !important;
 }
 
+#dashboard-overview-current-chart{
+    text-transform: uppercase;
+}
+
 .stats-info ul {
     margin: 0;
 }
@@ -4695,4 +4699,40 @@ body:not(.small-sidebar):not(.page-horizontal-bar) .menu.accordion-menu,
     border-radius: 5px !important;
     height: 40px;
     margin-top: -10px;
+}
+
+/* HOVER CSS */
+/* Icon Spin */
+.hvr-icon-spin {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    padding-right: 2.2em;
+}
+.hvr-icon-spin:before {
+    content: "\f021";
+    position: absolute;
+    right: 1em;
+    padding: 0 1px;
+    font-family: FontAwesome;
+    -webkit-transition-duration: 1s;
+    transition-duration: 1s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    -webkit-transition-timing-function: ease-in-out;
+    transition-timing-function: ease-in-out;
+}
+.hvr-icon-spin:hover:before, .hvr-icon-spin:focus:before, .hvr-icon-spin:active:before {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+#btn-select-second-chart{
+    color: #fff;
 }
