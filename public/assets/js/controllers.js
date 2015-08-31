@@ -33,6 +33,7 @@ controllersModule.controller('ZAAppController', ['$scope', '$rootScope', '$http'
         $rootScope.currentTab = 'management';
     }
 
+    //TODO handle later
     $scope.selectSidebarMenu = function(){
         return '/views/templates/' + $rootScope.currentTab + '/sidebar.html';
     };
@@ -46,7 +47,7 @@ controllersModule.controller('DatepickerController', ['$scope', '$rootScope', fu
     todayDateObject.setSeconds(0);
     var yesterday = todayDateObject.setDate(todayDateObject.getDate() - 1);
     var yesterdayDateObject = new Date(yesterday);
-    var twoWeekAgoDateObject = new Date(todayDateObject.setDate(todayDateObject.getDate() - 13));
+    var threeWeekAgoDateObject = new Date(todayDateObject.setDate(todayDateObject.getDate() - 20));
 
     var yesterdayDateString = moment(yesterdayDateObject).format("YYYY-MM-DD");
 
@@ -80,9 +81,9 @@ controllersModule.controller('DatepickerController', ['$scope', '$rootScope', fu
     if (!$rootScope.dateFrom || !$rootScope.dateTo){
         $("#za-date-range-picker-span")
             .data('dateRangePicker')
-            .setDateRange(moment(twoWeekAgoDateObject).format("YYYY-MM-DD"),
+            .setDateRange(moment(threeWeekAgoDateObject).format("YYYY-MM-DD"),
             moment(yesterdayDateObject).format("YYYY-MM-DD"));
-        $rootScope.dateFrom = twoWeekAgoDateObject;
+        $rootScope.dateFrom = threeWeekAgoDateObject;
         $rootScope.dateTo = yesterdayDateObject;
     }
 

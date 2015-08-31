@@ -140,109 +140,97 @@ function drawLineChart(elementSelector, dataset){
  * DIRECTIVES
  */
 
-directivesModule.directive('reportingDashboardSummary', ['$http', function($http){
+directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope', function($http, $rootScope) {
     return {
         restrict: 'E',
-        templateUrl: '/views/reporting/reporting-dashboard-summary.html',
+        templateUrl: '/views/reporting/reporting-dashboard-overview.html',
         link: function(scope, element, attrs){
-            scope.users = [
-                {
-                    "pageviews": 300,
-                    "date": "2015-08-01"
-                },
-                {
-                    "pageviews": 450,
-                    "date": "2015-08-02"
-                },
-                {
-                    "pageviews": 380,
-                    "date": "2015-08-03"
-                },
-                {
-                    "pageviews": 135,
-                    "date": "2015-08-04"
-                },
-                {
-                    "pageviews": 278,
-                    "date": "2015-08-05"
-                },
-                {
-                    "pageviews": 175,
-                    "date": "2015-08-06"
-                },
-                {
-                    "pageviews": 300,
-                    "date": "2015-08-07"
-                },
-                {
-                    "pageviews": 370,
-                    "date": "2015-08-08"
-                },
-                {
-                    "pageviews": 224,
-                    "date": "2015-08-09"
-                },
-                {
-                    "pageviews": 90,
-                    "date": "2015-08-10"
+            scope.dashboardSummaryData = null;
+            scope.currentChart = null;
+            scope.chartDataset = [];
+
+            function renderDashboardOverview(){
+                var dateFrom = $rootScope.dateFrom.getTime();
+                var dateTo = $rootScope.dateTo.getTime();
+                var currentAppId = $rootScope.currentAppId;
+                var queryString = '/app/overview?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                console.log(queryString);
+
+                $http.get(queryString).success(function(data) {
+                    scope.dashboardSummaryData = data;
+                    // Calculate the total / average values
+                    scope.sumOfSessions = 0;
+                    scope.sumOfUsers = 0;
+                    scope.sumOfPageviews = 0;
+                    scope.sumOfEntrances = 0;
+                    scope.sumOfBounces = 0;
+                    scope.sumOfSessionsDuration = 0;
+
+                    for (var i = 0; i< data.length; i++){
+                        scope.sumOfSessions += data[i].sessions;
+                        scope.sumOfUsers += data[i].users;
+                        scope.sumOfPageviews += data[i].pageviews;
+                        scope.sumOfEntrances += data[i].entrances;
+                        scope.sumOfBounces += data[i].bounces;
+                        scope.sumOfSessionsDuration += data[i].sessionDuration;
+                    }
+                    scope.sumOfPageSessions = (parseFloat(scope.sumOfPageviews) / scope.sumOfSessions).toFixed(2);
+                    scope.sumOfBounceRate = (parseFloat(scope.sumOfBounces) * 100 / scope.sumOfEntrances).toFixed(2);
+                    scope.sumOfPercentNewVists = (parseFloat(scope.sumOfUsers) * 100 / scope.sumOfSessions).toFixed(2);
+                    scope.avgSessionDuration = (scope.sumOfSessionsDuration / scope.sumOfSessions);
+                    var date = new Date(null);
+                    date.setSeconds(scope.avgSessionDuration); // specify value for SECONDS here
+                    scope.avgSessionDuration = date.toISOString().substr(11, 8);
+
+                    // By default, the 'Sessions' chart is the current chart
+                    scope.currentChart = "sessions";
+                    var sessionsData = getArrayOfArraysForLineChart(scope.dashboardSummaryData, "date", "sessions", true);
+                    var chartData = getLineChartData(sessionsData, "Sessions", LINE_CHART_MAIN_COLOR);
+                    scope.chartDataset = [];
+                    scope.chartDataset.push(chartData[0]);
+                    scope.chartDataset.push(chartData[1]);
+                    drawLineChart("#dashboard-summary-chart", scope.chartDataset);
+                });
+            }
+
+            $(".total-metrics .panel-body").unbind();
+            $(".total-metrics .panel-body").click(function(event){
+                $(this).parent().parent().parent().find(".panel-body").each(function(){
+                    $(this).removeClass("active");
+                });
+                $(this).addClass("active");
+                var chartLabel = $(this).data("chart-label");
+                var fieldname = $(this).data("field-name");
+                scope.currentChart = fieldname;
+                var currentChartData = getArrayOfArraysForLineChart(scope.dashboardSummaryData, "date", fieldname, true);
+                var chartData = getLineChartData(currentChartData, chartLabel, LINE_CHART_MAIN_COLOR);
+                scope.chartDataset = [];
+                scope.chartDataset.push(chartData[0]);
+                scope.chartDataset.push(chartData[1]);
+                drawLineChart("#dashboard-summary-chart", scope.chartDataset);
+            });
+
+            $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
+                if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){
+                    renderDashboardOverview();
                 }
-            ];
+            });
+            scope.$on("datepickerChanged", renderDashboardOverview);
+            scope.$on("appSelectChanged", renderDashboardOverview);
 
-            scope.sessions = [
-                {
-                    "sessions": 13,
-                    "date": "2015-08-01"
-                },
-                {
-                    "sessions": 83,
-                    "date": "2015-08-02"
-                },
-                {
-                    "sessions": 44,
-                    "date": "2015-08-03"
-                },
-                {
-                    "sessions": 33,
-                    "date": "2015-08-04"
-                },
-                {
-                    "sessions": 78,
-                    "date": "2015-08-05"
-                },
-                {
-                    "sessions": 55,
-                    "date": "2015-08-06"
-                },
-                {
-                    "sessions": 100,
-                    "date": "2015-08-07"
-                },
-                {
-                    "sessions": 30,
-                    "date": "2015-08-08"
-                },
-                {
-                    "sessions": 94,
-                    "date": "2015-08-09"
-                },
-                {
-                    "sessions": 11,
-                    "date": "2015-08-10"
-                }
-            ];
 
-            var data = getArrayOfArraysForLineChart(scope.users, "date", "pageviews", true);
-            var data2 = getArrayOfArraysForLineChart(scope.sessions, "date", "sessions", true);
+            //var data = getArrayOfArraysForLineChart(scope.users, "date", "pageviews", true);
+            //var data2 = getArrayOfArraysForLineChart(scope.sessions, "date", "sessions", true);
 
-            var dataset = [];
-            var chartData1 = getLineChartData(data2, "Sessions", LINE_CHART_MAIN_COLOR);
-            var chartData2 = getLineChartData(data, "Pageviews", LINE_CHART_SUB_COLOR);
-            dataset.push(chartData1[0]);
-            dataset.push(chartData1[1]);
+            //var dataset = [];
+            //var chartData1 = getLineChartData(data2, "Sessions", LINE_CHART_MAIN_COLOR);
+            //var chartData2 = getLineChartData(data, "Pageviews", LINE_CHART_SUB_COLOR);
+            //dataset.push(chartData1[0]);
+            //dataset.push(chartData1[1]);
             //dataset.push(chartData2[0]);
             //dataset.push(chartData2[1]);
 
-            drawLineChart("#dashboard-summary-chart", dataset);
+            //drawLineChart("#dashboard-summary-chart", dataset);
         }
     }
 }]);
