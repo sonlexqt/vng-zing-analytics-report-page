@@ -136,6 +136,10 @@ function drawLineChart(elementSelector, dataset){
 
 }
 
+/**
+ * DIRECTIVES
+ */
+
 directivesModule.directive('reportingDashboardSummary', ['$http', function($http){
     return {
         restrict: 'E',

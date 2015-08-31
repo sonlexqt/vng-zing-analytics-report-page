@@ -4078,201 +4078,6 @@ body:not(.page-horizontal-bar):not(.small-sidebar) .menu.accordion-menu a {
     height: 100px;
 }
 
-/* Profile */
-
-.profile-cover {
-    background: url('../images/profile-cover.png');
-    background-size: cover;
-    width: 100%;
-    height: 300px;
-    position: relative;
-}
-
-.profile-image {
-    position: absolute;
-    margin: 200px 20px 20px 20px;
-}
-
-.profile-image img {
-    display: block;
-    margin: 0 auto;
-    width: 150px;
-    border-radius: 50%;
-    -webkit-box-shadow: 0 0 0 5px #fff;
-    -moz-box-shadow: 0 0 0 5px #fff;
-    -o-box-shadow: 0 0 0 5px #fff;
-    box-shadow: 0 0 0 5px #fff;
-}
-
-.profile-info {
-    position: absolute;
-    bottom: 10px;
-    right: 20px;
-    padding: 0;
-    margin: 0;
-    text-align: right;
-}
-
-.profile-info-value {
-    color: #fff;
-    display: inline-block;
-    margin-left: 40px;
-}
-
-.user-profile {
-    margin-top: 60px;
-}
-
-.team .team-member {
-    display: block;
-    overflow: hidden;
-    margin-bottom: 10px;
-    float: left;
-    position: relative;
-}
-
-.team .team-member .online {
-    top: 5px;
-    right: 5px;
-}
-
-.team .team-member img {
-    width: 50px;
-    float: left;
-    border-radius: 50%;
-    margin: 0 5px 0 5px;
-}
-
-.team .more-members a {
-    display: block;
-    text-align: center;
-}
-
-.profile-timeline ul li .timeline-item-header {
-    width: 100%;
-    overflow: hidden;
-}
-
-.profile-timeline ul li .timeline-item-header img {
-    width: 50px;
-    float: left;
-    margin-right: 10px;
-    border-radius: 50%;
-}
-
-.profile-timeline ul li .timeline-item-header p {
-    margin: 0;
-    color: #000;
-    font-weight: bold;
-}
-
-.profile-timeline ul li .timeline-item-header p span {
-    margin: 0;
-    color: #8E8E8E;
-    font-weight: normal;
-}
-
-.profile-timeline ul li .timeline-item-header small {
-    margin: 0;
-    color: #8E8E8E;
-}
-
-.profile-timeline ul li .timeline-item-post {
-    padding: 20px 0 0 0;
-    position: relative;
-}
-
-.profile-timeline ul li .timeline-item-post > img {
-    width: 100%;
-}
-
-.timeline-options {
-    overflow: hidden;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #f1f1f1;
-    padding: 10px 0 10px 0;
-}
-
-.timeline-options a {
-    display: block;
-    margin-right: 20px;
-    float: left;
-    color: #333;
-    text-decoration: none;
-}
-
-.timeline-options a i {
-    margin-right: 3px;
-}
-
-.timeline-options a:hover {
-    color: #22BAA0;
-}
-
-.timeline-comment {
-    overflow: hidden;
-    margin-bottom: 10px;
-    width: 100%;
-    border-bottom: 1px solid #f1f1f1;
-    padding-bottom: 5px;
-}
-
-.timeline-comment .timeline-comment-header {
-    overflow: hidden;
-}
-
-.timeline-comment .timeline-comment-header img {
-    width: 30px;
-    border-radius: 50%;
-    float: left;
-    margin-right: 10px;
-}
-
-.timeline-comment .timeline-comment-header p {
-    color: #000;
-    float: left;
-    margin: 0;
-    font-weight: bold;
-}
-
-.timeline-comment .timeline-comment-header small {
-    font-weight: normal;
-    color: #8E8E8E;
-}
-
-.timeline-comment p.timeline-comment-text {
-    display: block;
-    color: #333;
-    font-size: 12px;
-    padding-left: 40px;
-}
-
-.post-options {
-    overflow: hidden;
-    margin-top: 15px;
-    margin-left: 15px;
-}
-
-.post-options a {
-    display: block;
-    margin-top: 5px;
-    margin-right: 20px;
-    float: left;
-    color: #333;
-    text-decoration: none;
-    font-size: 17px;
-}
-
-.post-options a:hover {
-    color: #22BAA0;
-}
-
-#gallery .mix {
-	display: none;
-}
-
-
 /* Mailbox */
 
 .mailbox-nav li a {
@@ -4470,17 +4275,6 @@ body:not(.page-horizontal-bar):not(.small-sidebar) .menu.accordion-menu a {
     margin-bottom: 20px;
     text-align: center;
 } 
-
-.coming-soon .page-inner {
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/coming-soon.jpg');
-    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/coming-soon.jpg');
-    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/coming-soon.jpg');
-    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/coming-soon.jpg');
-    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.6)), to(rgba(0, 0, 0, 0.6))), url('../images/coming-soon.jpg');
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/coming-soon.jpg');
-    background-size: cover;
-}
-
 
 /* Login */
 
@@ -4930,4 +4724,10 @@ body:not(.small-sidebar):not(.page-horizontal-bar) .menu.accordion-menu,
 
 .show-menu .overlay {
     display: block;
+}
+
+.za-date-range-picker, .za-date-range-picker:hover, .za-date-range-picker:focus{
+    background-color: #22BAA0 !important;
+    color: #fff !important;
+    font-size: 15px;
 }
