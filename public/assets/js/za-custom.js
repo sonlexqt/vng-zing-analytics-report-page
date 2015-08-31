@@ -1,3 +1,8 @@
+google.setOnLoadCallback(function() {
+    angular.bootstrap(document, ['zaApp']);
+});
+google.load('visualization', '1', {'packages': ['geochart']});
+
 $(document).ready(function() {
     // Fullscreen
     function toggleFullScreen() {

@@ -151,12 +151,12 @@ function removeElementFromArray(array, search_field, search_term){
  * DIRECTIVES
  */
 
-directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope', '$timeout', function($http, $rootScope, $timeout) {
+directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope', function($http, $rootScope) {
     return {
         restrict: 'E',
         templateUrl: '/views/reporting/reporting-dashboard-overview.html',
         link: function(scope, element, attrs){
-            scope.dashboardSummaryData = null;
+            scope.dashboardOverviewData = null;
             scope.currentChart = null;
             scope.chartDataset = [];
             scope.secondChartsArray = [];
@@ -173,7 +173,7 @@ directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope',
                 console.log(queryString);
 
                 $http.get(queryString).success(function(data) {
-                    scope.dashboardSummaryData = data;
+                    scope.dashboardOverviewData = data;
                     // Calculate the total / average values
                     scope.sumOfSessions = 0;
                     scope.sumOfUsers = 0;
@@ -208,12 +208,12 @@ directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope',
                         chartLabel: "None"
                     };
                     // Render the chart
-                    var sessionsData = getArrayOfArraysForLineChart(scope.dashboardSummaryData, "date", "sessions", true);
+                    var sessionsData = getArrayOfArraysForLineChart(scope.dashboardOverviewData, "date", "sessions", true);
                     var chartData = getLineChartData(sessionsData, "Sessions", LINE_CHART_MAIN_COLOR);
                     scope.chartDataset = [];
                     scope.chartDataset.push(chartData[0]);
                     scope.chartDataset.push(chartData[1]);
-                    drawLineChart("#dashboard-summary-chart", scope.chartDataset);
+                    drawLineChart("#dashboard-overview-chart", scope.chartDataset);
                     // Modify the second charts array (for comparison)
                     var chartsList = [
                         {
@@ -266,12 +266,12 @@ directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope',
                     fieldName: "none",
                     chartLabel: "None"
                 };
-                var currentChartData = getArrayOfArraysForLineChart(scope.dashboardSummaryData, "date", fieldName, true);
+                var currentChartData = getArrayOfArraysForLineChart(scope.dashboardOverviewData, "date", fieldName, true);
                 var chartData = getLineChartData(currentChartData, chartLabel, LINE_CHART_MAIN_COLOR);
                 scope.chartDataset = [];
                 scope.chartDataset.push(chartData[0]);
                 scope.chartDataset.push(chartData[1]);
-                drawLineChart("#dashboard-summary-chart", scope.chartDataset);
+                drawLineChart("#dashboard-overview-chart", scope.chartDataset);
 
                 var chartsList = [
                     {
@@ -313,16 +313,16 @@ directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope',
                         chartLabel: selectedChartLabel
                     };
                     $('#select-second-chart-modal').modal('toggle');
-                    var currentChartArrayData = getArrayOfArraysForLineChart(scope.dashboardSummaryData, "date", scope.currentChart.fieldName, true);
+                    var currentChartArrayData = getArrayOfArraysForLineChart(scope.dashboardOverviewData, "date", scope.currentChart.fieldName, true);
                     var currentChartData = getLineChartData(currentChartArrayData, scope.currentChart.chartLabel, LINE_CHART_MAIN_COLOR);
-                    var secondChartArrayData = getArrayOfArraysForLineChart(scope.dashboardSummaryData, "date", scope.secondChart.fieldName, true);
+                    var secondChartArrayData = getArrayOfArraysForLineChart(scope.dashboardOverviewData, "date", scope.secondChart.fieldName, true);
                     var secondChartData = getLineChartData(secondChartArrayData, scope.secondChart.chartLabel, LINE_CHART_SUB_COLOR);
                     scope.chartDataset = [];
                     scope.chartDataset.push(currentChartData[0]);
                     scope.chartDataset.push(currentChartData[1]);
                     scope.chartDataset.push(secondChartData[0]);
                     scope.chartDataset.push(secondChartData[1]);
-                    drawLineChart("#dashboard-summary-chart", scope.chartDataset);
+                    drawLineChart("#dashboard-overview-chart", scope.chartDataset);
                 }
             };
 
@@ -340,20 +340,97 @@ directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope',
             });
             scope.$on("datepickerChanged", renderDashboardOverview);
             scope.$on("appSelectChanged", renderDashboardOverview);
+        }
+    }
+}]);
+
+directivesModule.directive('reportingDashboardDemographics', ['$http', '$rootScope', function($http, $rootScope) {
+    return {
+        restrict: 'E',
+        templateUrl: '/views/reporting/reporting-dashboard-demographics.html',
+        link: function (scope, element, attrs) {
+            function renderDashboardDemographics(){
+                scope.cityChartData = null;
+
+                // the Demographics > City chart
+                var chart = new google.visualization.GeoChart(document.getElementById("dashboard-demographics-city-chart"));
+                var parentWidth = angular.element("#dashboard-demographics-city-chart").parent().width();
+                var options = {};
+                $http.get('/data/dashboard-demographics-city-data.json').success(function(data) {
+                    data.unshift(['City', 'Sessions', '% Sessions']);
+                    scope.cityChartData = data;
+                    options = {
+                        region: 'VN',
+                        displayMode: 'markers',
+                        resolution: 'provinces',
+                        width: Number(parentWidth),
+                        height: '100%',
+                        colorAxis: {colors: ['#e7711c', '#4374e0']}
+                    };
+                });
+                scope.$watch('cityChartData', function(v) {
+                    if (!!v){
+                        var data = google.visualization.arrayToDataTable(v);
+                        chart.draw(data, options);
+                    }
+                });
+
+                $(window).bind('resizeEnd', function(){
+                    var chartHolder = angular.element("#dashboard-demographics-city-chart");
+                    var parentWidth = chartHolder.parent().width();
+                    chartHolder.width(parentWidth);
+                    options = {
+                        region: 'VN',
+                        displayMode: 'markers',
+                        resolution: 'provinces',
+                        width: Number(parentWidth),
+                        height: '100%',
+                        colorAxis: {colors: ['#e7711c', '#4374e0']}
+                    };
+                    var data = google.visualization.arrayToDataTable(scope.cityChartData);
+                    chart.draw(data, options);
+                });
+                $(window).resize(function() {
+                    if(this.resizeTO) clearTimeout(this.resizeTO);
+                    this.resizeTO = setTimeout(function() {
+                        $(this).trigger('resizeEnd');
+                    }, 250);
+                });
+            }
+
+            $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
+                if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){
+                    renderDashboardDemographics();
+                }
+            });
+            scope.$on("datepickerChanged", renderDashboardDemographics);
+            scope.$on("appSelectChanged", renderDashboardDemographics);
+        }
+    }
+}]);
+
+directivesModule.directive('reportingDashboardSystem', ['$http', '$rootScope', function($http, $rootScope) {
+    return {
+        restrict: 'E',
+        templateUrl: '/views/reporting/reporting-dashboard-system.html',
+        link: function (scope, element, attrs) {
+            function renderDashboardSystem(){
+                var dateFrom = $rootScope.dateFrom.getTime();
+                var dateTo = $rootScope.dateTo.getTime();
+                var currentAppId = $rootScope.currentAppId;
+                var languageQueryString = '/app/language?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                console.log(languageQueryString);
 
 
-            //var data = getArrayOfArraysForLineChart(scope.users, "date", "pageviews", true);
-            //var data2 = getArrayOfArraysForLineChart(scope.sessions, "date", "sessions", true);
+            }
 
-            //var dataset = [];
-            //var chartData1 = getLineChartData(data2, "Sessions", LINE_CHART_MAIN_COLOR);
-            //var chartData2 = getLineChartData(data, "Pageviews", LINE_CHART_SUB_COLOR);
-            //dataset.push(chartData1[0]);
-            //dataset.push(chartData1[1]);
-            //dataset.push(chartData2[0]);
-            //dataset.push(chartData2[1]);
-
-            //drawLineChart("#dashboard-summary-chart", dataset);
+            $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
+                if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){
+                    renderDashboardSystem();
+                }
+            });
+            scope.$on("datepickerChanged", renderDashboardSystem);
+            scope.$on("appSelectChanged", renderDashboardSystem);
         }
     }
 }]);
