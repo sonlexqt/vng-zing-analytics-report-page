@@ -2231,6 +2231,9 @@ tr.group:hover {
     text-align: center;
 }
 
+/*
+ * CHARTS
+ */
 
 /* Sparkline Charts */
 
@@ -3989,10 +3992,14 @@ body:not(.page-horizontal-bar):not(.small-sidebar) .menu.accordion-menu a {
     clear: both;
 }
 
-@media (min-width: 768px) {
-    .visitors-chart {
-        border-right: 1px solid #eee;
-    }
+.info-box .panel-body:hover{
+    background-color: #22BAA0;
+    color: #fff;
+    cursor: pointer;
+}
+
+.info-box .panel-body:hover .info-box-stats p, .info-box .panel-body:hover .info-box-icon i, .info-box .panel-body:hover .info-box-stats span{
+    color: #fff !important;
 }
 
 .stats-info ul {
@@ -4010,27 +4017,6 @@ body:not(.page-horizontal-bar):not(.small-sidebar) .menu.accordion-menu a {
 
 .stats-info ul li i {
     margin-left: 5px;
-}
-
-#flotchart1 {
-    height: 340px;
-    width: 100%;
-}
-
-#flotchart2 {
-    height: 278px;
-    width: 100%;
-}
-
-#flotchart3 {
-    height: 200px;
-    width: 100%;
-}
-
-@media (max-width: 768px) {
-    .weather-days li {
-        margin-bottom: 15px;
-    }
 }
 
 .inbox-widget {
