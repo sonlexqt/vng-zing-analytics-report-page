@@ -481,7 +481,8 @@ directivesModule.directive('reportingDashboardDemographics', ['$http', '$rootSco
                         resolution: 'provinces',
                         width: Number(parentWidth),
                         height: '100%',
-                        colorAxis: {colors: ['#e7711c', '#4374e0']}
+                        colorAxis: {colors: ['#fff', '#22BAA0']}
+                        //colorAxis: {colors: ['#e7711c', '#4374e0']}
                     };
                 });
                 scope.$watch('cityChartData', function(v) {
@@ -530,23 +531,100 @@ directivesModule.directive('reportingDashboardSystem', ['$http', '$rootScope', f
         restrict: 'E',
         templateUrl: '/views/reporting/reporting-dashboard-system.html',
         link: function (scope, element, attrs) {
-            //function renderDashboardSystem(){
-            //    var dateFrom = $rootScope.dateFrom.getTime();
-            //    var dateTo = $rootScope.dateTo.getTime();
-            //    var currentAppId = $rootScope.currentAppId;
-            //    var languageQueryString = '/app/language?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
-            //    console.log(languageQueryString);
-            //
-            //
-            //}
-            //
-            //$rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
-            //    if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){
-            //        renderDashboardSystem();
-            //    }
-            //});
-            //scope.$on("datepickerChanged", renderDashboardSystem);
-            //scope.$on("appSelectChanged", renderDashboardSystem);
+            $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
+                if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){
+                    renderDashboardSystem();
+                }
+            });
+
+            scope.$on("datepickerChanged", renderDashboardSystem);
+            scope.$on("appSelectChanged", renderDashboardSystem);
+
+            function renderDashboardSystem(){
+                var dateFrom = $rootScope.dateFrom.getTime();
+                var dateTo = $rootScope.dateTo.getTime();
+                var currentAppId = $rootScope.currentAppId;
+
+                // The Browsers part
+                scope.allBrowsersSessions = 0;
+                scope.chromeSessions = 0;
+                scope.firefoxSessions = 0;
+                scope.operaSessions = 0;
+                scope.safariSessions = 0;
+                scope.ieSessions = 0;
+                scope.otherBrowsersSessions = 0;
+
+                var browserQueryString = '/app/browser?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                $http.get(browserQueryString).success(function(data) {
+                    for (var i = 0; i < data.length; i++){
+                        switch (data[i].browserName){
+                            case "Chrome":
+                                scope.chromeSessions = data[i].sessions;
+                                scope.allBrowsersSessions+= data[i].sessions;
+                                break;
+                            case "Firefox":
+                                scope.firefoxSessions = data[i].sessions;
+                                scope.allBrowsersSessions+= data[i].sessions;
+                                break;
+                            case "Safari":
+                                scope.safariSessions = data[i].sessions;
+                                scope.allBrowsersSessions+= data[i].sessions;
+                                break;
+                            case "Opera":
+                                scope.operaSessions = data[i].sessions;
+                                scope.allBrowsersSessions+= data[i].sessions;
+                                break;
+                            case "Internet Explorer":
+                                scope.ieSessions = data[i].sessions;
+                                scope.allBrowsersSessions+= data[i].sessions;
+                                break;
+                            default:
+                                scope.otherBrowsersSessions = data[i].sessions;
+                                scope.allBrowsersSessions+= data[i].sessions;
+                        }
+                    }
+                });
+
+                // The Operating Systems part
+                scope.allOSSessions = 0;
+                scope.windowsSessions = 0;
+                scope.macOSSessions = 0;
+                scope.linuxSessions = 0;
+                scope.androidSessions = 0;
+                scope.iOSSessions = 0;
+                scope.otherOSSessions = 0;
+
+                var osQueryString = '/app/os?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                $http.get(osQueryString).success(function(data) {
+                    for (var i = 0; i < data.length; i++){
+                        switch (data[i].osName){
+                            case "Windows":
+                                scope.windowsSessions = data[i].sessions;
+                                scope.allOSSessions+= data[i].sessions;
+                                break;
+                            case "Mac OS":
+                                scope.macOSSessions = data[i].sessions;
+                                scope.allOSSessions+= data[i].sessions;
+                                break;
+                            case "Linux":
+                                scope.linuxSessions = data[i].sessions;
+                                scope.allOSSessions+= data[i].sessions;
+                                break;
+                            case "Android":
+                                scope.androidSessions = data[i].sessions;
+                                scope.allOSSessions+= data[i].sessions;
+                                break;
+                            case "iOS":
+                                scope.iOSSessions = data[i].sessions;
+                                scope.allOSSessions+= data[i].sessions;
+                                break;
+                            default:
+                                scope.otherOSSessions = data[i].sessions;
+                                scope.allOSSessions+= data[i].sessions;
+                        }
+                    }
+                });
+            }
         }
     }
 }]);
