@@ -479,7 +479,9 @@ directivesModule.directive('reportingDashboardDemographics', ['$http', '$rootSco
 
                 // The Demographics > City chart
                 var chart = new google.visualization.GeoChart(document.getElementById("dashboard-demographics-city-chart"));
+                var chartHolder = angular.element("#dashboard-demographics-city-chart");
                 var parentWidth = angular.element("#dashboard-demographics-city-chart").parent().width();
+                chartHolder.width(parentWidth);
                 var options = {};
                 $http.get('/data/dashboard-demographics-city-data.json').success(function(data) {
                     data.unshift(['City', 'Sessions', '% Sessions']);
@@ -945,7 +947,9 @@ directivesModule.directive('reportingGeoLocationContent', ['$http', '$rootScope'
 
                 // The Geochart
                 var chart = new google.visualization.GeoChart(document.getElementById("geo-location-city-chart"));
+                var chartHolder = angular.element("#geo-location-city-chart");
                 var parentWidth = angular.element("#geo-location-city-chart").parent().width();
+                chartHolder.width(parentWidth);
                 var options = {};
                 $http.get('/data/dashboard-demographics-city-data.json').success(function(data) {
                     data.unshift(['City', 'Sessions', '% Sessions']);
