@@ -215,20 +215,14 @@
                                 </li> <!-- END Messages notifications -->
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown">
-                                        <span class="user-name">David<i class="fa fa-angle-down"></i></span>
-                                        <img class="img-circle avatar" src="assets/images/avatar1.png" width="40" height="40" alt="">
+                                        <span class="user-name" ng-cloak>{[{userProfile.username}]}<i class="fa fa-angle-down"></i></span>
+                                        <img class="img-circle avatar" src="assets/images/avatar.png" width="40" height="40" alt="">
                                     </a>
                                     <ul class="dropdown-menu dropdown-list" role="menu">
                                         <li role="presentation"><a href="profile.html"><i class="fa fa-user"></i>Profile</a></li>
                                         <li role="presentation" class="divider"></li>
-                                        <li role="presentation"><a href="lock-screen.html"><i class="fa fa-lock"></i>Lock screen</a></li>
-                                        <li role="presentation"><a href="login.html"><i class="fa fa-sign-out m-r-xs"></i>Log out</a></li>
+                                        <li role="presentation"><a href="/logout"><i class="fa fa-sign-out m-r-xs"></i>Log out</a></li>
                                     </ul>
-                                </li>
-                                <li>
-                                    <a href="login.html" class="log-out waves-effect waves-button waves-classic">
-                                        <span><i class="fa fa-sign-out m-r-xs"></i>Log out</span>
-                                    </a>
                                 </li>
                                 <li>
                                     <a href="javascript:void(0);" class="waves-effect waves-button waves-classic" id="showRight">
@@ -248,10 +242,14 @@
                         <div class="sidebar-profile">
                             <a href="javascript:void(0);" id="profile-menu-link">
                                 <div class="sidebar-profile-image">
-                                    <img src="assets/images/avatar1.png" class="img-circle img-responsive" alt="">
+                                    <img src="assets/images/avatar_white.png" class="img-circle img-responsive" alt="">
                                 </div>
                                 <div class="sidebar-profile-details">
-                                    <span>David Green<br><small>Art Director</small></span>
+                                    <span>
+                                        {[{userProfile.username}]}
+                                        <br>
+                                        <small>{[{userProfile.role}]}</small>
+                                    </span>
                                 </div>
                             </a>
                         </div>
@@ -287,7 +285,6 @@
                                 <li><a href="/views/extra/login.html">Login Form</a></li>
                                 <li><a href="/views/extra/register.html">Register Form</a></li>
                                 <li><a href="/views/extra/forgot.html">Forgot Password</a></li>
-                                <li><a href="/views/extra/lock-screen.html">Lock Screen</a></li>
                                 <li><a href="/views/extra/ui-panels.html">Panels</a></li>
                             </ul>
                         </li>
