@@ -434,6 +434,13 @@ directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope',
                     fieldName: "none",
                     chartLabel: "None"
                 };
+                // Render the chart
+                var currentChartArrayData = getArrayOfArraysForDrawingChart(scope.dashboardOverviewData, "date", scope.currentChart.fieldName, true);
+                var chartData = getLineChartData(currentChartArrayData, scope.currentChart.chartLabel, LINE_CHART_MAIN_COLOR);
+                scope.chartDataset = [];
+                scope.chartDataset.push(chartData[0]);
+                scope.chartDataset.push(chartData[1]);
+                drawLineChart("#dashboard-overview-chart", scope.chartDataset);
             };
 
             $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
@@ -625,6 +632,194 @@ directivesModule.directive('reportingDashboardSystem', ['$http', '$rootScope', f
                     }
                 });
             }
+        }
+    }
+}]);
+
+
+
+directivesModule.directive('reportingPagesOverviewContent', ['$http', '$rootScope', function($http, $rootScope) {
+    return {
+        restrict: 'E',
+        templateUrl: '/views/reporting/reporting-pages-overview-content.html',
+        link: function (scope, element, attrs) {
+            scope.zaPagesOverviewData = null;
+
+            function renderPagesOverview(){
+                var dateFrom = $rootScope.dateFrom.getTime();
+                var dateTo = $rootScope.dateTo.getTime();
+                var currentAppId = $rootScope.currentAppId;
+                var queryByDateString = '/app/page?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo + '&by=date';
+
+                $http.get(queryByDateString).success(function(data) {
+                    scope.zaPagesOverviewData = data;
+
+                    // Calculate the total / average values
+                    scope.sumOfPageviews = 0;
+                    scope.sumOfUniquePageviews = 0;
+                    scope.sumOfTimeOnPage = 0;
+                    scope.sumOfBounces = 0;
+                    scope.sumOfEntrances = 0;
+                    scope.sumOfExits = 0;
+
+                    for (var i = 0; i< data.length; i++){
+                        scope.sumOfPageviews += data[i].pageviews;
+                        scope.sumOfUniquePageviews += data[i].uniquePageviews;
+                        scope.sumOfTimeOnPage += data[i].timeOnPage;
+                        scope.sumOfBounces += data[i].bounces;
+                        scope.sumOfEntrances += data[i].entrances;
+                        scope.sumOfExits += data[i].exits;
+                    }
+                    scope.avgTimeOnPage = (scope.sumOfTimeOnPage) / (scope.sumOfPageviews - scope.sumOfExits);
+                    var date = new Date(null);
+                    date.setSeconds(scope.avgTimeOnPage); // specify value for SECONDS here
+                    scope.avgTimeOnPage = date.toISOString().substr(11, 8);
+                    scope.sumOfBounceRate = (parseFloat(scope.sumOfBounces) * 100 / scope.sumOfEntrances).toFixed(2);
+                    scope.sumOfPercentExit = (parseFloat(scope.sumOfExits) * 100 / scope.sumOfPageviews).toFixed(2);
+
+                    // By default, the 'Pageviews' chart is the current chart
+                    scope.currentChart = {
+                        fieldName: "pageviews",
+                        chartLabel: "Pageviews"
+                    };
+                    scope.secondChart = {
+                        fieldName: "none",
+                        chartLabel: "None"
+                    };
+                    // Render the chart
+                    var pageviewsData = getArrayOfArraysForDrawingChart(scope.zaPagesOverviewData, "date", "pageviews", true);
+                    var chartData = getLineChartData(pageviewsData, "Pageviews", LINE_CHART_MAIN_COLOR);
+                    scope.chartDataset = [];
+                    scope.chartDataset.push(chartData[0]);
+                    scope.chartDataset.push(chartData[1]);
+                    drawLineChart("#pages-overview-chart", scope.chartDataset);
+                    // Modify the second charts array (for comparison)
+                    var chartsList = [
+                        {
+                            fieldName: "pageviews",
+                            chartLabel: "Pageviews"
+                        },
+                        {
+                            fieldName: "uniquePageviews",
+                            chartLabel: "Unique Pageviews"
+                        },
+                        {
+                            fieldName: "avgTimeOnPage",
+                            chartLabel: "Avg. Time On Page"
+                        },
+                        {
+                            fieldName: "bounceRate",
+                            chartLabel: "Bounce Rate"
+                        },
+                        {
+                            fieldName: "percentExit",
+                            chartLabel: "% Exits"
+                        }
+                    ];
+                    scope.secondChartsArray = removeElementFromArray(chartsList, "fieldName", "pageviews");
+                    // Reset 'active' class to the Sessions chart
+                    angular.element(".total-metrics .panel-body").each(function(){
+                        angular.element(this).removeClass("active");
+                    });
+                    angular.element(".total-metrics .panel-body").first().addClass("active");
+                });
+
+            }
+
+            scope.handleMetricBadgesClick = function($event){
+                var thisBadge = angular.element($event.currentTarget);
+                thisBadge.parent().parent().parent().find(".panel-body").each(function(){
+                    angular.element(this).removeClass("active");
+                });
+                thisBadge.addClass("active");
+                var chartLabel = thisBadge.data("chart-label");
+                var fieldName = thisBadge.data("field-name");
+                scope.currentChart = {
+                    fieldName: fieldName,
+                    chartLabel: chartLabel
+                };
+                scope.secondChart = {
+                    fieldName: "none",
+                    chartLabel: "None"
+                };
+                var currentChartData = getArrayOfArraysForDrawingChart(scope.zaPagesOverviewData, "date", fieldName, true);
+                var chartData = getLineChartData(currentChartData, chartLabel, LINE_CHART_MAIN_COLOR);
+                scope.chartDataset = [];
+                scope.chartDataset.push(chartData[0]);
+                scope.chartDataset.push(chartData[1]);
+                drawLineChart("#pages-overview-chart", scope.chartDataset);
+
+                var chartsList = [
+                    {
+                        fieldName: "pageviews",
+                        chartLabel: "Pageviews"
+                    },
+                    {
+                        fieldName: "uniquePageviews",
+                        chartLabel: "Unique Pageviews"
+                    },
+                    {
+                        fieldName: "avgTimeOnPage",
+                        chartLabel: "Avg. Time On Page"
+                    },
+                    {
+                        fieldName: "bounceRate",
+                        chartLabel: "Bounce Rate"
+                    },
+                    {
+                        fieldName: "percentExit",
+                        chartLabel: "% Exits"
+                    }
+                ];
+                scope.secondChartsArray = removeElementFromArray(chartsList, "fieldName", scope.currentChart.fieldName);
+            };
+
+            scope.getSecondChartValue = function($event){
+                var selectedVal = "";
+                var selected = $("input[type='radio'][name='select-second-chart-radio']:checked");
+                if (selected.length > 0) {
+                    var selectedFieldName = selected.val();
+                    var selectedChartLabel = selected.parent().find("span").text();
+                    scope.secondChart = {
+                        fieldName: selectedFieldName,
+                        chartLabel: selectedChartLabel
+                    };
+                    $('#select-second-chart-modal').modal('toggle');
+                    var currentChartArrayData = getArrayOfArraysForDrawingChart(scope.zaPagesOverviewData, "date", scope.currentChart.fieldName, true);
+                    var currentChartData = getLineChartData(currentChartArrayData, scope.currentChart.chartLabel, LINE_CHART_MAIN_COLOR);
+                    var secondChartArrayData = getArrayOfArraysForDrawingChart(scope.zaPagesOverviewData, "date", scope.secondChart.fieldName, true);
+                    var secondChartData = getLineChartData(secondChartArrayData, scope.secondChart.chartLabel, LINE_CHART_SUB_COLOR);
+                    scope.chartDataset = [];
+                    scope.chartDataset.push(currentChartData[0]);
+                    scope.chartDataset.push(currentChartData[1]);
+                    scope.chartDataset.push(secondChartData[0]);
+                    scope.chartDataset.push(secondChartData[1]);
+                    drawLineChart("#pages-overview-chart", scope.chartDataset);
+                }
+            };
+
+            scope.clearSecondChartValue = function($event){
+                scope.secondChart = {
+                    fieldName: "none",
+                    chartLabel: "None"
+                };
+                // Render the chart
+                var currentChartArrayData = getArrayOfArraysForDrawingChart(scope.zaPagesOverviewData, "date", scope.currentChart.fieldName, true);
+                var chartData = getLineChartData(currentChartArrayData, scope.currentChart.chartLabel, LINE_CHART_MAIN_COLOR);
+                scope.chartDataset = [];
+                scope.chartDataset.push(chartData[0]);
+                scope.chartDataset.push(chartData[1]);
+                drawLineChart("#pages-overview-chart", scope.chartDataset);
+            };
+
+            $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function () {
+                if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo) {
+                    renderPagesOverview();
+                }
+            });
+
+            scope.$on("datepickerChanged", renderPagesOverview);
+            scope.$on("appSelectChanged", renderPagesOverview);
         }
     }
 }]);

@@ -22,6 +22,11 @@ zaApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
         .when('/', {
             templateUrl: '/views/reporting/reporting-dashboard.html'
         })
+        .when('/pages-overview', {
+            templateUrl: '/views/reporting/reporting-pages-overview.html'
+        })
+
+
         .when('/404', {
             templateUrl: '/views/404.html'
         })

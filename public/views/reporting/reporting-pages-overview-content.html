@@ -17,7 +17,7 @@
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <div id="dashboard-overview-chart" style="height: 300px;"></div>
+                    <div id="pages-overview-chart" style="height: 300px;"></div>
                 </div>
             </div>
         </div>
@@ -25,10 +25,10 @@
             <div class="panel panel-white total-metrics">
                 <div class="col-lg-6 col-md-6">
                     <div class="panel info-box panel-white">
-                        <div class="panel-body active" data-chart-label="Sessions" data-field-name="sessions" ng-click="handleMetricBadgesClick($event)">
+                        <div class="panel-body active" data-chart-label="Pageviews" data-field-name="pageviews" ng-click="handleMetricBadgesClick($event)">
                             <div class="info-box-stats">
-                                <p class="counter">{[{sumOfSessions}]}</p>
-                                <span class="info-box-title">Sessions</span>
+                                <p class="counter">{[{sumOfPageviews}]}</p>
+                                <span class="info-box-title">Pageviews</span>
                             </div>
                             <div class="info-box-icon">
                                 <i class="icon-directions"></i>
@@ -38,10 +38,10 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="panel info-box panel-white">
-                        <div class="panel-body" data-chart-label="Users" data-field-name="users" ng-click="handleMetricBadgesClick($event)">
+                        <div class="panel-body" data-chart-label="Unique Pageviews" data-field-name="uniquePageviews" ng-click="handleMetricBadgesClick($event)">
                             <div class="info-box-stats">
-                                <p class="counter">{[{sumOfUsers}]}</p>
-                                <span class="info-box-title">Users</span>
+                                <p class="counter">{[{sumOfUniquePageviews}]}</p>
+                                <span class="info-box-title">Unique Pageviews</span>
                             </div>
                             <div class="info-box-icon">
                                 <i class="icon-users"></i>
@@ -51,23 +51,10 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="panel info-box panel-white">
-                        <div class="panel-body" data-chart-label="Pageviews" data-field-name="pageviews" ng-click="handleMetricBadgesClick($event)">
+                        <div class="panel-body" data-chart-label="Avg. Time on Page" data-field-name="avgTimeOnPage" ng-click="handleMetricBadgesClick($event)">
                             <div class="info-box-stats">
-                                <p class="counter">{[{sumOfPageviews}]}</p>
-                                <span class="info-box-title">Pageviews</span>
-                            </div>
-                            <div class="info-box-icon">
-                                <i class="icon-eye"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="panel info-box panel-white">
-                        <div class="panel-body" data-chart-label="Avg. Session Duration" data-field-name="avgSessionDuration" ng-click="handleMetricBadgesClick($event)">
-                            <div class="info-box-stats">
-                                <p><span class="counter">{[{avgSessionDuration}]}</span></p>
-                                <span class="info-box-title">Avg. Session Duration</span>
+                                <p><span class="counter">{[{avgTimeOnPage}]}</span></p>
+                                <span class="info-box-title">Avg. Time on Page</span>
                             </div>
                             <div class="info-box-icon">
                                 <i class="icon-clock"></i>
@@ -90,10 +77,10 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="panel info-box panel-white">
-                        <div class="panel-body" data-chart-label="% New Visits" data-field-name="percentNewVists" ng-click="handleMetricBadgesClick($event)">
+                        <div class="panel-body" data-chart-label="% Exit" data-field-name="percentExit" ng-click="handleMetricBadgesClick($event)">
                             <div class="info-box-stats">
-                                <p class="counter">{[{sumOfPercentNewVists}]}%</p>
-                                <span class="info-box-title">% New Visits</span>
+                                <p class="counter">{[{sumOfPercentExit}]}%</p>
+                                <span class="info-box-title">% Exit</span>
                             </div>
                             <div class="info-box-icon">
                                 <i class="icon-graph"></i>
