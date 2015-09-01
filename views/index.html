@@ -103,12 +103,20 @@
         <div class="menu-wrap">
             <!-- TODO what should I do with this ? -->
             <nav class="profile-menu">
-                <div class="profile"><img src="assets/images/avatar1.png" width="52" alt="David Green"/><span>David Green</span></div>
+                <div class="profile"><img src="assets/images/avatar.png" width="52"/><span>{[{userProfile.username}]}</span></div>
                 <div class="profile-menu-list">
-                    <a href="#"><i class="fa fa-star"></i><span>Favorites</span></a>
-                    <a href="#"><i class="fa fa-bell"></i><span>Alerts</span></a>
-                    <a href="#"><i class="fa fa-envelope"></i><span>Messages</span></a>
-                    <a href="#"><i class="fa fa-comment"></i><span>Comments</span></a>
+                    <div class="text-center">
+                        <p class="text-left">
+                            <strong>Date Registered: </strong>
+                            <br>
+                            {[{userProfile['registeredAt'] | readableDate}]}
+                        </p>
+                        <p class="text-left">
+                            <strong>Status: </strong>
+                            <br>
+                            {[{userProfile['status']}]}
+                        </p>
+                    </div>
                 </div>
             </nav>
             <button class="close-button" id="close-button">Close Menu</button>
@@ -225,7 +233,7 @@
                                         <img class="img-circle avatar" src="assets/images/avatar.png" width="40" height="40" alt="">
                                     </a>
                                     <ul class="dropdown-menu dropdown-list" role="menu">
-                                        <li role="presentation"><a href="profile.html"><i class="fa fa-user"></i>Profile</a></li>
+                                        <li role="presentation"><a class="profile-menu-opener"><i class="fa fa-user"></i>Profile</a></li>
                                         <li role="presentation" class="divider"></li>
                                         <li role="presentation"><a href="/logout"><i class="fa fa-sign-out m-r-xs"></i>Log out</a></li>
                                     </ul>
@@ -246,7 +254,7 @@
                 <div class="page-sidebar-inner slimscroll">
                     <div class="sidebar-header">
                         <div class="sidebar-profile">
-                            <a href="javascript:void(0);" id="profile-menu-link">
+                            <a href="javascript:void(0);" id="profile-menu-link" class="profile-menu-opener">
                                 <div class="sidebar-profile-image">
                                     <img src="assets/images/avatar_white.png" class="img-circle img-responsive" alt="">
                                 </div>

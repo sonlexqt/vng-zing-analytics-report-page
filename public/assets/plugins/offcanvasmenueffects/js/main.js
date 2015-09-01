@@ -13,6 +13,7 @@
 	var bodyEl = document.body,
 		overlay = document.querySelector( '.overlay' ),
 		openbtn = document.getElementById( 'profile-menu-link' ),
+        openBtns = document.getElementsByClassName('profile-menu-opener'),
 		closebtn = document.getElementById( 'close-button' ),
 		isOpen = false;
 
@@ -22,6 +23,9 @@
 
 	function initEvents() {
 		openbtn.addEventListener( 'click', toggleMenu );
+        for (var i = 0; i < openBtns.length; i++){
+            openBtns[i].addEventListener( 'click', toggleMenu );
+        }
 		if( closebtn ) {
 			closebtn.addEventListener( 'click', toggleMenu );
 		}
