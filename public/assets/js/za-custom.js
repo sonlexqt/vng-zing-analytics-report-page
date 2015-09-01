@@ -26,25 +26,25 @@ $(document).ready(function() {
         }
     }
 
-    $('.toggle-fullscreen').click(function(){
+    angular.element('.toggle-fullscreen').click(function(){
         toggleFullScreen();
     });
-
 
     // Waves
     Waves.displayEffect();
 
-    // tooltips
+    // Tooltips
     $( '[data-toggle~="tooltip"]').tooltip({
         container: 'body'
     });
 
     // Switchery
     var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
-
     elems.forEach(function(html) {
         var switchery = new Switchery(html, { color: '#23B7E5' });
     });
+
+    //TODO pause here 9:21 PM 2015-09-01
 
     // Panel Control
     $('.panel-collapse').click(function(){
@@ -80,22 +80,12 @@ $(document).ready(function() {
         cursor: 'move'
     });
 
-    // .toggleAttr() Function
-    $.fn.toggleAttr = function(a, b) {
-        var c = (b === undefined);
-        return this.each(function() {
-            if((c && !$(this).is("["+a+"]")) || (!c && b)) $(this).attr(a,a);
-            else $(this).removeAttr(a);
-        });
-    };
-
     // Sidebar Menu
     var parent, ink, d, x, y;
     $('.sidebar .accordion-menu li .sub-menu').slideUp(0);
     $('.sidebar .accordion-menu li.open .sub-menu').slideDown(0);
     $('.small-sidebar .sidebar .accordion-menu li.open .sub-menu').hide(0);
     $('.sidebar .accordion-menu > li.droplink > a').click(function(){
-
         if($('body').hasClass('.small-sidebar')) {
             return;
         }
@@ -185,7 +175,6 @@ $(document).ready(function() {
     sidebarAndContentHeight();
 
     window.onresize = sidebarAndContentHeight;
-
 
     // Slimscroll
     $('.slimscroll').slimscroll({
