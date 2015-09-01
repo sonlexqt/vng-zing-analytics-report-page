@@ -1653,7 +1653,7 @@ h5 {
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
     color: #fff;
-    background-color: #7a6fbe;
+    background-color: #22BAA0;
 }
 
 .tabs-below > .nav-tabs,
@@ -4710,8 +4710,6 @@ body:not(.small-sidebar):not(.page-horizontal-bar) .menu.accordion-menu,
 }
 
 .za-date-range-picker, .za-date-range-picker:hover, .za-date-range-picker:focus{
-    /*background-color: #22BAA0 !important;*/ /*TODO*/
-    /*color: #fff !important;*/ /*TODO*/
     font-size: 15px;
 }
 

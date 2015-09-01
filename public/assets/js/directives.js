@@ -1021,7 +1021,6 @@ directivesModule.directive('reportingTechDevicesContent', ['$http', '$rootScope'
                 var queryString = '/app/device?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
 
                 $http.get(queryString).success(function(data) {
-                    console.log(data);
                     scope.techDevicesTableData = data;
                     // Calculate the total / average values
                     scope.tableTotalSessions = 0;
@@ -1041,6 +1040,66 @@ directivesModule.directive('reportingTechDevicesContent', ['$http', '$rootScope'
 
             scope.$on("datepickerChanged", renderTechDevices);
             scope.$on("appSelectChanged", renderTechDevices);
+        }
+    }
+}]);
+
+// THE TECH > BROWSER & OS PAGE
+
+directivesModule.directive('reportingTechBrowserOsContent', ['$http', '$rootScope', function($http, $rootScope) {
+    return {
+        restrict: 'E',
+        templateUrl: '/views/reporting/reporting-tech-browser-os-content.html',
+        link: function (scope, element, attrs) {
+            scope.techBrowserTableData = null;
+            scope.tableBrowserTotalSessions = 0;
+            scope.tableBrowserTotalNewUsers = 0;
+            scope.techOsTableData = null;
+            scope.tableOsTotalSessions = 0;
+            scope.tableOsTotalNewUsers = 0;
+
+            function renderTechBrowserOs(){
+                var dateFrom = $rootScope.dateFrom.getTime();
+                var dateTo = $rootScope.dateTo.getTime();
+                var currentAppId = $rootScope.currentAppId;
+
+                var browserQueryString = '/app/browser?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                $http.get(browserQueryString).success(function(data) {
+                    console.log("browser:");
+                    console.log(data);
+                    scope.techBrowserTableData = data;
+                    // Calculate the total / average values
+                    scope.tableBrowserTotalSessions = 0;
+                    scope.tableBrowserTotalNewUsers = 0;
+                    for (var i = 0; i < data.length; i++){
+                        scope.tableBrowserTotalSessions += data[i].sessions;
+                        scope.tableBrowserTotalNewUsers += data[i].newUsers;
+                    }
+                });
+
+                var osQueryString = '/app/os?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                $http.get(osQueryString).success(function(data) {
+                    console.log("os:");
+                    console.log(data);
+                    scope.techOsTableData = data;
+                    // Calculate the total / average values
+                    scope.tableOsTotalSessions = 0;
+                    scope.tableOsTotalNewUsers = 0;
+                    for (var i = 0; i < data.length; i++){
+                        scope.tableOsTotalSessions += data[i].sessions;
+                        scope.tableOsTotalNewUsers += data[i].newUsers;
+                    }
+                });
+            }
+
+            $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
+                if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){
+                    renderTechBrowserOs();
+                }
+            });
+
+            scope.$on("datepickerChanged", renderTechBrowserOs);
+            scope.$on("appSelectChanged", renderTechBrowserOs);
         }
     }
 }]);
