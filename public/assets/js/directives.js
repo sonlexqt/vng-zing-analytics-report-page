@@ -491,7 +491,6 @@ directivesModule.directive('reportingDashboardDemographics', ['$http', '$rootSco
                         width: Number(parentWidth),
                         height: '100%',
                         colorAxis: {colors: ['#fff', '#22BAA0']}
-                        //colorAxis: {colors: ['#e7711c', '#4374e0']}
                     };
                 });
                 scope.$watch('cityChartData', function(v) {
@@ -890,7 +889,6 @@ directivesModule.directive('reportingGeoLanguageContent', ['$http', '$rootScope'
                 var dateTo = $rootScope.dateTo.getTime();
                 var currentAppId = $rootScope.currentAppId;
                 var queryString = '/app/language?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
-                console.log(queryString)
 
                 $http.get(queryString).success(function(data) {
                     scope.geoLanguageTableData = data;
@@ -912,6 +910,93 @@ directivesModule.directive('reportingGeoLanguageContent', ['$http', '$rootScope'
 
             scope.$on("datepickerChanged", renderGeoLanguage);
             scope.$on("appSelectChanged", renderGeoLanguage);
+        }
+    }
+}]);
+
+// THE GEO > LOCATION PAGE
+
+directivesModule.directive('reportingGeoLocationContent', ['$http', '$rootScope', function($http, $rootScope) {
+    return {
+        restrict: 'E',
+        templateUrl: '/views/reporting/reporting-geo-location-content.html',
+        link: function (scope, element, attrs) {
+            scope.geoLocationTableData = null;
+            scope.cityChartData = null;
+            scope.tableTotalSessions = 0;
+            scope.tableTotalNewUsers = 0;
+
+            function renderGeoLocation(){
+                var dateFrom = $rootScope.dateFrom.getTime();
+                var dateTo = $rootScope.dateTo.getTime();
+                var currentAppId = $rootScope.currentAppId;
+                var queryString = '/app/location?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+
+                $http.get(queryString).success(function(data) {
+                    scope.geoLocationTableData = data;
+                    // Calculate the total / average values
+                    scope.tableTotalSessions = 0;
+                    scope.tableTotalNewUsers = 0;
+                    for (var i = 0; i < data.length; i++){
+                        scope.tableTotalSessions += data[i].sessions;
+                        scope.tableTotalNewUsers += data[i].newUsers;
+                    }
+                });
+
+                // The Geochart
+                var chart = new google.visualization.GeoChart(document.getElementById("geo-location-city-chart"));
+                var parentWidth = angular.element("#geo-location-city-chart").parent().width();
+                var options = {};
+                $http.get('/data/dashboard-demographics-city-data.json').success(function(data) {
+                    data.unshift(['City', 'Sessions', '% Sessions']);
+                    scope.cityChartData = data;
+                    options = {
+                        region: 'VN',
+                        displayMode: 'markers',
+                        resolution: 'provinces',
+                        width: Number(parentWidth),
+                        height: '100%',
+                        colorAxis: {colors: ['#fff', '#22BAA0']}
+                    };
+                });
+                scope.$watch('cityChartData', function(v) {
+                    if (!!v){
+                        var data = google.visualization.arrayToDataTable(v);
+                        chart.draw(data, options);
+                    }
+                });
+
+                $(window).bind('resizeEnd', function(){
+                    var chartHolder = angular.element("#geo-location-city-chart");
+                    var parentWidth = chartHolder.parent().width();
+                    chartHolder.width(parentWidth);
+                    options = {
+                        region: 'VN',
+                        displayMode: 'markers',
+                        resolution: 'provinces',
+                        width: Number(parentWidth),
+                        height: '100%',
+                        colorAxis: {colors: ['#e7711c', '#4374e0']}
+                    };
+                    var data = google.visualization.arrayToDataTable(scope.cityChartData);
+                    chart.draw(data, options);
+                });
+                $(window).resize(function() {
+                    if(this.resizeTO) clearTimeout(this.resizeTO);
+                    this.resizeTO = setTimeout(function() {
+                        $(this).trigger('resizeEnd');
+                    }, 250);
+                });
+            }
+
+            $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
+                if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){
+                    renderGeoLocation();
+                }
+            });
+
+            scope.$on("datepickerChanged", renderGeoLocation);
+            scope.$on("appSelectChanged", renderGeoLocation);
         }
     }
 }]);
