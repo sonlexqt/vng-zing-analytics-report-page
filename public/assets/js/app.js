@@ -25,6 +25,9 @@ zaApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
         .when('/pages-overview', {
             templateUrl: '/views/reporting/reporting-pages-overview.html'
         })
+        .when('/geo-language', {
+            templateUrl: '/views/reporting/reporting-geo-language.html'
+        })
 
 
         .when('/404', {

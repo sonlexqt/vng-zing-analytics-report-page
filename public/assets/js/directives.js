@@ -873,3 +873,45 @@ directivesModule.directive('tableTooltip', function(){
         }
     }
 });
+
+// THE GEO > LANGUAGE PAGE
+
+directivesModule.directive('reportingGeoLanguageContent', ['$http', '$rootScope', function($http, $rootScope) {
+    return {
+        restrict: 'E',
+        templateUrl: '/views/reporting/reporting-geo-language-content.html',
+        link: function (scope, element, attrs) {
+            scope.geoLanguageTableData = null;
+            scope.tableTotalSessions = 0;
+            scope.tableTotalNewUsers = 0;
+
+            function renderGeoLanguage(){
+                var dateFrom = $rootScope.dateFrom.getTime();
+                var dateTo = $rootScope.dateTo.getTime();
+                var currentAppId = $rootScope.currentAppId;
+                var queryString = '/app/language?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                console.log(queryString)
+
+                $http.get(queryString).success(function(data) {
+                    scope.geoLanguageTableData = data;
+                    // Calculate the total / average values
+                    scope.tableTotalSessions = 0;
+                    scope.tableTotalNewUsers = 0;
+                    for (var i = 0; i < data.length; i++){
+                        scope.tableTotalSessions += data[i].sessions;
+                        scope.tableTotalNewUsers += data[i].newUsers;
+                    }
+                });
+            }
+
+            $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
+                if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){
+                    renderGeoLanguage();
+                }
+            });
+
+            scope.$on("datepickerChanged", renderGeoLanguage);
+            scope.$on("appSelectChanged", renderGeoLanguage);
+        }
+    }
+}]);

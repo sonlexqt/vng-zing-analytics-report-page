@@ -2072,6 +2072,10 @@ tr.group:hover {
     text-transform: uppercase;
 }
 
+.table-tooltip{
+    color: #C6C8CA;
+}
+
 .table-cell-stats{
     font-size: 14px;
     font-weight: bold;

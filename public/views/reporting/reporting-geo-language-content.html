@@ -1,0 +1,78 @@
+<reporting-dashboard-overview></reporting-dashboard-overview>
+
+<div class="main-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-white">
+                <div class="panel-heading clearfix">
+                    <h4 class="panel-title">DATATABLE</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="display table za-data-table" style="width: 100%; cellspacing: 0;">
+                            <thead>
+                            <tr>
+                                <th>
+                                    Language
+                                    <table-tooltip tooltip-title="The language settings in your users' browsers. <br> For example: EN (English), EN-US (English-United States), EN-GB (English-Great Britain)."></table-tooltip>
+                                </th>
+                                <th>
+                                    Sessions
+                                    <table-tooltip tooltip-title="Total number of Sessions within the date range. A session is the period time a user is actively engaged with your website, app, etc. All usage data (Screen Views, Events, Ecommerce, etc.) is associated with a session."></table-tooltip>
+                                </th>
+                                <th>
+                                    % New Sessions
+                                    <table-tooltip tooltip-title="An estimate of the percentage of first time visits."></table-tooltip>
+                                </th>
+                                <th>
+                                    New Users
+                                    <table-tooltip tooltip-title="The number of first-time users during the selected date range."></table-tooltip>
+                                </th>
+                                <th>
+                                    Bounce Rate
+                                    <table-tooltip tooltip-title="Bounce Rate is the percentage of single-page visits (i.e. visits in which the person left your site from the entrance page without interacting with the page)."></table-tooltip>
+                                </th>
+                                <th>
+                                    Pages / Session
+                                    <table-tooltip tooltip-title="Pages/Session (Average Page Depth) is the average number of pages viewed during a session. Repeated views of a single page are counted."></table-tooltip>
+                                </th>
+                                <th>
+                                    Avg. Session Duration
+                                    <table-tooltip tooltip-title="The average length of a session."></table-tooltip>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="row in geoLanguageTableData">
+                                <td>
+                                    <span class="table-cell-stats">{[{row.language}]}</span>
+                                </td>
+                                <td>
+                                    <span class="table-cell-stats">{[{row.sessions}]}</span>
+                                    <span class="table-cell-stats-percent">({[{row.sessions | percentage:tableTotalSessions:2}]})</span>
+                                </td>
+                                <td>
+                                    <span class="table-cell-stats">{[{row.percentNewSessions | decimals:2}]}%</span>
+                                </td>
+                                <td>
+                                    <span class="table-cell-stats">{[{row.newUsers}]}</span>
+                                    <span class="table-cell-stats-percent">({[{row.newUsers | percentage:tableTotalNewUsers:2}]})</span>
+                                </td>
+                                <td>
+                                    <span class="table-cell-stats">{[{row.bounceRate | decimals:2}]}%</span>
+                                </td>
+                                <td>
+                                    <span class="table-cell-stats">{[{row.pagesPerSession | decimals:2}]}</span>
+                                </td>
+                                <td>
+                                    <span class="table-cell-stats">{[{row.avgSessionDuration | decimals:2}]}</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- END col-md-12 -->
+    </div> <!-- END row -->
+</div> <!-- END main-wrapper -->
