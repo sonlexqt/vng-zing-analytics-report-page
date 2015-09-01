@@ -25,13 +25,18 @@ zaApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
         .when('/pages-overview', {
             templateUrl: '/views/reporting/reporting-pages-overview.html'
         })
-        .when('/geo-language', {
+        .when('/geo/language', {
             templateUrl: '/views/reporting/reporting-geo-language.html'
         })
-        .when('/geo-location', {
+        .when('/geo/location', {
             templateUrl: '/views/reporting/reporting-geo-location.html'
         })
-
+        .when('/tech/browser-os', {
+            templateUrl: '/views/reporting/reporting-tech-browser-os.html'
+        })
+        .when('/tech/devices', {
+            templateUrl: '/views/reporting/reporting-tech-devices.html'
+        })
 
         .when('/404', {
             templateUrl: '/views/404.html'

@@ -469,7 +469,6 @@ directivesModule.directive('reportingDashboardDemographics', ['$http', '$rootSco
                 var dateTo = $rootScope.dateTo.getTime();
                 var currentAppId = $rootScope.currentAppId;
                 var languageQueryString = '/app/language?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
-                console.log(languageQueryString);
 
                 $http.get(languageQueryString).success(function(data) {
                     var dataForBarChart = getArrayOfArraysForDrawingChart(data, "language", "sessions", false);
@@ -512,7 +511,7 @@ directivesModule.directive('reportingDashboardDemographics', ['$http', '$rootSco
                         resolution: 'provinces',
                         width: Number(parentWidth),
                         height: '100%',
-                        colorAxis: {colors: ['#e7711c', '#4374e0']}
+                        colorAxis: {colors: ['#fff', '#22BAA0']}
                     };
                     var data = google.visualization.arrayToDataTable(scope.cityChartData);
                     chart.draw(data, options);
@@ -732,7 +731,6 @@ directivesModule.directive('reportingPagesOverviewContent', ['$http', '$rootScop
                 });
 
                 var queryByPathString = '/app/page?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo + '&by=path';
-                console.log(queryByPathString);
                 $http.get(queryByPathString).success(function(data) {
                     scope.zaPagesOverviewTableData = data;
                     // Calculate the total / average values
@@ -980,7 +978,7 @@ directivesModule.directive('reportingGeoLocationContent', ['$http', '$rootScope'
                         resolution: 'provinces',
                         width: Number(parentWidth),
                         height: '100%',
-                        colorAxis: {colors: ['#e7711c', '#4374e0']}
+                        colorAxis: {colors: ['#fff', '#22BAA0']}
                     };
                     var data = google.visualization.arrayToDataTable(scope.cityChartData);
                     chart.draw(data, options);
@@ -1001,6 +999,48 @@ directivesModule.directive('reportingGeoLocationContent', ['$http', '$rootScope'
 
             scope.$on("datepickerChanged", renderGeoLocation);
             scope.$on("appSelectChanged", renderGeoLocation);
+        }
+    }
+}]);
+
+// THE TECH > DEVICES PAGE
+
+directivesModule.directive('reportingTechDevicesContent', ['$http', '$rootScope', function($http, $rootScope) {
+    return {
+        restrict: 'E',
+        templateUrl: '/views/reporting/reporting-tech-devices-content.html',
+        link: function (scope, element, attrs) {
+            scope.techDevicesTableData = null;
+            scope.tableTotalSessions = 0;
+            scope.tableTotalNewUsers = 0;
+
+            function renderTechDevices(){
+                var dateFrom = $rootScope.dateFrom.getTime();
+                var dateTo = $rootScope.dateTo.getTime();
+                var currentAppId = $rootScope.currentAppId;
+                var queryString = '/app/device?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+
+                $http.get(queryString).success(function(data) {
+                    console.log(data);
+                    scope.techDevicesTableData = data;
+                    // Calculate the total / average values
+                    scope.tableTotalSessions = 0;
+                    scope.tableTotalNewUsers = 0;
+                    for (var i = 0; i < data.length; i++){
+                        scope.tableTotalSessions += data[i].sessions;
+                        scope.tableTotalNewUsers += data[i].newUsers;
+                    }
+                });
+            }
+
+            $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
+                if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){
+                    renderTechDevices();
+                }
+            });
+
+            scope.$on("datepickerChanged", renderTechDevices);
+            scope.$on("appSelectChanged", renderTechDevices);
         }
     }
 }]);
