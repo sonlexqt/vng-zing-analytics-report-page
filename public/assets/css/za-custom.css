@@ -5001,3 +5001,7 @@ body:not(.small-sidebar):not(.page-horizontal-bar) .menu.accordion-menu,
     height: 80px;
     width: 80px;
 }
+
+.za-tab a{
+    font-size: 15px;
+}

@@ -33,9 +33,17 @@ controllersModule.controller('ZAAppController', ['$scope', '$rootScope', '$http'
         $rootScope.currentTab = 'management';
     }
 
-    //TODO handle later
+    // Handle zaTab navigation
+    $('.za-tab .hvr-underline-reveal').unbind();
+    $('.za-tab .hvr-underline-reveal').click(function(){
+        $rootScope.currentTab = $(this).data("zatab");
+        $('.za-tab .hvr-underline-reveal').removeClass('active');
+        $(this).addClass('active');
+        $scope.$digest();
+    });
+
     $scope.selectSidebarMenu = function(){
-        return '/views/templates/' + $rootScope.currentTab + '/sidebar.html';
+        return '/views/' + $rootScope.currentTab + '/sidebar.html';
     };
 
 }]);
@@ -87,6 +95,7 @@ controllersModule.controller('DatepickerController', ['$scope', '$rootScope', fu
         $rootScope.dateTo = yesterdayDateObject;
     }
 
+    $(".date-picker-wrapper .drp_top-bar .apply-btn").unbind();
     $(".date-picker-wrapper .drp_top-bar .apply-btn").click(function(){
         $rootScope.$broadcast('datepickerChanged');
     });
@@ -94,5 +103,96 @@ controllersModule.controller('DatepickerController', ['$scope', '$rootScope', fu
     $("#app-id-selector").change(function(){
         $rootScope.currentAppId = $(this).val();
         $rootScope.$broadcast('appSelectChanged');
+    });
+}]);
+
+controllersModule.controller('PageContentController', ['$scope', function($scope){
+    $scope.$on('$viewContentLoaded', function(event) {
+        // Sidebar Menu
+        $('.sidebar .accordion-menu li .sub-menu').slideUp(0);
+        $('.sidebar .accordion-menu li.open .sub-menu').slideDown(0);
+        $('.small-sidebar .sidebar .accordion-menu li.open .sub-menu').hide(0);
+        $('.sidebar .accordion-menu > li.droplink > a').unbind();
+        $('.sidebar .accordion-menu > li.droplink > a').click(function(){
+            var menu = $('.sidebar .menu'),
+                sidebar = $('.page-sidebar-inner'),
+                page = $('.page-content'),
+                sub = $(this).next(),
+                el = $(this);
+
+            menu.find('li').removeClass('open');
+            $('.sub-menu').slideUp(200, function() {
+                sidebarAndContentHeight();
+            });
+
+            sidebarAndContentHeight();
+
+            if (!sub.is(':visible')) {
+                $(this).parent('li').addClass('open');
+                $(this).next('.sub-menu').slideDown(200, function() {
+                    sidebarAndContentHeight();
+                });
+            } else {
+                sub.slideUp(200, function() {
+                    sidebarAndContentHeight();
+                });
+            }
+            return false;
+        });
+
+        // Handle sidebar menu navigation
+        $('.sidebar .accordion-menu li:not(.droplink)').unbind();
+        $('.sidebar .accordion-menu li:not(.droplink)').click(function(){
+            $('.sidebar .accordion-menu li:not(.droplink)').removeClass("active");
+            $(this).addClass("active");
+        });
+
+        // Makes .page-inner height same as .page-sidebar height
+        var sidebarAndContentHeight = function () {
+            var content = $('.page-inner'),
+                sidebar = $('.page-sidebar'),
+                body = $('body'),
+                height,
+                footerHeight = $('.page-footer').outerHeight(),
+                pageContentHeight = $('.page-content').height();
+
+            content.attr('style', 'min-height:' + sidebar.height() + 'px !important');
+
+            if (body.hasClass('page-sidebar-fixed')) {
+                height = sidebar.height() + footerHeight;
+            } else {
+                height = sidebar.height() + footerHeight;
+                if (height  < $(window).height()) {
+                    height = $(window).height();
+                }
+            }
+
+            if (height >= content.height()) {
+                content.attr('style', 'min-height:' + height + 'px !important');
+            }
+        };
+        sidebarAndContentHeight();
+        window.onresize = sidebarAndContentHeight;
+
+        // Collapse sidebar
+        var str = $('.navbar .logo-box a span').text();
+        var smTxt = (str.slice(0,1));
+        // Logo text on Collapsed Sidebar
+        $('.small-sidebar .navbar .logo-box a span').html($('.navbar .logo-box a span').text() == smTxt ? str : smTxt);
+        $('.sidebar-toggle').unbind();
+        $('.sidebar-toggle').click(function() {
+            $('body').toggleClass("small-sidebar");
+            $('.navbar .logo-box a span').html($('.navbar .logo-box a span').text() == smTxt ? str : smTxt);
+            sidebarAndContentHeight();
+        });
+    });
+}]);
+
+controllersModule.controller('CanvasMenuController', ['$scope', '$rootScope', function($scope, $rootScope){
+    $('.cd-nav a').unbind();
+    $('.cd-nav a').click(function(){
+        var menu = ($(this).parent().data('menu'));
+        $rootScope.currentTab = menu;
+        $rootScope.$digest();
     });
 }]);

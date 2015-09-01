@@ -115,7 +115,7 @@
         </div>
 
         <!-- MAIN -->
-        <main class="page-content content-wrap">
+        <main class="page-content content-wrap" ng-controller="PageContentController">
             <div class="navbar">
                 <div class="navbar-inner">
                     <div class="sidebar-pusher">
@@ -137,6 +137,12 @@
                                 </li>
                                 <li>
                                     <a href="javascript:void(0);" class="waves-effect waves-button waves-classic toggle-fullscreen"><i class="fa fa-expand"></i></a>
+                                </li>
+                                <li class="za-tab">
+                                    <a href="#/" class="hvr-underline-reveal active" data-zatab="reporting">Reporting</a>
+                                </li>
+                                <li class="za-tab" ng-show="userProfile.role == 'admin'">
+                                    <a href="#/management" class="hvr-underline-reveal" data-zatab="management">Management</a>
                                 </li>
                             </ul>
 
@@ -254,41 +260,7 @@
                             </a>
                         </div>
                     </div>
-                    <ul class="menu accordion-menu">
-                        <li class="active"><a href="#/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>
-                        <li><a href="#/pages-overview" class="waves-effect waves-button"><span class="menu-icon fa fa-area-chart"></span><p>Pages Overview</p></a></li>
-                        <li class="droplink">
-                            <a href="#" class="waves-effect waves-button">
-                                <span class="menu-icon fa fa-globe"></span>
-                                <p>Geo</p>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                                <li><a href="#/geo/language">Language</a></li>
-                                <li><a href="#/geo/location">Location</a></li>
-                            </ul>
-                        </li>
-                        <li class="droplink">
-                            <a href="#" class="waves-effect waves-button">
-                                <span class="menu-icon fa fa-television"></span>
-                                <p>Technology</p>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                                <li><a href="#/tech/browser-os">Browser & OS</a></li>
-                                <li><a href="#/tech/devices">Devices</a></li>
-                            </ul>
-                        </li>
-                        <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-gift"></span><p>Extra</p><span class="arrow"></span></a>
-                            <ul class="sub-menu">
-                                <li><a href="/views/extra/form-wizard.html">Form Wizard</a></li>
-                                <li><a href="/views/extra/login.html">Login Form</a></li>
-                                <li><a href="/views/extra/register.html">Register Form</a></li>
-                                <li><a href="/views/extra/forgot.html">Forgot Password</a></li>
-                                <li><a href="/views/extra/ui-panels.html">Panels</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <ng-include src="selectSidebarMenu()"></ng-include>
                 </div><!-- Page Sidebar Inner -->
             </div><!-- Page Sidebar -->
 
@@ -303,58 +275,34 @@
         </main><!-- Page Content -->
 
         <!-- The CANVAS menu -->
-        <nav class="cd-nav-container" id="cd-nav">
+        <nav class="cd-nav-container" id="cd-nav" ng-controller="CanvasMenuController">
             <header>
                 <h3>Navigation</h3>
                 <a href="#0" class="cd-close-nav">Close</a>
             </header>
             <ul class="cd-nav list-unstyled">
-                <li class="cd-selected" data-menu="index">
-                    <a href="javsacript:void(0);">
+                <li class="cd-selected" data-menu="reporting">
+                    <a href="#/">
                         <span>
-                            <i class="glyphicon glyphicon-home"></i>
+                            <i class="fa fa-line-chart"></i>
                         </span>
-                        <p>Dashboard</p>
+                        <p>Reporting</p>
                     </a>
                 </li>
-                <li data-menu="profile">
-                    <a href="javsacript:void(0);">
+                <li data-menu="management">
+                    <a href="#/management">
                         <span>
-                            <i class="glyphicon glyphicon-user"></i>
+                            <i class="fa fa-database"></i>
                         </span>
-                        <p>Profile</p>
+                        <p>Management</p>
                     </a>
                 </li>
-                <li data-menu="inbox">
+                <li data-menu="settings">
                     <a href="javsacript:void(0);">
                         <span>
-                            <i class="glyphicon glyphicon-envelope"></i>
-                        </span>
-                        <p>Mailbox</p>
-                    </a>
-                </li>
-                <li data-menu="#">
-                    <a href="javsacript:void(0);">
-                        <span>
-                            <i class="glyphicon glyphicon-tasks"></i>
-                        </span>
-                        <p>Tasks</p>
-                    </a>
-                </li>
-                <li data-menu="#">
-                    <a href="javsacript:void(0);">
-                        <span>
-                            <i class="glyphicon glyphicon-cog"></i>
+                            <i class="fa fa-cogs"></i>
                         </span>
                         <p>Settings</p>
-                    </a>
-                </li>
-                <li data-menu="calendar">
-                    <a href="javsacript:void(0);">
-                        <span>
-                            <i class="glyphicon glyphicon-calendar"></i>
-                        </span>
-                        <p>Calendar</p>
                     </a>
                 </li>
             </ul>

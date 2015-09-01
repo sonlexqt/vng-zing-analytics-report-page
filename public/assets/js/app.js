@@ -37,6 +37,9 @@ zaApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
         .when('/tech/devices', {
             templateUrl: '/views/reporting/reporting-tech-devices.html'
         })
+        .when('/management', {
+            templateUrl: '/views/management/management-products.html'
+        })
 
         .when('/404', {
             templateUrl: '/views/404.html'
