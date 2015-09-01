@@ -254,6 +254,8 @@ function drawBarChart(elementSelector, dataArray, ticksArray, columnLabel){
  * DIRECTIVES
  */
 
+// THE DASHBOARD PAGE
+
 directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope', function($http, $rootScope) {
     return {
         restrict: 'E',
@@ -636,7 +638,7 @@ directivesModule.directive('reportingDashboardSystem', ['$http', '$rootScope', f
     }
 }]);
 
-
+// THE PAGES OVERVIEW PAGE
 
 directivesModule.directive('reportingPagesOverviewContent', ['$http', '$rootScope', function($http, $rootScope) {
     return {
@@ -644,13 +646,13 @@ directivesModule.directive('reportingPagesOverviewContent', ['$http', '$rootScop
         templateUrl: '/views/reporting/reporting-pages-overview-content.html',
         link: function (scope, element, attrs) {
             scope.zaPagesOverviewData = null;
+            scope.zaPagesOverviewTableData = null;
 
             function renderPagesOverview(){
                 var dateFrom = $rootScope.dateFrom.getTime();
                 var dateTo = $rootScope.dateTo.getTime();
                 var currentAppId = $rootScope.currentAppId;
                 var queryByDateString = '/app/page?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo + '&by=date';
-
                 $http.get(queryByDateString).success(function(data) {
                     scope.zaPagesOverviewData = data;
 
@@ -724,6 +726,11 @@ directivesModule.directive('reportingPagesOverviewContent', ['$http', '$rootScop
                     angular.element(".total-metrics .panel-body").first().addClass("active");
                 });
 
+                var queryByPathString = '/app/page?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo + '&by=path';
+                console.log(queryByPathString);
+                $http.get(queryByPathString).success(function(data) {
+                    scope.zaPagesOverviewTableData = data;
+                });
             }
 
             scope.handleMetricBadgesClick = function($event){
@@ -820,6 +827,17 @@ directivesModule.directive('reportingPagesOverviewContent', ['$http', '$rootScop
 
             scope.$on("datepickerChanged", renderPagesOverview);
             scope.$on("appSelectChanged", renderPagesOverview);
+        }
+    }
+}]);
+
+directivesModule.directive('zaDataTable', ['$timeout', function($timeout) {
+    return {
+        restrict: 'C',
+        link: function(scope, element, attrs) {
+            $timeout(function () {
+                element.DataTable();
+            }, 1000);
         }
     }
 }]);
