@@ -1830,7 +1830,7 @@
 						<div class="default-top">default</div>';
 				}
 
-				html += '<input type="button" class="btn btn-primary apply-btn disabled'+ getApplyBtnClass() +'" value="'+lang('apply')+'" />';
+				html += '<input type="button" class="btn btn-success apply-btn disabled'+ getApplyBtnClass() +'" value="'+lang('apply')+'" />';
 				html += '</div>'
 			}
 

@@ -61,7 +61,7 @@ controllersModule.controller('DatepickerController', ['$scope', '$rootScope', fu
         {
             this.innerHTML = s;
         },
-        separator: ' <i class="fa fa-chevron-circle-right"></i> ',
+        separator: ' <i class="fa fa-chevron-circle-right" style="color: #22BAA0;"></i> ',
         endDate: yesterdayDateString,
         showShortcuts: false
     });
