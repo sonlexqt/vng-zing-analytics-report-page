@@ -40,7 +40,8 @@ function getLineChartData(_data, _label, _color){
         }
     ]
 }
-function getArrayOfArraysForLineChart(arrayOfObjects, property1, property2, isProperty1DateTime){
+
+function getArrayOfArraysForDrawingChart(arrayOfObjects, property1, property2, isProperty1DateTime){
     var res = [];
     if (isProperty1DateTime){
         for (var i = 0; i< arrayOfObjects.length; i++) {
@@ -147,6 +148,108 @@ function removeElementFromArray(array, search_field, search_term){
     return res;
 }
 
+function getTicksAndDataArrayForLanguageChart(array){
+    var ticksArray = [];
+    var dataArray = [];
+    for (var i = 0; i < array.length; i++){
+        var ticksArrayRow = [
+            i,
+            array[i][0]
+        ];
+        ticksArray.push(ticksArrayRow);
+        var dataArrayRow = [
+            i,
+            array[i][1]
+        ];
+        dataArray.push(dataArrayRow);
+    }
+    return {
+        ticksArray: ticksArray,
+        dataArray: dataArray
+    }
+}
+
+function drawBarChart(elementSelector, dataArray, ticksArray, columnLabel){
+    if($(elementSelector).length)
+    {
+        var plot = $.plot($(elementSelector),
+            [
+                {
+                    data: dataArray,
+                    label: columnLabel
+                }
+            ], {
+                series: {
+                    bars: {
+                        show: true,
+                        fill: true,
+                        align: "center"
+                    },
+                    legend: {
+                        show: false
+                    }
+                },
+                grid: {
+                    hoverable: true,
+                    clickable: true,
+                    tickColor: "rgba(255,255,255,0.05)",
+                    borderWidth: 0
+                },
+                colors: [
+                    "rgba(34, 186, 160, 0.8)"
+                ],
+                xaxis: {
+                    ticks: ticksArray,
+                    color: "rgba(255,255,255,0.8)"
+                },
+                yaxis: {
+                    color: "rgba(255,255,255,0.8)"
+                }
+            });
+
+        function showTooltip(x, y, contents) {
+            $('<div id="tooltip">' + contents + '</div>').css( {
+                position: 'absolute',
+                display: 'none',
+                top: y + 5,
+                left: x + 5,
+                border: '1px solid #fdd',
+                padding: '2px',
+                'background-color': '#dfeffc',
+                opacity: 0.80
+            }).appendTo("body").fadeIn(200);
+        }
+
+        function getXAxisLabel(x){
+            for (var i = 0; i < ticksArray.length; i++){
+                if (ticksArray[i][0] == x){
+                    return ticksArray[i][1];
+                }
+            }
+        }
+
+        var previousPoint = null;
+        $(elementSelector).bind("plothover", function (event, pos, item) {
+            $("#x").text(pos.x.toFixed(2));
+            $("#y").text(pos.y.toFixed(2));
+            if (item) {
+                if (previousPoint != item.dataIndex) {
+                    previousPoint = item.dataIndex;
+                    $("#tooltip").remove();
+                    var x = item.datapoint[0].toFixed(2),
+                        y = item.datapoint[1].toFixed(2);
+                    showTooltip(item.pageX, item.pageY,
+                        item.series.label + " of " + getXAxisLabel(x) + " = " + Math.round(y));
+                }
+            }
+            else {
+                $("#tooltip").remove();
+                previousPoint = null;
+            }
+        });
+    }
+}
+
 /**
  * DIRECTIVES
  */
@@ -208,7 +311,7 @@ directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope',
                         chartLabel: "None"
                     };
                     // Render the chart
-                    var sessionsData = getArrayOfArraysForLineChart(scope.dashboardOverviewData, "date", "sessions", true);
+                    var sessionsData = getArrayOfArraysForDrawingChart(scope.dashboardOverviewData, "date", "sessions", true);
                     var chartData = getLineChartData(sessionsData, "Sessions", LINE_CHART_MAIN_COLOR);
                     scope.chartDataset = [];
                     scope.chartDataset.push(chartData[0]);
@@ -266,7 +369,7 @@ directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope',
                     fieldName: "none",
                     chartLabel: "None"
                 };
-                var currentChartData = getArrayOfArraysForLineChart(scope.dashboardOverviewData, "date", fieldName, true);
+                var currentChartData = getArrayOfArraysForDrawingChart(scope.dashboardOverviewData, "date", fieldName, true);
                 var chartData = getLineChartData(currentChartData, chartLabel, LINE_CHART_MAIN_COLOR);
                 scope.chartDataset = [];
                 scope.chartDataset.push(chartData[0]);
@@ -313,9 +416,9 @@ directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope',
                         chartLabel: selectedChartLabel
                     };
                     $('#select-second-chart-modal').modal('toggle');
-                    var currentChartArrayData = getArrayOfArraysForLineChart(scope.dashboardOverviewData, "date", scope.currentChart.fieldName, true);
+                    var currentChartArrayData = getArrayOfArraysForDrawingChart(scope.dashboardOverviewData, "date", scope.currentChart.fieldName, true);
                     var currentChartData = getLineChartData(currentChartArrayData, scope.currentChart.chartLabel, LINE_CHART_MAIN_COLOR);
-                    var secondChartArrayData = getArrayOfArraysForLineChart(scope.dashboardOverviewData, "date", scope.secondChart.fieldName, true);
+                    var secondChartArrayData = getArrayOfArraysForDrawingChart(scope.dashboardOverviewData, "date", scope.secondChart.fieldName, true);
                     var secondChartData = getLineChartData(secondChartArrayData, scope.secondChart.chartLabel, LINE_CHART_SUB_COLOR);
                     scope.chartDataset = [];
                     scope.chartDataset.push(currentChartData[0]);
@@ -349,10 +452,23 @@ directivesModule.directive('reportingDashboardDemographics', ['$http', '$rootSco
         restrict: 'E',
         templateUrl: '/views/reporting/reporting-dashboard-demographics.html',
         link: function (scope, element, attrs) {
-            function renderDashboardDemographics(){
-                scope.cityChartData = null;
+            scope.cityChartData = null;
 
-                // the Demographics > City chart
+            function renderDashboardDemographics(){
+                // The Demographics > Language chart
+                var dateFrom = $rootScope.dateFrom.getTime();
+                var dateTo = $rootScope.dateTo.getTime();
+                var currentAppId = $rootScope.currentAppId;
+                var languageQueryString = '/app/language?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                console.log(languageQueryString);
+
+                $http.get(languageQueryString).success(function(data) {
+                    var dataForBarChart = getArrayOfArraysForDrawingChart(data, "language", "sessions", false);
+                    var modifiedData = getTicksAndDataArrayForLanguageChart(dataForBarChart);
+                    drawBarChart("#dashboard-demographics-language-chart", modifiedData.dataArray, modifiedData.ticksArray, "Sessions");
+                });
+
+                // The Demographics > City chart
                 var chart = new google.visualization.GeoChart(document.getElementById("dashboard-demographics-city-chart"));
                 var parentWidth = angular.element("#dashboard-demographics-city-chart").parent().width();
                 var options = {};
@@ -414,23 +530,23 @@ directivesModule.directive('reportingDashboardSystem', ['$http', '$rootScope', f
         restrict: 'E',
         templateUrl: '/views/reporting/reporting-dashboard-system.html',
         link: function (scope, element, attrs) {
-            function renderDashboardSystem(){
-                var dateFrom = $rootScope.dateFrom.getTime();
-                var dateTo = $rootScope.dateTo.getTime();
-                var currentAppId = $rootScope.currentAppId;
-                var languageQueryString = '/app/language?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
-                console.log(languageQueryString);
-
-
-            }
-
-            $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
-                if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){
-                    renderDashboardSystem();
-                }
-            });
-            scope.$on("datepickerChanged", renderDashboardSystem);
-            scope.$on("appSelectChanged", renderDashboardSystem);
+            //function renderDashboardSystem(){
+            //    var dateFrom = $rootScope.dateFrom.getTime();
+            //    var dateTo = $rootScope.dateTo.getTime();
+            //    var currentAppId = $rootScope.currentAppId;
+            //    var languageQueryString = '/app/language?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+            //    console.log(languageQueryString);
+            //
+            //
+            //}
+            //
+            //$rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
+            //    if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){
+            //        renderDashboardSystem();
+            //    }
+            //});
+            //scope.$on("datepickerChanged", renderDashboardSystem);
+            //scope.$on("appSelectChanged", renderDashboardSystem);
         }
     }
 }]);
