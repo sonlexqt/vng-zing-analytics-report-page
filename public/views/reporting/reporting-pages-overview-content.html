@@ -125,27 +125,65 @@
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
-                        <table id="pages-overview-datatable" class="display table za-data-table" style="width: 100%; cellspacing: 0;">
+                        <table class="display table za-data-table" style="width: 100%; cellspacing: 0;">
                             <thead>
                             <tr>
-                                <th>Page</th>
-                                <th>Pageviews</th>
-                                <th>Unique Pageviews</th>
-                                <th>Avg. Time On Page</th>
-                                <th>Entrances</th>
-                                <th>Bounce Rate</th>
-                                <th>% Exit</th>
+                                <th>
+                                    Page
+                                    <table-tooltip tooltip-title="The page visited, listed by URI. The URI is the portion of a page's URL following the domain name; for example, the URI portion of www.example.com/contact.html is /contact.html."></table-tooltip>
+                                </th>
+                                <th>
+                                    Pageviews
+                                    <table-tooltip tooltip-title="Pageviews is the total number of pages viewed. Repeated views of a single page are counted."></table-tooltip>
+                                </th>
+                                <th>
+                                    Unique Pageviews
+                                    <table-tooltip tooltip-title="Unique Pageviews is the number of sessions during which the specified page was viewed at least once. A unique pageview is counted for each page URL + page Title combination."></table-tooltip>
+                                </th>
+                                <th>
+                                    Avg. Time On Page
+                                    <table-tooltip tooltip-title="The average amount of time users spent viewing a specified page or screen, or set of pages of screens."></table-tooltip>
+                                </th>
+                                <th>
+                                    Entrances
+                                    <table-tooltip tooltip-title="Entrances is the number of times visitors entered your site through a specified page or set of pages."></table-tooltip>
+                                </th>
+                                <th>
+                                    Bounce Rate
+                                    <table-tooltip tooltip-title="Bounce Rate is the percentage of single-page visits (i.e. visits in which the person left your site from the entrance page without interacting with the page)."></table-tooltip>
+                                </th>
+                                <th>
+                                    % Exit
+                                    <table-tooltip tooltip-title="% Exit is (number of exits) / (number of pageviews) for the page or set of pages. It indicates how often users exit from that page or set of pages when they view the page(s)."></table-tooltip>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="row in zaPagesOverviewTableData">
-                                    <td>{[{row.page}]}</td>
-                                    <td>{[{row.pageviews}]}</td>
-                                    <td>{[{row.uniquePageviews}]}</td>
-                                    <td>{[{row.avgTimeOnPage}]}</td>
-                                    <td>{[{row.entrances}]}</td>
-                                    <td>{[{row.bounceRate}]}</td>
-                                    <td>{[{row.percentExit}]}</td>
+                                    <td>
+                                        <span class="table-cell-stats">{[{row.page}]}</span>
+                                    </td>
+                                    <td>
+                                        <span class="table-cell-stats">{[{row.pageviews}]}</span>
+                                        <span class="table-cell-stats-percent">({[{row.pageviews | percentage:tableTotalPageviews:2}]})</span>
+                                    </td>
+                                    <td>
+                                        <span class="table-cell-stats">{[{row.uniquePageviews}]}</span>
+                                        <span class="table-cell-stats-percent">({[{row.uniquePageviews | percentage:tableTotalUniquePageviews:2}]})</span>
+                                    </td>
+                                    <td>
+                                        <span class="table-cell-stats">{[{row.avgTimeOnPage | timeInHHMMSS}]}</span>
+                                    </td>
+                                    <td>
+                                        <span class="table-cell-stats">{[{row.entrances}]}</span>
+                                        <span class="table-cell-stats-percent">({[{row.entrances | percentage:tableTotalEntrances:2}]})</span>
+                                    </td>
+                                    <td>
+                                        <span class="table-cell-stats">{[{row.bounceRate | decimals:2}]}%</span>
+                                    </td>
+                                    <td>
+                                        <span class="table-cell-stats">{[{row.percentExit | decimals:2}]}%</span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

@@ -20,3 +20,9 @@ filtersModule.filter('percentage', ['$filter', function ($filter) {
         return $filter('number')(parseFloat(input * 100) / sum, decimals) + '%';
     };
 }]);
+
+filtersModule.filter('decimals', ['$filter', function ($filter) {
+    return function (input, decimals) {
+        return $filter('number')(parseFloat(input), decimals);
+    };
+}]);

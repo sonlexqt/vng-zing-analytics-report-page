@@ -1192,7 +1192,6 @@ h5 {
 
 
 /* Tooltip */
-
 .tooltip-inner {
     border-radius: 0;
 }
@@ -2066,6 +2065,20 @@ ol.linenums {
 tr.group,
 tr.group:hover {
     background-color: #ddd !important;
+}
+
+.za-data-table thead th {
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.table-cell-stats{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.table-cell-stats-percent{
+    color: grey;
 }
 
 

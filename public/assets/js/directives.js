@@ -648,6 +648,10 @@ directivesModule.directive('reportingPagesOverviewContent', ['$http', '$rootScop
             scope.zaPagesOverviewData = null;
             scope.zaPagesOverviewTableData = null;
 
+            scope.tableTotalPageviews = null;
+            scope.tableTotalUniquePageviews = null;
+            scope.tableTotalEntrances = null;
+
             function renderPagesOverview(){
                 var dateFrom = $rootScope.dateFrom.getTime();
                 var dateTo = $rootScope.dateTo.getTime();
@@ -730,6 +734,15 @@ directivesModule.directive('reportingPagesOverviewContent', ['$http', '$rootScop
                 console.log(queryByPathString);
                 $http.get(queryByPathString).success(function(data) {
                     scope.zaPagesOverviewTableData = data;
+                    // Calculate the total / average values
+                    scope.tableTotalPageviews = 0;
+                    scope.tableTotalUniquePageviews = 0;
+                    scope.tableTotalEntrances = 0;
+                    for (var i = 0; i < data.length; i++){
+                        scope.tableTotalPageviews += data[i].pageviews;
+                        scope.tableTotalUniquePageviews += data[i].uniquePageviews;
+                        scope.tableTotalEntrances += data[i].entrances;
+                    }
                 });
             }
 
@@ -841,3 +854,22 @@ directivesModule.directive('zaDataTable', ['$timeout', function($timeout) {
         }
     }
 }]);
+
+directivesModule.directive('tableTooltip', function(){
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {}, // isolated scope
+        templateUrl: '/views/reporting/table-tooltip.html',
+        link: function (scope, element, attrs) {
+            scope.tooltipTitle = attrs["tooltipTitle"];
+            element.hover(function(){
+                // on mouseenter
+                element.tooltip('show');
+            }, function(){
+                // on mouseleave
+                element.tooltip('hide');
+            });
+        }
+    }
+});
