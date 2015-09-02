@@ -256,6 +256,26 @@ controllersModule.controller('ChatController', ['$scope', '$rootScope', '$http',
             }
             $scope.currentOpponent = thatUser.username;
             $scope.currentOpponentConversation = conversationWithThatUser;
+            $scope.currentOpponentConversation.$watch(function(data){
+                if (data.event == "child_added"){
+                    var key = data.key;
+                    var newMessage = $scope.currentOpponentConversation.$getRecord(key);
+                    if (newMessage.sender !== $rootScope.userProfile.username){
+                        toastr.options = {
+                            "positionClass": "toast-top-center",
+                            "onclick": function(){
+                                classie.add(menuRight2, 'cbp-spmenu-open');
+                                var newConversationWithThatUser = ChatService.Conversation.getConversationWithThatUser($rootScope.userProfile.username, newMessage.sender);
+                                newConversationWithThatUser.$loaded(function(data){
+                                    $scope.currentOpponentConversation = newConversationWithThatUser;
+                                    $scope.currentOpponent = newMessage.sender;
+                                });
+                            }
+                        };
+                        toastr.success(newMessage.msg, newMessage.sender);
+                    }
+                }
+            });
         });
     };
 
