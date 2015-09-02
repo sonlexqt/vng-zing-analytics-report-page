@@ -77,18 +77,18 @@ $(document).ready(function() {
     closeRight2.onclick = function() {
         classie.toggle( menuRight2, 'cbp-spmenu-open' );
     };
-    $('.showRight2').click(function() {
-        classie.toggle( menuRight2, 'cbp-spmenu-open' );
-    });
-    $(".chat-write form input").keypress(function (e) {
-        if ((e.which == 13)&&(!$(this).val().length == 0)) {
-            $('<div class="chat-item chat-item-right"><div class="chat-message">' + $(this).val() + '</div></div>').insertAfter(".chat .chat-item:last-child");
-            $(this).val('');
-        } else if(e.which == 13) {
-            return;
-        }
-        $('.chat').slimscroll({
-            allowPageScroll: true
-        });
-    });
+    //$('.showRight2').click(function() {
+    //    classie.toggle( menuRight2, 'cbp-spmenu-open' );
+    //});
+    //$(".chat-write form input").keypress(function (e) {
+    //    if ((e.which == 13)&&(!$(this).val().length == 0)) {
+    //        $('<div class="chat-item chat-item-right"><div class="chat-message">' + $(this).val() + '</div></div>').insertAfter(".chat .chat-item:last-child");
+    //        $(this).val('');
+    //    } else if(e.which == 13) {
+    //        return;
+    //    }
+    //    $('.chat').slimscroll({
+    //        allowPageScroll: true
+    //    });
+    //});
 });

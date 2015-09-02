@@ -38,63 +38,47 @@
             <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right hidden-print" id="cbp-spmenu-s1">
                 <h3><span class="pull-left">Chat</span><a href="javascript:void(0);" class="pull-right" id="closeRight"><i class="fa fa-times"></i></a></h3>
                 <div class="slimscroll">
-                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar2.png" alt=""><span>Sandra smith<small>Hi! How're you?</small></span></a>
-                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar3.png" alt=""><span>Amily Lee<small>Hi! How're you?</small></span></a>
-                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar4.png" alt=""><span>Christopher Palmer<small>Hi! How're you?</small></span></a>
-                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar5.png" alt=""><span>Nick Doe<small>Hi! How're you?</small></span></a>
-                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar2.png" alt=""><span>Sandra smith<small>Hi! How're you?</small></span></a>
-                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar3.png" alt=""><span>Amily Lee<small>Hi! How're you?</small></span></a>
-                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar4.png" alt=""><span>Christopher Palmer<small>Hi! How're you?</small></span></a>
-                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar5.png" alt=""><span>Nick Doe<small>Hi! How're you?</small></span></a>
+                    <a ng-repeat="otherUser in otherUsers" href="javascript:void(0);" class="showRight2" ng-click="startChatting(otherUser)">
+                        <img src="assets/images/avatar.png" alt="">
+                        <span>{[{otherUser.username}]}
+                            <small style="opacity: 0;">css issue</small>
+                        </span>
+                    </a>
                 </div>
             </nav> <!-- END Chat List -->
             <!-- Chat Person -->
             <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right hidden-print" id="cbp-spmenu-s2">
-                <h3><span class="pull-left">Sandra Smith</span> <a href="javascript:void(0);" class="pull-right" id="closeRight2"><i class="fa fa-angle-right"></i></a></h3>
+                <h3>
+                    <span class="pull-left">{[{currentOpponent}]}</span>
+                    <a href="javascript:void(0);" class="pull-right" id="closeRight2">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </h3>
                 <div class="slimscroll chat">
-                    <div class="chat-item chat-item-left">
-                        <div class="chat-image">
-                            <img src="assets/images/avatar2.png" alt="">
+                    <div ng-repeat="message in currentOpponentConversation">
+                        <div ng-if="message.sender == userProfile.username">
+                            <div class="chat-item chat-item-right">
+                                <div class="chat-message">
+                                    {[{message.msg}]}
+                                </div>
+                            </div>
                         </div>
-                        <div class="chat-message">
-                            Hi There!
-                        </div>
-                    </div>
-                    <div class="chat-item chat-item-right">
-                        <div class="chat-message">
-                            Hi! How are you?
-                        </div>
-                    </div>
-                    <div class="chat-item chat-item-left">
-                        <div class="chat-image">
-                            <img src="assets/images/avatar2.png" alt="">
-                        </div>
-                        <div class="chat-message">
-                            Fine! do you like my project?
-                        </div>
-                    </div>
-                    <div class="chat-item chat-item-right">
-                        <div class="chat-message">
-                            Yes, It's clean and creative, good job!
-                        </div>
-                    </div>
-                    <div class="chat-item chat-item-left">
-                        <div class="chat-image">
-                            <img src="assets/images/avatar2.png" alt="">
-                        </div>
-                        <div class="chat-message">
-                            Thanks, I tried!
-                        </div>
-                    </div>
-                    <div class="chat-item chat-item-right">
-                        <div class="chat-message">
-                            Good luck with your sales!
+
+                        <div ng-if="message.sender != userProfile.username">
+                            <div class="chat-item chat-item-left">
+                                <div class="chat-image">
+                                    <img src="assets/images/avatar.png">
+                                </div>
+                                <div class="chat-message">
+                                    {[{message.msg}]}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="chat-write">
                     <form class="form-horizontal" action="javascript:void(0);">
-                        <input type="text" class="form-control" placeholder="Say something">
+                        <input id="chat-msg-input" type="text" ng-model="chatMessage" class="form-control" placeholder="Say something" ng-keypress="sendMessage($event, chatMessage)">
                     </form>
                 </div>
             </nav> <!-- END Chat Person -->

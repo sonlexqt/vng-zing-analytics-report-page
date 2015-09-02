@@ -219,24 +219,54 @@ controllersModule.controller('CanvasMenuController', ['$scope', '$rootScope', fu
     });
 }]);
 
-controllersModule.controller('ChatController', ['$scope', '$rootScope', 'ChatService', function($scope, $rootScope, ChatService){
-    $scope.userChatData = null;
+function removeElementFromArray(array, search_field, search_term){
+    var res = array;
+    for (var i = res.length-1; i>=0; i--) {
+        if (res[i][search_field] === search_term) {
+            res.splice(i, 1);
+            break;       //<-- Uncomment  if only the first term has to be removed
+        }
+    }
+    return res;
+}
+
+controllersModule.controller('ChatController', ['$scope', '$rootScope', '$http', 'ChatService', function($scope, $rootScope, $http, ChatService){
+    $scope.otherUsers = [];
+    $scope.currentOpponent = null;
+    $scope.currentOpponentConversation = null;
+
     $rootScope.$watch('userProfile', function(){
         if ($rootScope.userProfile && $rootScope.userProfile.id){
-            var userId = $rootScope.userProfile.id;
-            var userChatData = ChatService.User.get(userId);
-            userChatData.$loaded(function(data){
-                if (data.hasOwnProperty('username')){
-                    $scope.userChatData = userChatData;
-                } else {
-                    var userInfo = {
-                        username: $rootScope.userProfile.username
-                    };
-                    ChatService.User.create(userId, userInfo);
-                    $scope.userChatData = ChatService.User.get(userId);
-                }
+            $http.get('/users').success(function(data){
+                $scope.otherUsers = removeElementFromArray(data, "id", $rootScope.userProfile.id);
             });
-
         }
     });
+
+    $scope.startChatting = function(thatUser){
+        var menuRight2 = document.getElementById( 'cbp-spmenu-s2' );
+        classie.toggle(menuRight2, 'cbp-spmenu-open');
+        var conversationWithThatUser = ChatService.Conversation.getConversationWithThatUser($rootScope.userProfile.username, thatUser.username);
+        conversationWithThatUser.$loaded(function(data){
+            if (data.length){
+                // already has a conversation with that user, do nothing
+            } else {
+                // haven't chat before, now create a new conversation
+                ChatService.Conversation.create($rootScope.userProfile.username, thatUser.username);
+            }
+            $scope.currentOpponent = thatUser.username;
+            $scope.currentOpponentConversation = conversationWithThatUser;
+        });
+    };
+
+    $scope.sendMessage = function($event, chatMessage){
+        if ($event.keyCode === 13 && chatMessage && chatMessage.length > 0){ // The Enter key
+            ChatService.Conversation.addMessage($rootScope.userProfile.username, $scope.currentOpponent, chatMessage);
+            angular.element('#chat-msg-input').val('');
+        }
+        $('.chat').slimscroll({
+            allowPageScroll: true
+        });
+    };
+
 }]);
