@@ -1,8 +1,9 @@
 var zaApp = angular.module('zaApp', [
+    'firebase',
     'ngRoute',
-    'zaApp.Controllers',
     'zaApp.Services',
     'zaApp.Filters',
+    'zaApp.Controllers',
     'zaApp.Directives'
 ]);
 

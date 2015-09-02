@@ -5011,6 +5011,12 @@ body:not(.small-sidebar):not(.page-horizontal-bar) .menu.accordion-menu,
 }
 
 @media print {
+    @page
+    {
+        size: auto;   /* auto is the initial value */
+        /* this affects the margin in the printer settings */
+        margin: 0;
+    }
     .table-responsive {
         overflow: hidden !important;
     }
@@ -5036,7 +5042,7 @@ body:not(.small-sidebar):not(.page-horizontal-bar) .menu.accordion-menu,
         border-radius: 5px;
         padding: 5px;
         padding-bottom: 0px;
-        margin-top: -60px;
+        margin-top: -55px;
     }
     #geo-location-city-chart{
         width: 600px !important;

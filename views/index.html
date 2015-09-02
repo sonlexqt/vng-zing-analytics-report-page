@@ -34,69 +34,71 @@
     <body ng-controller="ZAAppController" class="page-header-fixed">
         <div class="overlay"></div>
         <!-- Chat List -->
-        <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right hidden-print" id="cbp-spmenu-s1">
-            <h3><span class="pull-left">Chat</span><a href="javascript:void(0);" class="pull-right" id="closeRight"><i class="fa fa-times"></i></a></h3>
-            <div class="slimscroll">
-                <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar2.png" alt=""><span>Sandra smith<small>Hi! How're you?</small></span></a>
-                <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar3.png" alt=""><span>Amily Lee<small>Hi! How're you?</small></span></a>
-                <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar4.png" alt=""><span>Christopher Palmer<small>Hi! How're you?</small></span></a>
-                <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar5.png" alt=""><span>Nick Doe<small>Hi! How're you?</small></span></a>
-                <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar2.png" alt=""><span>Sandra smith<small>Hi! How're you?</small></span></a>
-                <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar3.png" alt=""><span>Amily Lee<small>Hi! How're you?</small></span></a>
-                <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar4.png" alt=""><span>Christopher Palmer<small>Hi! How're you?</small></span></a>
-                <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar5.png" alt=""><span>Nick Doe<small>Hi! How're you?</small></span></a>
-            </div>
-		</nav> <!-- END Chat List -->
-        <!-- Chat Person -->
-        <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right hidden-print" id="cbp-spmenu-s2">
-            <h3><span class="pull-left">Sandra Smith</span> <a href="javascript:void(0);" class="pull-right" id="closeRight2"><i class="fa fa-angle-right"></i></a></h3>
-            <div class="slimscroll chat">
-                <div class="chat-item chat-item-left">
-                    <div class="chat-image">
-                        <img src="assets/images/avatar2.png" alt="">
+        <div ng-controller="ChatController">
+            <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right hidden-print" id="cbp-spmenu-s1">
+                <h3><span class="pull-left">Chat</span><a href="javascript:void(0);" class="pull-right" id="closeRight"><i class="fa fa-times"></i></a></h3>
+                <div class="slimscroll">
+                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar2.png" alt=""><span>Sandra smith<small>Hi! How're you?</small></span></a>
+                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar3.png" alt=""><span>Amily Lee<small>Hi! How're you?</small></span></a>
+                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar4.png" alt=""><span>Christopher Palmer<small>Hi! How're you?</small></span></a>
+                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar5.png" alt=""><span>Nick Doe<small>Hi! How're you?</small></span></a>
+                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar2.png" alt=""><span>Sandra smith<small>Hi! How're you?</small></span></a>
+                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar3.png" alt=""><span>Amily Lee<small>Hi! How're you?</small></span></a>
+                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar4.png" alt=""><span>Christopher Palmer<small>Hi! How're you?</small></span></a>
+                    <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar5.png" alt=""><span>Nick Doe<small>Hi! How're you?</small></span></a>
+                </div>
+            </nav> <!-- END Chat List -->
+            <!-- Chat Person -->
+            <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right hidden-print" id="cbp-spmenu-s2">
+                <h3><span class="pull-left">Sandra Smith</span> <a href="javascript:void(0);" class="pull-right" id="closeRight2"><i class="fa fa-angle-right"></i></a></h3>
+                <div class="slimscroll chat">
+                    <div class="chat-item chat-item-left">
+                        <div class="chat-image">
+                            <img src="assets/images/avatar2.png" alt="">
+                        </div>
+                        <div class="chat-message">
+                            Hi There!
+                        </div>
                     </div>
-                    <div class="chat-message">
-                        Hi There!
+                    <div class="chat-item chat-item-right">
+                        <div class="chat-message">
+                            Hi! How are you?
+                        </div>
+                    </div>
+                    <div class="chat-item chat-item-left">
+                        <div class="chat-image">
+                            <img src="assets/images/avatar2.png" alt="">
+                        </div>
+                        <div class="chat-message">
+                            Fine! do you like my project?
+                        </div>
+                    </div>
+                    <div class="chat-item chat-item-right">
+                        <div class="chat-message">
+                            Yes, It's clean and creative, good job!
+                        </div>
+                    </div>
+                    <div class="chat-item chat-item-left">
+                        <div class="chat-image">
+                            <img src="assets/images/avatar2.png" alt="">
+                        </div>
+                        <div class="chat-message">
+                            Thanks, I tried!
+                        </div>
+                    </div>
+                    <div class="chat-item chat-item-right">
+                        <div class="chat-message">
+                            Good luck with your sales!
+                        </div>
                     </div>
                 </div>
-                <div class="chat-item chat-item-right">
-                    <div class="chat-message">
-                        Hi! How are you?
-                    </div>
+                <div class="chat-write">
+                    <form class="form-horizontal" action="javascript:void(0);">
+                        <input type="text" class="form-control" placeholder="Say something">
+                    </form>
                 </div>
-                <div class="chat-item chat-item-left">
-                    <div class="chat-image">
-                        <img src="assets/images/avatar2.png" alt="">
-                    </div>
-                    <div class="chat-message">
-                        Fine! do you like my project?
-                    </div>
-                </div>
-                <div class="chat-item chat-item-right">
-                    <div class="chat-message">
-                        Yes, It's clean and creative, good job!
-                    </div>
-                </div>
-                <div class="chat-item chat-item-left">
-                    <div class="chat-image">
-                        <img src="assets/images/avatar2.png" alt="">
-                    </div>
-                    <div class="chat-message">
-                        Thanks, I tried!
-                    </div>
-                </div>
-                <div class="chat-item chat-item-right">
-                    <div class="chat-message">
-                        Good luck with your sales!
-                    </div>
-                </div>
-            </div>
-            <div class="chat-write">
-                <form class="form-horizontal" action="javascript:void(0);">
-                    <input type="text" class="form-control" placeholder="Say something">
-                </form>
-            </div>
-		</nav> <!-- END Chat Person -->
+            </nav> <!-- END Chat Person -->
+        </div>
 
         <!-- User Profile Menu -->
         <div class="menu-wrap hidden-print">
@@ -328,8 +330,9 @@
 
         <!-- JAVASCRIPTS -->
         <!-- Libraries -->
+        <!-- MomentJS -->
         <script src="/assets/plugins/moment/moment.js"></script>
-
+        <!-- jQuery -->
         <script src="/assets/plugins/jquery/jquery-2.1.3.min.js"></script>
         <script src="/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
         <script src="/assets/plugins/jquery-daterangepicker/jquery.daterangepicker.js"></script>
@@ -339,10 +342,11 @@
         <script src="/assets/plugins/flot/jquery.flot.time.min.js"></script>
         <script src="/assets/plugins/flot/jquery.flot.resize.min.js"></script>
         <script src="/assets/plugins/curvedlines/curvedLines.js"></script>
-
+        <!-- Bootstrap -->
         <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-
+        <!-- Pace -->
         <script src="/assets/plugins/pace-master/pace.min.js"></script>
+        <!-- Switchery -->
         <script src="/assets/plugins/switchery/switchery.min.js"></script>
         <script src="/assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
         <script src="/assets/plugins/offcanvasmenueffects/js/classie.js"></script>
@@ -351,13 +355,17 @@
         <script src="/assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
         <script src="/assets/plugins/3d-bold-navigation/js/main.js"></script>
         <script src="/assets/plugins/toastr/toastr.min.js"></script>
-
+        <!-- AngularJS -->
         <script src="/assets/plugins/angular/angular.min.js"></script>
         <script src="/assets/plugins/angular/angular-route.min.js"></script>
+        <!-- Firebase -->
+        <script src="/assets/plugins/firebase/firebase.js"></script>
+        <script src="/assets/plugins/firebase/angularfire.min.js"></script>
+
         <!-- Custom Scripts -->
         <script src="/assets/js/za-custom.js"></script>
 
-        <!-- AngularJS Scripts -->
+        <!-- AngularJS Custom Scripts -->
         <script src="/assets/js/services.js"></script>
         <script src="/assets/js/filters.js"></script>
         <script src="/assets/js/controllers.js"></script>

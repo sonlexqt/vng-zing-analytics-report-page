@@ -218,3 +218,25 @@ controllersModule.controller('CanvasMenuController', ['$scope', '$rootScope', fu
         $rootScope.$digest();
     });
 }]);
+
+controllersModule.controller('ChatController', ['$scope', '$rootScope', 'ChatService', function($scope, $rootScope, ChatService){
+    $scope.userChatData = null;
+    $rootScope.$watch('userProfile', function(){
+        if ($rootScope.userProfile && $rootScope.userProfile.id){
+            var userId = $rootScope.userProfile.id;
+            var userChatData = ChatService.User.get(userId);
+            userChatData.$loaded(function(data){
+                if (data.hasOwnProperty('username')){
+                    $scope.userChatData = userChatData;
+                } else {
+                    var userInfo = {
+                        username: $rootScope.userProfile.username
+                    };
+                    ChatService.User.create(userId, userInfo);
+                    $scope.userChatData = ChatService.User.get(userId);
+                }
+            });
+
+        }
+    });
+}]);
