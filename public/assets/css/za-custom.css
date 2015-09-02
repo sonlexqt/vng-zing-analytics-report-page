@@ -1095,6 +1095,10 @@ h5 {
     color: #fff;
 }
 
+.btn.btn-default.fa.fa-print span{
+    font-family: "Open Sans", sans-serif;
+}
+
 /* Box Shadow */
 
 .bs-n {
@@ -5004,4 +5008,37 @@ body:not(.small-sidebar):not(.page-horizontal-bar) .menu.accordion-menu,
 
 .za-tab a{
     font-size: 15px;
+}
+
+@media print {
+    .table-responsive {
+        overflow: hidden !important;
+    }
+    .total-metrics > div {
+        border: 1px solid #dce1e4;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        padding: 10px;
+    }
+    .total-metrics p {
+        color: #000 !important;
+    }
+    .total-metrics span {
+        color: #000 !important;
+    }
+    .dataTables_length, .dataTables_filter {
+        display: none;
+    }
+    #user-profile-print{
+        display: block !important;
+        border: 1px solid #dce1e4;
+        border-radius: 5px;
+        padding: 5px;
+        padding-bottom: 0px;
+        margin-top: -60px;
+    }
+    #geo-location-city-chart{
+        width: 600px !important;
+    }
 }

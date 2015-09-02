@@ -44,15 +44,6 @@ $(document).ready(function() {
         var switchery = new Switchery(html, { color: '#23B7E5' });
     });
 
-    // Panel Control
-    $('.panel-collapse').click(function(){
-        $(this).closest(".panel").children('.panel-body').slideToggle('fast');
-    });
-
-    $('.panel-remove').click(function(){
-        $(this).closest(".panel").hide();
-    });
-
     // Push Menu
     $('.push-sidebar').click(function(){
         var hidden = $('.sidebar');
@@ -64,18 +55,6 @@ $(document).ready(function() {
             hidden.addClass('visible');
             $('.page-inner').addClass('sidebar-visible');
         }
-    });
-
-    // sortable
-    $(".sortable").sortable({
-        connectWith: '.sortable',
-        items: '.panel',
-        helper: 'original',
-        revert: true,
-        placeholder: 'panel-placeholder',
-        forcePlaceholderSize: true,
-        opacity: 0.95,
-        cursor: 'move'
     });
 
     // Slimscroll

@@ -46,6 +46,27 @@ controllersModule.controller('ZAAppController', ['$scope', '$rootScope', '$http'
         return '/views/' + $rootScope.currentTab + '/sidebar.html';
     };
 
+    // sortable
+    $(".sortable").sortable({
+        connectWith: '.sortable',
+        items: '.panel',
+        helper: 'original',
+        revert: true,
+        placeholder: 'panel-placeholder',
+        forcePlaceholderSize: true,
+        opacity: 0.95,
+        cursor: 'move'
+    });
+
+    // Panel Control
+    $('.panel-collapse').click(function(){
+        $(this).closest(".panel").children('.panel-body').slideToggle('fast');
+    });
+
+    $('.panel-remove').click(function(){
+        $(this).closest(".panel").hide();
+    });
+
 }]);
 
 controllersModule.controller('DatepickerController', ['$scope', '$rootScope', function($scope, $rootScope){
@@ -108,6 +129,7 @@ controllersModule.controller('DatepickerController', ['$scope', '$rootScope', fu
 
 controllersModule.controller('PageContentController', ['$scope', function($scope){
     $scope.$on('$viewContentLoaded', function(event) {
+
         // Sidebar Menu
         $('.sidebar .accordion-menu li .sub-menu').slideUp(0);
         $('.sidebar .accordion-menu li.open .sub-menu').slideDown(0);

@@ -26,3 +26,9 @@ filtersModule.filter('decimals', ['$filter', function ($filter) {
         return $filter('number')(parseFloat(input), decimals);
     };
 }]);
+
+filtersModule.filter('currentDate',['$filter',  function($filter) {
+    return function() {
+        return $filter('date')(new Date(), 'yyyy-MM-dd');
+    };
+}]);

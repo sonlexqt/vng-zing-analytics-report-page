@@ -23,7 +23,6 @@
         <link href="/assets/plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css"/>
         <link href="/assets/plugins/datatables/css/jquery.datatables_themeroller.css" rel="stylesheet" type="text/css"/>
 
-
         <!-- Theme Styles -->
         <link href="/assets/css/za-custom.css" rel="stylesheet" type="text/css"/>
         <link href="/assets/css/themes/white.css" class="theme-color" rel="stylesheet" type="text/css"/>
@@ -35,7 +34,7 @@
     <body ng-controller="ZAAppController" class="page-header-fixed">
         <div class="overlay"></div>
         <!-- Chat List -->
-        <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s1">
+        <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right hidden-print" id="cbp-spmenu-s1">
             <h3><span class="pull-left">Chat</span><a href="javascript:void(0);" class="pull-right" id="closeRight"><i class="fa fa-times"></i></a></h3>
             <div class="slimscroll">
                 <a href="javascript:void(0);" class="showRight2"><img src="assets/images/avatar2.png" alt=""><span>Sandra smith<small>Hi! How're you?</small></span></a>
@@ -49,7 +48,7 @@
             </div>
 		</nav> <!-- END Chat List -->
         <!-- Chat Person -->
-        <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s2">
+        <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right hidden-print" id="cbp-spmenu-s2">
             <h3><span class="pull-left">Sandra Smith</span> <a href="javascript:void(0);" class="pull-right" id="closeRight2"><i class="fa fa-angle-right"></i></a></h3>
             <div class="slimscroll chat">
                 <div class="chat-item chat-item-left">
@@ -100,8 +99,7 @@
 		</nav> <!-- END Chat Person -->
 
         <!-- User Profile Menu -->
-        <div class="menu-wrap">
-            <!-- TODO what should I do with this ? -->
+        <div class="menu-wrap hidden-print">
             <nav class="profile-menu">
                 <div class="profile"><img src="assets/images/avatar.png" width="52"/><span>{[{userProfile.username}]}</span></div>
                 <div class="profile-menu-list">
@@ -124,7 +122,7 @@
 
         <!-- MAIN -->
         <main class="page-content content-wrap" ng-controller="PageContentController">
-            <div class="navbar">
+            <div class="navbar hidden-print">
                 <div class="navbar-inner">
                     <div class="sidebar-pusher">
                         <a href="javascript:void(0);" class="waves-effect waves-button waves-classic push-sidebar">
@@ -250,7 +248,7 @@
             </div><!-- Navbar -->
 
             <!-- Sidebar -->
-            <div class="page-sidebar sidebar">
+            <div class="page-sidebar sidebar hidden-print">
                 <div class="page-sidebar-inner slimscroll">
                     <div class="sidebar-header">
                         <div class="sidebar-profile">
@@ -273,6 +271,16 @@
             </div><!-- Page Sidebar -->
 
             <div class="page-inner">
+                <div id="user-profile-print" class="col-xs-6 col-xs-offset-3" style="display: none">
+                    <div class="profile">
+                        <img src="assets/images/avatar.png" width="52"/><span>{[{userProfile.username}]}</span>
+                        <span style="font-weight: normal">
+                            <i class="fa fa-print"></i>
+                            <strong>Date printed:</strong> {[{'' | currentDate}]}
+                        </span>
+                    </div>
+                </div>
+
                 <div class="ng-view">
                     <!--TODO views go here-->
                 </div>
@@ -283,7 +291,7 @@
         </main><!-- Page Content -->
 
         <!-- The CANVAS menu -->
-        <nav class="cd-nav-container" id="cd-nav" ng-controller="CanvasMenuController">
+        <nav class="cd-nav-container hidden-print" id="cd-nav" ng-controller="CanvasMenuController">
             <header>
                 <h3>Navigation</h3>
                 <a href="#0" class="cd-close-nav">Close</a>
