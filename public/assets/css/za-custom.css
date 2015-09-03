@@ -5026,3 +5026,36 @@ body:not(.small-sidebar):not(.page-horizontal-bar) .menu.accordion-menu,
         width: 600px !important;
     }
 }
+
+.no-data-warning > div{
+    /*border: 1px solid #D9D9D9;*/
+    /*border-radius: 3px;*/
+    text-align: center;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.no-data-warning > div > p {
+    font-size: 35px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    color: #4E5E6A;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.no-data-warning > div > i {
+    font-size: 100px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.no-data-warning > div > span {
+    font-size: 17px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
