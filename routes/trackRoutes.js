@@ -43,7 +43,7 @@ router.get('/overview', function(req, res, next) {
                     res.send(result);
                 }
                 else {
-                    res.send("No query result.");
+                    res.send([]);
                 }
             }
         );
@@ -121,7 +121,7 @@ router.get('/page', function(req, res, next) {
                         res.send(result);
                     }
                     else {
-                        res.send("No query result.");
+                        res.send([]);
                     }
                 }
             );
@@ -161,7 +161,7 @@ router.get('/page', function(req, res, next) {
                         res.send(result);
                     }
                     else {
-                        res.send("No query result.");
+                        res.send([]);
                     }
                 }
             );
@@ -202,7 +202,7 @@ router.get('/language', function(req, res, next) {
                     res.send(result);
                 }
                 else {
-                    res.send("No query result.");
+                    res.send([]);
                 }
             }
         );
@@ -239,7 +239,7 @@ router.get('/location', function(req, res, next) {
                     res.send(result);
                 }
                 else {
-                    res.send("No query result.");
+                    res.send([]);
                 }
             }
         );
@@ -276,7 +276,7 @@ router.get('/device', function(req, res, next) {
                     res.send(result);
                 }
                 else {
-                    res.send("No query result.");
+                    res.send([]);
                 }
             }
         );
@@ -313,7 +313,7 @@ router.get('/browser', function(req, res, next) {
                     res.send(result);
                 }
                 else {
-                    res.send("No query result.");
+                    res.send([]);
                 }
             }
         );
@@ -350,7 +350,7 @@ router.get('/os', function(req, res, next) {
                     res.send(result);
                 }
                 else {
-                    res.send("No query result.");
+                    res.send([]);
                 }
             }
         );

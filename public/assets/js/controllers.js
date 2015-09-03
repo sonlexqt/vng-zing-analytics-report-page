@@ -76,7 +76,7 @@ controllersModule.controller('DatepickerController', ['$scope', '$rootScope', fu
     todayDateObject.setSeconds(0);
     var yesterday = todayDateObject.setDate(todayDateObject.getDate() - 1);
     var yesterdayDateObject = new Date(yesterday);
-    var threeWeekAgoDateObject = new Date(todayDateObject.setDate(todayDateObject.getDate() - 20));
+    var threeWeekAgoDateObject = new Date(todayDateObject.setDate(todayDateObject.getDate() - 13));
 
     var yesterdayDateString = moment(yesterdayDateObject).format("YYYY-MM-DD");
 

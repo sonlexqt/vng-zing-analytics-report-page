@@ -259,8 +259,10 @@ function drawBarChart(elementSelector, dataArray, ticksArray, columnLabel){
 directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope', function($http, $rootScope) {
     return {
         restrict: 'E',
+        scope: {},
         templateUrl: '/views/reporting/reporting-dashboard-overview.html',
         link: function(scope, element, attrs){
+            scope.hasNoData = false;
             scope.dashboardOverviewData = null;
             scope.currentChart = null;
             scope.chartDataset = [];
@@ -279,79 +281,84 @@ directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope',
 
                 $http.get(queryString).success(function(data) {
                     scope.dashboardOverviewData = data;
-                    // Calculate the total / average values
-                    scope.sumOfSessions = 0;
-                    scope.sumOfUsers = 0;
-                    scope.sumOfPageviews = 0;
-                    scope.sumOfEntrances = 0;
-                    scope.sumOfBounces = 0;
-                    scope.sumOfSessionsDuration = 0;
+                    if (data && data.length){
+                        scope.hasNoData = false;
+                        // Calculate the total / average values
+                        scope.sumOfSessions = 0;
+                        scope.sumOfUsers = 0;
+                        scope.sumOfPageviews = 0;
+                        scope.sumOfEntrances = 0;
+                        scope.sumOfBounces = 0;
+                        scope.sumOfSessionsDuration = 0;
 
-                    for (var i = 0; i< data.length; i++){
-                        scope.sumOfSessions += data[i].sessions;
-                        scope.sumOfUsers += data[i].newVisitors;
-                        scope.sumOfPageviews += data[i].pageviews;
-                        scope.sumOfEntrances += data[i].entrances;
-                        scope.sumOfBounces += data[i].bounces;
-                        scope.sumOfSessionsDuration += data[i].sessionDuration;
-                    }
-                    scope.sumOfPageSessions = (parseFloat(scope.sumOfPageviews) / scope.sumOfSessions).toFixed(2);
-                    scope.sumOfBounceRate = (parseFloat(scope.sumOfBounces) * 100 / scope.sumOfEntrances).toFixed(2);
-                    scope.sumOfPercentNewVists = (parseFloat(scope.sumOfUsers) * 100 / scope.sumOfSessions).toFixed(2);
-                    scope.avgSessionDuration = (scope.sumOfSessionsDuration / scope.sumOfSessions);
-                    var date = new Date(null);
-                    date.setSeconds(scope.avgSessionDuration); // specify value for SECONDS here
-                    scope.avgSessionDuration = date.toISOString().substr(11, 8);
+                        for (var i = 0; i< data.length; i++){
+                            scope.sumOfSessions += data[i].sessions;
+                            scope.sumOfUsers += data[i].newVisitors;
+                            scope.sumOfPageviews += data[i].pageviews;
+                            scope.sumOfEntrances += data[i].entrances;
+                            scope.sumOfBounces += data[i].bounces;
+                            scope.sumOfSessionsDuration += data[i].sessionDuration;
+                        }
+                        scope.sumOfPageSessions = (parseFloat(scope.sumOfPageviews) / scope.sumOfSessions).toFixed(2);
+                        scope.sumOfBounceRate = (parseFloat(scope.sumOfBounces) * 100 / scope.sumOfEntrances).toFixed(2);
+                        scope.sumOfPercentNewVists = (parseFloat(scope.sumOfUsers) * 100 / scope.sumOfSessions).toFixed(2);
+                        scope.avgSessionDuration = (scope.sumOfSessionsDuration / scope.sumOfSessions);
+                        var date = new Date(null);
+                        date.setSeconds(scope.avgSessionDuration); // specify value for SECONDS here
+                        scope.avgSessionDuration = date.toISOString().substr(11, 8);
 
-                    // By default, the 'Sessions' chart is the current chart
-                    scope.currentChart = {
-                        fieldName: "sessions",
-                        chartLabel: "Sessions"
-                    };
-                    scope.secondChart = {
-                        fieldName: "none",
-                        chartLabel: "None"
-                    };
-                    // Render the chart
-                    var sessionsData = getArrayOfArraysForDrawingChart(scope.dashboardOverviewData, "date", "sessions", true);
-                    var chartData = getLineChartData(sessionsData, "Sessions", LINE_CHART_MAIN_COLOR);
-                    scope.chartDataset = [];
-                    scope.chartDataset.push(chartData[0]);
-                    scope.chartDataset.push(chartData[1]);
-                    drawLineChart("#dashboard-overview-chart", scope.chartDataset);
-                    // Modify the second charts array (for comparison)
-                    var chartsList = [
-                        {
+                        // By default, the 'Sessions' chart is the current chart
+                        scope.currentChart = {
                             fieldName: "sessions",
                             chartLabel: "Sessions"
-                        },
-                        {
-                            fieldName: "users",
-                            chartLabel: "Users"
-                        },
-                        {
-                            fieldName: "pageviews",
-                            chartLabel: "Pageviews"
-                        },
-                        {
-                            fieldName: "avgSessionDuration",
-                            chartLabel: "Avg. Sessions Duration"
-                        },
-                        {
-                            fieldName: "bounceRate",
-                            chartLabel: "Bounce Rate"
-                        },
-                        {
-                            fieldName: "percentNewVists",
-                            chartLabel: "% New Visits"
-                        }
-                    ];
-                    scope.secondChartsArray = removeElementFromArray(chartsList, "fieldName", "sessions");
-                    // Reset 'active' class to the Sessions chart
-                    angular.element(".total-metrics .panel-body").each(function(){
-                        angular.element(this).removeClass("active");
-                    });
-                    angular.element(".total-metrics .panel-body").first().addClass("active");
+                        };
+                        scope.secondChart = {
+                            fieldName: "none",
+                            chartLabel: "None"
+                        };
+                        // Render the chart
+                        var sessionsData = getArrayOfArraysForDrawingChart(scope.dashboardOverviewData, "date", "sessions", true);
+                        var chartData = getLineChartData(sessionsData, "Sessions", LINE_CHART_MAIN_COLOR);
+                        scope.chartDataset = [];
+                        scope.chartDataset.push(chartData[0]);
+                        scope.chartDataset.push(chartData[1]);
+                        drawLineChart("#dashboard-overview-chart", scope.chartDataset);
+                        // Modify the second charts array (for comparison)
+                        var chartsList = [
+                            {
+                                fieldName: "sessions",
+                                chartLabel: "Sessions"
+                            },
+                            {
+                                fieldName: "users",
+                                chartLabel: "Users"
+                            },
+                            {
+                                fieldName: "pageviews",
+                                chartLabel: "Pageviews"
+                            },
+                            {
+                                fieldName: "avgSessionDuration",
+                                chartLabel: "Avg. Sessions Duration"
+                            },
+                            {
+                                fieldName: "bounceRate",
+                                chartLabel: "Bounce Rate"
+                            },
+                            {
+                                fieldName: "percentNewVists",
+                                chartLabel: "% New Visits"
+                            }
+                        ];
+                        scope.secondChartsArray = removeElementFromArray(chartsList, "fieldName", "sessions");
+                        // Reset 'active' class to the Sessions chart
+                        angular.element(".total-metrics .panel-body").each(function(){
+                            angular.element(this).removeClass("active");
+                        });
+                        angular.element(".total-metrics .panel-body").first().addClass("active");
+                    } else {
+                        scope.hasNoData = true;
+                    }
                 });
             }
 
@@ -460,67 +467,74 @@ directivesModule.directive('reportingDashboardDemographics', ['$http', '$rootSco
     return {
         restrict: 'E',
         templateUrl: '/views/reporting/reporting-dashboard-demographics.html',
+        scope: {},
         link: function (scope, element, attrs) {
+            scope.hasNoData = false;
             scope.cityChartData = null;
+            scope.languageChartData = null;
 
             function renderDashboardDemographics(){
-                // The Demographics > Language chart
                 var dateFrom = $rootScope.dateFrom.getTime();
                 var dateTo = $rootScope.dateTo.getTime();
                 var currentAppId = $rootScope.currentAppId;
                 var languageQueryString = '/track/language?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
-
                 $http.get(languageQueryString).success(function(data) {
+                    scope.languageChartData = data;
+                    // The Demographics > Language chart
                     var dataForBarChart = getArrayOfArraysForDrawingChart(data, "language", "sessions", false);
                     var modifiedData = getTicksAndDataArrayForLanguageChart(dataForBarChart);
                     drawBarChart("#dashboard-demographics-language-chart", modifiedData.dataArray, modifiedData.ticksArray, "Sessions");
-                });
 
-                // The Demographics > City chart
-                var chart = new google.visualization.GeoChart(document.getElementById("dashboard-demographics-city-chart"));
-                var chartHolder = angular.element("#dashboard-demographics-city-chart");
-                var parentWidth = angular.element("#dashboard-demographics-city-chart").parent().width();
-                chartHolder.width(parentWidth);
-                var options = {};
-                $http.get('/data/dashboard-demographics-city-data.json').success(function(data) {
-                    data.unshift(['City', 'Sessions', '% Sessions']);
-                    scope.cityChartData = data;
-                    options = {
-                        region: 'VN',
-                        displayMode: 'markers',
-                        resolution: 'provinces',
-                        width: Number(parentWidth),
-                        height: '100%',
-                        colorAxis: {colors: ['#fff', '#22BAA0']}
-                    };
-                });
-                scope.$watch('cityChartData', function(v) {
-                    if (!!v){
-                        var data = google.visualization.arrayToDataTable(v);
-                        chart.draw(data, options);
-                    }
-                });
-
-                $(window).bind('resizeEnd', function(){
+                    // The Demographics > City chart
+                    var chart = new google.visualization.GeoChart(document.getElementById("dashboard-demographics-city-chart"));
                     var chartHolder = angular.element("#dashboard-demographics-city-chart");
-                    var parentWidth = chartHolder.parent().width();
+                    var parentWidth = angular.element("#dashboard-demographics-city-chart").parent().width();
                     chartHolder.width(parentWidth);
-                    options = {
-                        region: 'VN',
-                        displayMode: 'markers',
-                        resolution: 'provinces',
-                        width: Number(parentWidth),
-                        height: '100%',
-                        colorAxis: {colors: ['#fff', '#22BAA0']}
-                    };
-                    var data = google.visualization.arrayToDataTable(scope.cityChartData);
-                    chart.draw(data, options);
-                });
-                $(window).resize(function() {
-                    if(this.resizeTO) clearTimeout(this.resizeTO);
-                    this.resizeTO = setTimeout(function() {
-                        $(this).trigger('resizeEnd');
-                    }, 250);
+                    var options = {};
+                    $http.get('/data/dashboard-demographics-city-data.json').success(function(data) {
+                        data.unshift(['City', 'Sessions', '% Sessions']);
+                        scope.cityChartData = data;
+                        if (!scope.cityChartData.length || !scope.languageChartData.length){
+                            scope.hasNoData = true;
+                        } else {
+                            scope.hasNoData = false;
+                        }
+                        options = {
+                            region: 'VN',
+                            displayMode: 'markers',
+                            resolution: 'provinces',
+                            width: Number(parentWidth),
+                            height: '100%',
+                            colorAxis: {colors: ['#fff', '#22BAA0']}
+                        };
+                    });
+                    scope.$watch('cityChartData', function(v) {
+                        if (!!v){
+                            var data = google.visualization.arrayToDataTable(v);
+                            chart.draw(data, options);
+                        }
+                    });
+                    $(window).bind('resizeEnd', function(){
+                        var chartHolder = angular.element("#dashboard-demographics-city-chart");
+                        var parentWidth = chartHolder.parent().width();
+                        chartHolder.width(parentWidth);
+                        options = {
+                            region: 'VN',
+                            displayMode: 'markers',
+                            resolution: 'provinces',
+                            width: Number(parentWidth),
+                            height: '100%',
+                            colorAxis: {colors: ['#fff', '#22BAA0']}
+                        };
+                        var data = google.visualization.arrayToDataTable(scope.cityChartData);
+                        chart.draw(data, options);
+                    });
+                    $(window).resize(function() {
+                        if(this.resizeTO) clearTimeout(this.resizeTO);
+                        this.resizeTO = setTimeout(function() {
+                            $(this).trigger('resizeEnd');
+                        }, 250);
+                    });
                 });
             }
 
@@ -540,6 +554,10 @@ directivesModule.directive('reportingDashboardSystem', ['$http', '$rootScope', f
         restrict: 'E',
         templateUrl: '/views/reporting/reporting-dashboard-system.html',
         link: function (scope, element, attrs) {
+            scope.hasNoData = false;
+            scope.browserOverviewData = null;
+            scope.osOverviewData = null;
+
             $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
                 if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){
                     renderDashboardSystem();
@@ -565,6 +583,7 @@ directivesModule.directive('reportingDashboardSystem', ['$http', '$rootScope', f
 
                 var browserQueryString = '/track/browser?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
                 $http.get(browserQueryString).success(function(data) {
+                    scope.browserOverviewData = data;
                     for (var i = 0; i < data.length; i++){
                         switch (data[i].browserName){
                             case "Google Chrome":
@@ -592,50 +611,57 @@ directivesModule.directive('reportingDashboardSystem', ['$http', '$rootScope', f
                                 scope.allBrowsersSessions+= data[i].sessions;
                         }
                     }
-                });
 
-                // The Operating Systems part
-                scope.allOSSessions = 0;
-                scope.windowsSessions = 0;
-                scope.macOSSessions = 0;
-                scope.linuxSessions = 0;
-                scope.androidSessions = 0;
-                scope.iOSSessions = 0;
-                scope.otherOSSessions = 0;
+                    // The Operating Systems part
+                    scope.allOSSessions = 0;
+                    scope.windowsSessions = 0;
+                    scope.macOSSessions = 0;
+                    scope.linuxSessions = 0;
+                    scope.androidSessions = 0;
+                    scope.iOSSessions = 0;
+                    scope.otherOSSessions = 0;
 
-                var osQueryString = '/track/os?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
-                $http.get(osQueryString).success(function(data) {
-                    for (var i = 0; i < data.length; i++){
-                        switch (data[i].osName){
-                            case "Windows":
-                                scope.windowsSessions += data[i].sessions;
-                                scope.allOSSessions+= data[i].sessions;
-                                break;
-                            case "MacOS":
-                                scope.macOSSessions += data[i].sessions;
-                                scope.allOSSessions+= data[i].sessions;
-                                break;
-                            case "Linux":
-                                scope.linuxSessions += data[i].sessions;
-                                scope.allOSSessions+= data[i].sessions;
-                                break;
-                            case "Ubuntu":
-                                scope.linuxSessions += data[i].sessions;
-                                scope.allOSSessions+= data[i].sessions;
-                                break;
-                            case "Android":
-                                scope.androidSessions += data[i].sessions;
-                                scope.allOSSessions+= data[i].sessions;
-                                break;
-                            case "iOS":
-                                scope.iOSSessions += data[i].sessions;
-                                scope.allOSSessions+= data[i].sessions;
-                                break;
-                            default:
-                                scope.otherOSSessions += data[i].sessions;
-                                scope.allOSSessions+= data[i].sessions;
+                    var osQueryString = '/track/os?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                    $http.get(osQueryString).success(function(data) {
+                        scope.osOverviewData = data;
+                        if (!scope.browserOverviewData.length || !scope.osOverviewData.length){
+                            scope.hasNoData = true;
+                        } else {
+                            scope.hasNoData = false;
                         }
-                    }
+
+                        for (var i = 0; i < data.length; i++){
+                            switch (data[i].osName){
+                                case "Windows":
+                                    scope.windowsSessions += data[i].sessions;
+                                    scope.allOSSessions+= data[i].sessions;
+                                    break;
+                                case "MacOS":
+                                    scope.macOSSessions += data[i].sessions;
+                                    scope.allOSSessions+= data[i].sessions;
+                                    break;
+                                case "Linux":
+                                    scope.linuxSessions += data[i].sessions;
+                                    scope.allOSSessions+= data[i].sessions;
+                                    break;
+                                case "Ubuntu":
+                                    scope.linuxSessions += data[i].sessions;
+                                    scope.allOSSessions+= data[i].sessions;
+                                    break;
+                                case "Android":
+                                    scope.androidSessions += data[i].sessions;
+                                    scope.allOSSessions+= data[i].sessions;
+                                    break;
+                                case "iOS":
+                                    scope.iOSSessions += data[i].sessions;
+                                    scope.allOSSessions+= data[i].sessions;
+                                    break;
+                                default:
+                                    scope.otherOSSessions += data[i].sessions;
+                                    scope.allOSSessions+= data[i].sessions;
+                            }
+                        }
+                    });
                 });
             }
         }

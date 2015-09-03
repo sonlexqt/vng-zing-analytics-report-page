@@ -53,7 +53,7 @@ router.post('/login', function(req, res, next){
                     res.redirect('/');
                 }
                 else {
-                    res.send("No query result.");
+                    res.send([]);
                 }
             }
         );

@@ -1,4 +1,4 @@
-<div class="main-wrapper">
+<div class="main-wrapper" ng-if="hasNoData == false">
     <div class="row">
         <div class="col-lg-6 col-md-12">
             <div class="panel panel-white">
@@ -104,27 +104,31 @@
             </div>
         </div> <!-- END Badges -->
     </div><!-- Row -->
-</div>
 
-<div class="modal fade" id="select-second-chart-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="mySmallModalLabel">Select a metric for comparison</h4>
-            </div>
-            <div class="modal-body">
-                <div class="radio" ng-repeat="secondChart in secondChartsArray">
-                    <label>
-                        <input name="select-second-chart-radio" type="radio" value="{[{secondChart.fieldName}]}">
-                        <span>{[{secondChart.chartLabel}]}</span>
-                    </label>
+    <div class="modal fade" id="select-second-chart-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="mySmallModalLabel">Select a metric for comparison</h4>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button id="clear-charts-comparison" type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearSecondChartValue($event)">Clear Comparison</button>
-                <button id="set-charts-comparison" type="button" class="btn btn-success" ng-click="getSecondChartValue($event)">Set</button>
+                <div class="modal-body">
+                    <div class="radio" ng-repeat="secondChart in secondChartsArray">
+                        <label>
+                            <input name="select-second-chart-radio" type="radio" value="{[{secondChart.fieldName}]}">
+                            <span>{[{secondChart.chartLabel}]}</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="clear-charts-comparison" type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearSecondChartValue($event)">Clear Comparison</button>
+                    <button id="set-charts-comparison" type="button" class="btn btn-success" ng-click="getSecondChartValue($event)">Set</button>
+                </div>
             </div>
         </div>
     </div>
+</div>
+
+<div ng-if="hasNoData == true">
+    <ng-include src="'/views/reporting/no-data.html'"></ng-include>
 </div>

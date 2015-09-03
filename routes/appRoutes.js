@@ -44,7 +44,7 @@ router.get('/list', function(req, res, next) {
                         res.send(rows);
                     }
                     else {
-                        res.send("No query result.");
+                        res.send([]);
                     }
                 }
             );
@@ -58,7 +58,7 @@ router.get('/list', function(req, res, next) {
                         res.send(rows);
                     }
                     else {
-                        res.send("No query result.");
+                        res.send([]);
                     }
                 }
             );
