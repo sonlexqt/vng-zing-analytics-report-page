@@ -12,11 +12,11 @@ controllersModule.controller('ZAAppController', ['$scope', '$rootScope', '$http'
     $scope.$on('$viewContentLoaded', function(event) {
         $(".table-tooltip").tooltip();
 
-        $http.get('/profile').success(function(data) {
+        $http.get('user/profile').success(function(data) {
             $rootScope.userProfile = data;
         });
 
-        $http.get('/apps').success(function(data) {
+        $http.get('/app/list').success(function(data) {
             $rootScope.userApps = data;
         });
 
@@ -237,7 +237,7 @@ controllersModule.controller('ChatController', ['$scope', '$rootScope', '$http',
 
     $rootScope.$watch('userProfile', function(){
         if ($rootScope.userProfile && $rootScope.userProfile.id){
-            $http.get('/users').success(function(data){
+            $http.get('/user/list').success(function(data){
                 $scope.otherUsers = removeElementFromArray(data, "id", $rootScope.userProfile.id);
             });
         }

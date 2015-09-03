@@ -274,7 +274,7 @@ directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope',
                 var dateFrom = $rootScope.dateFrom.getTime();
                 var dateTo = $rootScope.dateTo.getTime();
                 var currentAppId = $rootScope.currentAppId;
-                var queryString = '/app/overview?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                var queryString = '/track/overview?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
                 console.log(queryString);
 
                 $http.get(queryString).success(function(data) {
@@ -468,7 +468,7 @@ directivesModule.directive('reportingDashboardDemographics', ['$http', '$rootSco
                 var dateFrom = $rootScope.dateFrom.getTime();
                 var dateTo = $rootScope.dateTo.getTime();
                 var currentAppId = $rootScope.currentAppId;
-                var languageQueryString = '/app/language?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                var languageQueryString = '/track/language?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
 
                 $http.get(languageQueryString).success(function(data) {
                     var dataForBarChart = getArrayOfArraysForDrawingChart(data, "language", "sessions", false);
@@ -563,32 +563,32 @@ directivesModule.directive('reportingDashboardSystem', ['$http', '$rootScope', f
                 scope.ieSessions = 0;
                 scope.otherBrowsersSessions = 0;
 
-                var browserQueryString = '/app/browser?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                var browserQueryString = '/track/browser?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
                 $http.get(browserQueryString).success(function(data) {
                     for (var i = 0; i < data.length; i++){
                         switch (data[i].browserName){
-                            case "Chrome":
-                                scope.chromeSessions = data[i].sessions;
+                            case "Google Chrome":
+                                scope.chromeSessions += data[i].sessions;
                                 scope.allBrowsersSessions+= data[i].sessions;
                                 break;
                             case "Firefox":
-                                scope.firefoxSessions = data[i].sessions;
+                                scope.firefoxSessions += data[i].sessions;
                                 scope.allBrowsersSessions+= data[i].sessions;
                                 break;
                             case "Safari":
-                                scope.safariSessions = data[i].sessions;
+                                scope.safariSessions += data[i].sessions;
                                 scope.allBrowsersSessions+= data[i].sessions;
                                 break;
                             case "Opera":
-                                scope.operaSessions = data[i].sessions;
+                                scope.operaSessions += data[i].sessions;
                                 scope.allBrowsersSessions+= data[i].sessions;
                                 break;
                             case "Internet Explorer":
-                                scope.ieSessions = data[i].sessions;
+                                scope.ieSessions += data[i].sessions;
                                 scope.allBrowsersSessions+= data[i].sessions;
                                 break;
                             default:
-                                scope.otherBrowsersSessions = data[i].sessions;
+                                scope.otherBrowsersSessions += data[i].sessions;
                                 scope.allBrowsersSessions+= data[i].sessions;
                         }
                     }
@@ -603,32 +603,36 @@ directivesModule.directive('reportingDashboardSystem', ['$http', '$rootScope', f
                 scope.iOSSessions = 0;
                 scope.otherOSSessions = 0;
 
-                var osQueryString = '/app/os?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                var osQueryString = '/track/os?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
                 $http.get(osQueryString).success(function(data) {
                     for (var i = 0; i < data.length; i++){
                         switch (data[i].osName){
                             case "Windows":
-                                scope.windowsSessions = data[i].sessions;
+                                scope.windowsSessions += data[i].sessions;
                                 scope.allOSSessions+= data[i].sessions;
                                 break;
-                            case "Mac OS":
-                                scope.macOSSessions = data[i].sessions;
+                            case "MacOS":
+                                scope.macOSSessions += data[i].sessions;
                                 scope.allOSSessions+= data[i].sessions;
                                 break;
                             case "Linux":
-                                scope.linuxSessions = data[i].sessions;
+                                scope.linuxSessions += data[i].sessions;
+                                scope.allOSSessions+= data[i].sessions;
+                                break;
+                            case "Ubuntu":
+                                scope.linuxSessions += data[i].sessions;
                                 scope.allOSSessions+= data[i].sessions;
                                 break;
                             case "Android":
-                                scope.androidSessions = data[i].sessions;
+                                scope.androidSessions += data[i].sessions;
                                 scope.allOSSessions+= data[i].sessions;
                                 break;
                             case "iOS":
-                                scope.iOSSessions = data[i].sessions;
+                                scope.iOSSessions += data[i].sessions;
                                 scope.allOSSessions+= data[i].sessions;
                                 break;
                             default:
-                                scope.otherOSSessions = data[i].sessions;
+                                scope.otherOSSessions += data[i].sessions;
                                 scope.allOSSessions+= data[i].sessions;
                         }
                     }
@@ -656,7 +660,7 @@ directivesModule.directive('reportingPagesOverviewContent', ['$http', '$rootScop
                 var dateFrom = $rootScope.dateFrom.getTime();
                 var dateTo = $rootScope.dateTo.getTime();
                 var currentAppId = $rootScope.currentAppId;
-                var queryByDateString = '/app/page?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo + '&by=date';
+                var queryByDateString = '/track/page?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo + '&by=date';
                 $http.get(queryByDateString).success(function(data) {
                     scope.zaPagesOverviewData = data;
 
@@ -730,7 +734,7 @@ directivesModule.directive('reportingPagesOverviewContent', ['$http', '$rootScop
                     angular.element(".total-metrics .panel-body").first().addClass("active");
                 });
 
-                var queryByPathString = '/app/page?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo + '&by=path';
+                var queryByPathString = '/track/page?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo + '&by=path';
                 $http.get(queryByPathString).success(function(data) {
                     scope.zaPagesOverviewTableData = data;
                     // Calculate the total / average values
@@ -888,7 +892,7 @@ directivesModule.directive('reportingGeoLanguageContent', ['$http', '$rootScope'
                 var dateFrom = $rootScope.dateFrom.getTime();
                 var dateTo = $rootScope.dateTo.getTime();
                 var currentAppId = $rootScope.currentAppId;
-                var queryString = '/app/language?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                var queryString = '/track/language?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
 
                 $http.get(queryString).success(function(data) {
                     scope.geoLanguageTableData = data;
@@ -930,7 +934,7 @@ directivesModule.directive('reportingGeoLocationContent', ['$http', '$rootScope'
                 var dateFrom = $rootScope.dateFrom.getTime();
                 var dateTo = $rootScope.dateTo.getTime();
                 var currentAppId = $rootScope.currentAppId;
-                var queryString = '/app/location?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                var queryString = '/track/location?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
 
                 $http.get(queryString).success(function(data) {
                     scope.geoLocationTableData = data;
@@ -1018,7 +1022,7 @@ directivesModule.directive('reportingTechDevicesContent', ['$http', '$rootScope'
                 var dateFrom = $rootScope.dateFrom.getTime();
                 var dateTo = $rootScope.dateTo.getTime();
                 var currentAppId = $rootScope.currentAppId;
-                var queryString = '/app/device?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                var queryString = '/track/device?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
 
                 $http.get(queryString).success(function(data) {
                     scope.techDevicesTableData = data;
@@ -1063,7 +1067,7 @@ directivesModule.directive('reportingTechBrowserOsContent', ['$http', '$rootScop
                 var dateTo = $rootScope.dateTo.getTime();
                 var currentAppId = $rootScope.currentAppId;
 
-                var browserQueryString = '/app/browser?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                var browserQueryString = '/track/browser?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
                 $http.get(browserQueryString).success(function(data) {
                     console.log("browser:");
                     console.log(data);
@@ -1077,10 +1081,8 @@ directivesModule.directive('reportingTechBrowserOsContent', ['$http', '$rootScop
                     }
                 });
 
-                var osQueryString = '/app/os?app_id='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                var osQueryString = '/track/os?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
                 $http.get(osQueryString).success(function(data) {
-                    console.log("os:");
-                    console.log(data);
                     scope.techOsTableData = data;
                     // Calculate the total / average values
                     scope.tableOsTotalSessions = 0;
