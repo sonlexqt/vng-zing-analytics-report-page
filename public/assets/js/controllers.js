@@ -37,9 +37,14 @@ controllersModule.controller('ZAAppController', ['$scope', '$rootScope', '$http'
     $('.za-tab .hvr-underline-reveal').unbind();
     $('.za-tab .hvr-underline-reveal').click(function(){
         $rootScope.currentTab = $(this).data("zatab");
-        $('.za-tab .hvr-underline-reveal').removeClass('active');
-        $(this).addClass('active');
+        //$('.za-tab .hvr-underline-reveal').removeClass('active');
+        //$(this).addClass('active');
         $scope.$digest();
+    });
+
+    $rootScope.$watch('currentTab', function(){
+        $('.za-tab .hvr-underline-reveal').removeClass('active');
+        $('.za-tab a[data-zatab="' + $rootScope.currentTab + '"]').addClass("active");
     });
 
     $scope.selectSidebarMenu = function(){
@@ -211,12 +216,13 @@ controllersModule.controller('PageContentController', ['$scope', function($scope
 }]);
 
 controllersModule.controller('CanvasMenuController', ['$scope', '$rootScope', function($scope, $rootScope){
-    $('.cd-nav a').unbind();
-    $('.cd-nav a').click(function(){
-        var menu = ($(this).parent().data('menu'));
+    $scope.changeTab = function($event){
+        var menu = angular.element($event.currentTarget).parent().data("menu");
         $rootScope.currentTab = menu;
+        //TODO
+
         $rootScope.$digest();
-    });
+    }
 }]);
 
 function removeElementFromArray(array, search_field, search_term){

@@ -126,7 +126,7 @@ xnavigation
 }
 
 .cd-nav {
-  background-color: #F1F4F9;
+  /*background-color: #F1F4F9;*/
   margin: 0;
 }
 .cd-nav::after {
@@ -143,6 +143,7 @@ xnavigation
   border: 1px solid #ffffff;
   border-top: none;
   border-left: none;
+    background-color: #F1F4F9;
 }
 .cd-nav li:nth-of-type(2n) {
   border-right-width: 0;

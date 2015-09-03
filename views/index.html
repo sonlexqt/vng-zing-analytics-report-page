@@ -233,20 +233,12 @@
                         <p>Reporting</p>
                     </a>
                 </li>
-                <li data-menu="management">
-                    <a href="#/management">
+                <li data-menu="management" ng-if="userProfile.role == 'admin'">
+                    <a href="#/management" ng-click="changeTab($event)">
                         <span>
                             <i class="fa fa-database"></i>
                         </span>
                         <p>Management</p>
-                    </a>
-                </li>
-                <li data-menu="settings">
-                    <a href="javsacript:void(0);">
-                        <span>
-                            <i class="fa fa-cogs"></i>
-                        </span>
-                        <p>Settings</p>
                     </a>
                 </li>
             </ul>
