@@ -4301,28 +4301,6 @@ body:not(.page-horizontal-bar):not(.small-sidebar) .menu.accordion-menu a {
     overflow: hidden;
 }
 
-
-/* Search Results */
-
-.search-item {
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #f1f1f1;
-}
-
-.search-item p {
-    margin: 0;
-}
-
-.search-item a {
-    text-decoration: none;
-}
-
-.search-item a.search-link {
-    color: #22BAA0;
-}
-
-
 /* Chat */
 
 .chat {

@@ -51,6 +51,10 @@ router.get('/', function(req, res, next) {
     }
 });
 
+router.get('/register', function(req, res, next) {
+    res.render('register');
+});
+
 router.get('/profile', function(req, res, next) {
     if (req.session && req.session.userInfo){
         res.send(req.session.userInfo);
