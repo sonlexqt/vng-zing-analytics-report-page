@@ -34,7 +34,7 @@ function genEmbedCode(appId) {
 router.get('/list', function(req, res, next) {
     if (req.session && req.session.userInfo){
         if (req.session.userInfo.role === "admin"){
-            mySqlConnection.query("select id, name, url, timeout, status, registeredAt from app",
+            mySqlConnection.query("select id as appId, name, url, timeout, status, registeredAt from app",
                 function(err, rows, fields) {
                     if (err) throw err;
                     if (rows && rows.length){
@@ -50,8 +50,8 @@ router.get('/list', function(req, res, next) {
             );
         }
         else {
-            mySqlConnection.query("select id, name, url, timeout, status, registeredAt from app, user_app where id=app_id and user_id=?",
-                [req.session.userInfo.id],
+            mySqlConnection.query("select id as appId, name, url, timeout, status, registeredAt from app, user_app where id=app_id and user_id=?",
+                [req.session.userInfo.userId],
                 function(err, rows, fields) {
                     if (err) throw err;
                     if (rows && rows.length){

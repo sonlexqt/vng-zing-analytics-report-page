@@ -236,9 +236,9 @@ controllersModule.controller('ChatController', ['$scope', '$rootScope', '$http',
     $scope.currentOpponentConversation = null;
 
     $rootScope.$watch('userProfile', function(){
-        if ($rootScope.userProfile && $rootScope.userProfile.id){
+        if ($rootScope.userProfile && $rootScope.userProfile.userId){
             $http.get('/user/list').success(function(data){
-                $scope.otherUsers = removeElementFromArray(data, "id", $rootScope.userProfile.id);
+                $scope.otherUsers = removeElementFromArray(data, "userId", $rootScope.userProfile.userId);
             });
         }
     });

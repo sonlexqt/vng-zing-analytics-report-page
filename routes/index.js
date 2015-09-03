@@ -38,7 +38,7 @@ router.get('/logout', function(req, res, netxt){
 
 router.post('/login', function(req, res, next){
     if (req.body && req.body.username && req.body.password){
-        var queryString = "select id, username, password, psalt, role, rsalt, status, registeredAt from user where username=?";
+        var queryString = "select id as userId, username, password, psalt, role, rsalt, status, registeredAt from user where username=?";
         mySqlConnection.query(queryString,
             [req.body.username],
             function(err, rows, fields) {

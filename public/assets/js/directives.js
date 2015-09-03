@@ -289,7 +289,7 @@ directivesModule.directive('reportingDashboardOverview', ['$http', '$rootScope',
 
                     for (var i = 0; i< data.length; i++){
                         scope.sumOfSessions += data[i].sessions;
-                        scope.sumOfUsers += data[i].users;
+                        scope.sumOfUsers += data[i].newVisitors;
                         scope.sumOfPageviews += data[i].pageviews;
                         scope.sumOfEntrances += data[i].entrances;
                         scope.sumOfBounces += data[i].bounces;

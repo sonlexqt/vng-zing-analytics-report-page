@@ -13,7 +13,7 @@ router.get('/profile', function(req, res, next) {
 
 router.get('/list', function(req, res, next) {
     if (req.session && req.session.userInfo && req.session.userInfo.role && req.session.userInfo.role == "admin"){
-        mySqlConnection.query("select id, username, password, psalt, role, rsalt, status, registeredAt from user",
+        mySqlConnection.query("select id as userId, username, password, psalt, role, rsalt, status, registeredAt from user",
             function(err, rows, fields) {
                 if (err) throw err;
                 if (rows && rows.length){
@@ -24,7 +24,20 @@ router.get('/list', function(req, res, next) {
                 }
             }
         );
-    } else {
+    } else if (req.session && req.session.userInfo && req.session.userInfo.role && req.session.userInfo.role == "user"){
+        mySqlConnection.query("select id as userId, username, password, psalt, role, rsalt, status, registeredAt from user",
+            function(err, rows, fields) {
+                if (err) throw err;
+                if (rows && rows.length){
+                    res.send(rows);
+                }
+                else {
+                    res.send("No query result.");
+                }
+            }
+        );
+    }
+    else {
         res.render("error");
     }
 });

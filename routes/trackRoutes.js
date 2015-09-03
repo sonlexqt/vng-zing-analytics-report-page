@@ -25,7 +25,7 @@ router.get('/overview', function(req, res, next) {
                             appId: thisRow.appId,
                             date: new Date(thisRow["date_tracking"]).getTime(),
                             sessions: thisRow.sessions,
-                            users: thisRow["new_visitors"],
+                            newVisitors: thisRow["new_visitors"],
                             returnVisitors: thisRow["return_visitors"],
                             pageviews: thisRow.pageviews,
                             bounces: thisRow.bounces,
