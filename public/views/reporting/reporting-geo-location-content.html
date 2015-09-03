@@ -1,4 +1,4 @@
-<div class="main-wrapper">
+<div class="main-wrapper" ng-show="hasNoData == false">
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-white">
@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<div class="main-wrapper">
+<div class="main-wrapper" ng-if="hasNoData == false">
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-white">
@@ -91,3 +91,7 @@
         </div> <!-- END col-md-12 -->
     </div> <!-- END row -->
 </div> <!-- END main-wrapper -->
+
+<div ng-if="hasNoData == true">
+    <ng-include src="'/views/reporting/no-data.html'"></ng-include>
+</div>

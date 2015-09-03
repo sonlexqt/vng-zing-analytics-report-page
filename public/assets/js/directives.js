@@ -480,61 +480,66 @@ directivesModule.directive('reportingDashboardDemographics', ['$http', '$rootSco
                 var languageQueryString = '/track/language?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
                 $http.get(languageQueryString).success(function(data) {
                     scope.languageChartData = data;
-                    // The Demographics > Language chart
-                    var dataForBarChart = getArrayOfArraysForDrawingChart(data, "language", "sessions", false);
-                    var modifiedData = getTicksAndDataArrayForLanguageChart(dataForBarChart);
-                    drawBarChart("#dashboard-demographics-language-chart", modifiedData.dataArray, modifiedData.ticksArray, "Sessions");
+                    if (!data.length){
+                        scope.hasNoData = true;
+                    } else {
+                        scope.hasNoData = false;
+                        // The Demographics > Language chart
+                        var dataForBarChart = getArrayOfArraysForDrawingChart(data, "language", "sessions", false);
+                        var modifiedData = getTicksAndDataArrayForLanguageChart(dataForBarChart);
+                        drawBarChart("#dashboard-demographics-language-chart", modifiedData.dataArray, modifiedData.ticksArray, "Sessions");
 
-                    // The Demographics > City chart
-                    var chart = new google.visualization.GeoChart(document.getElementById("dashboard-demographics-city-chart"));
-                    var chartHolder = angular.element("#dashboard-demographics-city-chart");
-                    var parentWidth = angular.element("#dashboard-demographics-city-chart").parent().width();
-                    chartHolder.width(parentWidth);
-                    var options = {};
-                    $http.get('/data/dashboard-demographics-city-data.json').success(function(data) {
-                        data.unshift(['City', 'Sessions', '% Sessions']);
-                        scope.cityChartData = data;
-                        if (!scope.cityChartData.length || !scope.languageChartData.length){
-                            scope.hasNoData = true;
-                        } else {
-                            scope.hasNoData = false;
-                        }
-                        options = {
-                            region: 'VN',
-                            displayMode: 'markers',
-                            resolution: 'provinces',
-                            width: Number(parentWidth),
-                            height: '100%',
-                            colorAxis: {colors: ['#fff', '#22BAA0']}
-                        };
-                    });
-                    scope.$watch('cityChartData', function(v) {
-                        if (!!v){
-                            var data = google.visualization.arrayToDataTable(v);
-                            chart.draw(data, options);
-                        }
-                    });
-                    $(window).bind('resizeEnd', function(){
+                        // The Demographics > City chart
+                        var chart = new google.visualization.GeoChart(document.getElementById("dashboard-demographics-city-chart"));
                         var chartHolder = angular.element("#dashboard-demographics-city-chart");
-                        var parentWidth = chartHolder.parent().width();
+                        var parentWidth = angular.element("#dashboard-demographics-city-chart").parent().width();
                         chartHolder.width(parentWidth);
-                        options = {
-                            region: 'VN',
-                            displayMode: 'markers',
-                            resolution: 'provinces',
-                            width: Number(parentWidth),
-                            height: '100%',
-                            colorAxis: {colors: ['#fff', '#22BAA0']}
-                        };
-                        var data = google.visualization.arrayToDataTable(scope.cityChartData);
-                        chart.draw(data, options);
-                    });
-                    $(window).resize(function() {
-                        if(this.resizeTO) clearTimeout(this.resizeTO);
-                        this.resizeTO = setTimeout(function() {
-                            $(this).trigger('resizeEnd');
-                        }, 250);
-                    });
+                        var options = {};
+                        $http.get('/data/dashboard-demographics-city-data.json').success(function(data) {
+                            data.unshift(['City', 'Sessions', '% Sessions']);
+                            scope.cityChartData = data;
+                            if (!scope.cityChartData.length || !scope.languageChartData.length){
+                                scope.hasNoData = true;
+                            } else {
+                                scope.hasNoData = false;
+                            }
+                            options = {
+                                region: 'VN',
+                                displayMode: 'markers',
+                                resolution: 'provinces',
+                                width: Number(parentWidth),
+                                height: '100%',
+                                colorAxis: {colors: ['#fff', '#22BAA0']}
+                            };
+                        });
+                        scope.$watch('cityChartData', function(v) {
+                            if (!!v){
+                                var data = google.visualization.arrayToDataTable(v);
+                                chart.draw(data, options);
+                            }
+                        });
+                        $(window).bind('resizeEnd', function(){
+                            var chartHolder = angular.element("#dashboard-demographics-city-chart");
+                            var parentWidth = chartHolder.parent().width();
+                            chartHolder.width(parentWidth);
+                            options = {
+                                region: 'VN',
+                                displayMode: 'markers',
+                                resolution: 'provinces',
+                                width: Number(parentWidth),
+                                height: '100%',
+                                colorAxis: {colors: ['#fff', '#22BAA0']}
+                            };
+                            var data = google.visualization.arrayToDataTable(scope.cityChartData);
+                            chart.draw(data, options);
+                        });
+                        $(window).resize(function() {
+                            if(this.resizeTO) clearTimeout(this.resizeTO);
+                            this.resizeTO = setTimeout(function() {
+                                $(this).trigger('resizeEnd');
+                            }, 250);
+                        });
+                    }
                 });
             }
 
@@ -675,6 +680,7 @@ directivesModule.directive('reportingPagesOverviewContent', ['$http', '$rootScop
         restrict: 'E',
         templateUrl: '/views/reporting/reporting-pages-overview-content.html',
         link: function (scope, element, attrs) {
+            scope.hasNoData = false;
             scope.zaPagesOverviewData = null;
             scope.zaPagesOverviewTableData = null;
 
@@ -688,89 +694,100 @@ directivesModule.directive('reportingPagesOverviewContent', ['$http', '$rootScop
                 var currentAppId = $rootScope.currentAppId;
                 var queryByDateString = '/track/page?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo + '&by=date';
                 $http.get(queryByDateString).success(function(data) {
-                    scope.zaPagesOverviewData = data;
-
-                    // Calculate the total / average values
-                    scope.sumOfPageviews = 0;
-                    scope.sumOfUniquePageviews = 0;
-                    scope.sumOfTimeOnPage = 0;
-                    scope.sumOfBounces = 0;
-                    scope.sumOfEntrances = 0;
-                    scope.sumOfExits = 0;
-
-                    for (var i = 0; i< data.length; i++){
-                        scope.sumOfPageviews += data[i].pageviews;
-                        scope.sumOfUniquePageviews += data[i].uniquePageviews;
-                        scope.sumOfTimeOnPage += data[i].timeOnPage;
-                        scope.sumOfBounces += data[i].bounces;
-                        scope.sumOfEntrances += data[i].entrances;
-                        scope.sumOfExits += data[i].exits;
+                    if (!data.length){
+                        scope.hasNoData = true;
                     }
-                    scope.avgTimeOnPage = (scope.sumOfTimeOnPage) / (scope.sumOfPageviews - scope.sumOfExits);
-                    var date = new Date(null);
-                    date.setSeconds(scope.avgTimeOnPage); // specify value for SECONDS here
-                    scope.avgTimeOnPage = date.toISOString().substr(11, 8);
-                    scope.sumOfBounceRate = (parseFloat(scope.sumOfBounces) * 100 / scope.sumOfEntrances).toFixed(2);
-                    scope.sumOfPercentExit = (parseFloat(scope.sumOfExits) * 100 / scope.sumOfPageviews).toFixed(2);
+                    else {
+                        scope.zaPagesOverviewData = data;
 
-                    // By default, the 'Pageviews' chart is the current chart
-                    scope.currentChart = {
-                        fieldName: "pageviews",
-                        chartLabel: "Pageviews"
-                    };
-                    scope.secondChart = {
-                        fieldName: "none",
-                        chartLabel: "None"
-                    };
-                    // Render the chart
-                    var pageviewsData = getArrayOfArraysForDrawingChart(scope.zaPagesOverviewData, "date", "pageviews", true);
-                    var chartData = getLineChartData(pageviewsData, "Pageviews", LINE_CHART_MAIN_COLOR);
-                    scope.chartDataset = [];
-                    scope.chartDataset.push(chartData[0]);
-                    scope.chartDataset.push(chartData[1]);
-                    drawLineChart("#pages-overview-chart", scope.chartDataset);
-                    // Modify the second charts array (for comparison)
-                    var chartsList = [
-                        {
+                        // Calculate the total / average values
+                        scope.sumOfPageviews = 0;
+                        scope.sumOfUniquePageviews = 0;
+                        scope.sumOfTimeOnPage = 0;
+                        scope.sumOfBounces = 0;
+                        scope.sumOfEntrances = 0;
+                        scope.sumOfExits = 0;
+
+                        for (var i = 0; i< data.length; i++){
+                            scope.sumOfPageviews += data[i].pageviews;
+                            scope.sumOfUniquePageviews += data[i].uniquePageviews;
+                            scope.sumOfTimeOnPage += data[i].timeOnPage;
+                            scope.sumOfBounces += data[i].bounces;
+                            scope.sumOfEntrances += data[i].entrances;
+                            scope.sumOfExits += data[i].exits;
+                        }
+                        scope.avgTimeOnPage = (scope.sumOfTimeOnPage) / (scope.sumOfPageviews - scope.sumOfExits);
+                        var date = new Date(null);
+                        date.setSeconds(scope.avgTimeOnPage); // specify value for SECONDS here
+                        scope.avgTimeOnPage = date.toISOString().substr(11, 8);
+                        scope.sumOfBounceRate = (parseFloat(scope.sumOfBounces) * 100 / scope.sumOfEntrances).toFixed(2);
+                        scope.sumOfPercentExit = (parseFloat(scope.sumOfExits) * 100 / scope.sumOfPageviews).toFixed(2);
+
+                        // By default, the 'Pageviews' chart is the current chart
+                        scope.currentChart = {
                             fieldName: "pageviews",
                             chartLabel: "Pageviews"
-                        },
-                        {
-                            fieldName: "uniquePageviews",
-                            chartLabel: "Unique Pageviews"
-                        },
-                        {
-                            fieldName: "avgTimeOnPage",
-                            chartLabel: "Avg. Time On Page"
-                        },
-                        {
-                            fieldName: "bounceRate",
-                            chartLabel: "Bounce Rate"
-                        },
-                        {
-                            fieldName: "percentExit",
-                            chartLabel: "% Exits"
-                        }
-                    ];
-                    scope.secondChartsArray = removeElementFromArray(chartsList, "fieldName", "pageviews");
-                    // Reset 'active' class to the Sessions chart
-                    angular.element(".total-metrics .panel-body").each(function(){
-                        angular.element(this).removeClass("active");
-                    });
-                    angular.element(".total-metrics .panel-body").first().addClass("active");
-                });
+                        };
+                        scope.secondChart = {
+                            fieldName: "none",
+                            chartLabel: "None"
+                        };
+                        // Render the chart
+                        var pageviewsData = getArrayOfArraysForDrawingChart(scope.zaPagesOverviewData, "date", "pageviews", true);
+                        var chartData = getLineChartData(pageviewsData, "Pageviews", LINE_CHART_MAIN_COLOR);
+                        scope.chartDataset = [];
+                        scope.chartDataset.push(chartData[0]);
+                        scope.chartDataset.push(chartData[1]);
+                        drawLineChart("#pages-overview-chart", scope.chartDataset);
+                        // Modify the second charts array (for comparison)
+                        var chartsList = [
+                            {
+                                fieldName: "pageviews",
+                                chartLabel: "Pageviews"
+                            },
+                            {
+                                fieldName: "uniquePageviews",
+                                chartLabel: "Unique Pageviews"
+                            },
+                            {
+                                fieldName: "avgTimeOnPage",
+                                chartLabel: "Avg. Time On Page"
+                            },
+                            {
+                                fieldName: "bounceRate",
+                                chartLabel: "Bounce Rate"
+                            },
+                            {
+                                fieldName: "percentExit",
+                                chartLabel: "% Exits"
+                            }
+                        ];
+                        scope.secondChartsArray = removeElementFromArray(chartsList, "fieldName", "pageviews");
+                        // Reset 'active' class to the Sessions chart
+                        angular.element(".total-metrics .panel-body").each(function(){
+                            angular.element(this).removeClass("active");
+                        });
+                        angular.element(".total-metrics .panel-body").first().addClass("active");
 
-                var queryByPathString = '/track/page?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo + '&by=path';
-                $http.get(queryByPathString).success(function(data) {
-                    scope.zaPagesOverviewTableData = data;
-                    // Calculate the total / average values
-                    scope.tableTotalPageviews = 0;
-                    scope.tableTotalUniquePageviews = 0;
-                    scope.tableTotalEntrances = 0;
-                    for (var i = 0; i < data.length; i++){
-                        scope.tableTotalPageviews += data[i].pageviews;
-                        scope.tableTotalUniquePageviews += data[i].uniquePageviews;
-                        scope.tableTotalEntrances += data[i].entrances;
+                        var queryByPathString = '/track/page?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo + '&by=path';
+                        $http.get(queryByPathString).success(function(data) {
+                            scope.zaPagesOverviewTableData = data;
+                            if (!scope.zaPagesOverviewData || !scope.zaPagesOverviewTableData){
+                                scope.hasNoData = true;
+                            } else {
+                                scope.hasNoData = false;
+                            }
+
+                            // Calculate the total / average values
+                            scope.tableTotalPageviews = 0;
+                            scope.tableTotalUniquePageviews = 0;
+                            scope.tableTotalEntrances = 0;
+                            for (var i = 0; i < data.length; i++){
+                                scope.tableTotalPageviews += data[i].pageviews;
+                                scope.tableTotalUniquePageviews += data[i].uniquePageviews;
+                                scope.tableTotalEntrances += data[i].entrances;
+                            }
+                        });
                     }
                 });
             }
@@ -910,6 +927,7 @@ directivesModule.directive('reportingGeoLanguageContent', ['$http', '$rootScope'
         restrict: 'E',
         templateUrl: '/views/reporting/reporting-geo-language-content.html',
         link: function (scope, element, attrs) {
+            scope.hasNoData = false;
             scope.geoLanguageTableData = null;
             scope.tableTotalSessions = 0;
             scope.tableTotalNewUsers = 0;
@@ -921,14 +939,20 @@ directivesModule.directive('reportingGeoLanguageContent', ['$http', '$rootScope'
                 var queryString = '/track/language?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
 
                 $http.get(queryString).success(function(data) {
-                    scope.geoLanguageTableData = data;
-                    // Calculate the total / average values
-                    scope.tableTotalSessions = 0;
-                    scope.tableTotalNewUsers = 0;
-                    for (var i = 0; i < data.length; i++){
-                        scope.tableTotalSessions += data[i].sessions;
-                        scope.tableTotalNewUsers += data[i].newUsers;
+                    if (!data.length){
+                        scope.hasNoData = true;
+                    } else {
+                        scope.hasNoData = false;
+                        scope.geoLanguageTableData = data;
+                        // Calculate the total / average values
+                        scope.tableTotalSessions = 0;
+                        scope.tableTotalNewUsers = 0;
+                        for (var i = 0; i < data.length; i++){
+                            scope.tableTotalSessions += data[i].sessions;
+                            scope.tableTotalNewUsers += data[i].newUsers;
+                        }
                     }
+
                 });
             }
 
@@ -951,6 +975,7 @@ directivesModule.directive('reportingGeoLocationContent', ['$http', '$rootScope'
         restrict: 'E',
         templateUrl: '/views/reporting/reporting-geo-location-content.html',
         link: function (scope, element, attrs) {
+            scope.hasNoData = false;
             scope.geoLocationTableData = null;
             scope.cityChartData = null;
             scope.tableTotalSessions = 0;
@@ -964,71 +989,84 @@ directivesModule.directive('reportingGeoLocationContent', ['$http', '$rootScope'
 
                 $http.get(queryString).success(function(data) {
                     scope.geoLocationTableData = data;
-                    // Calculate the total / average values
-                    scope.tableTotalSessions = 0;
-                    scope.tableTotalNewUsers = 0;
-                    for (var i = 0; i < data.length; i++){
-                        scope.tableTotalSessions += data[i].sessions;
-                        scope.tableTotalNewUsers += data[i].newUsers;
-                    }
-                });
+                    if (!data.length){
+                        scope.hasNoData = true;
+                    } else {
+                        // Calculate the total / average values
+                        scope.tableTotalSessions = 0;
+                        scope.tableTotalNewUsers = 0;
+                        for (var i = 0; i < data.length; i++){
+                            scope.tableTotalSessions += data[i].sessions;
+                            scope.tableTotalNewUsers += data[i].newUsers;
+                        }
+                        // The Geochart
+                        var chart = new google.visualization.GeoChart(document.getElementById("geo-location-city-chart"));
+                        var chartHolder = angular.element("#geo-location-city-chart");
+                        var parentWidth = angular.element("#geo-location-city-chart").parent().width();
+                        chartHolder.width(parentWidth);
+                        var options = {};
+                        $http.get('/data/dashboard-demographics-city-data.json').success(function(data) {
+                            scope.cityChartData = data;
+                            if (!data.length){
+                                scope.hasNoData = true;
+                            } else {
+                                scope.hasNoData = false;
+                                data.unshift(['City', 'Sessions', '% Sessions']);
+                                options = {
+                                    region: 'VN',
+                                    displayMode: 'markers',
+                                    resolution: 'provinces',
+                                    width: Number(parentWidth),
+                                    height: '100%',
+                                    colorAxis: {colors: ['#fff', '#22BAA0']}
+                                };
+                            }
+                        });
+                        scope.$watch('cityChartData', function(v) {
+                            if (!!v){
+                                var data = google.visualization.arrayToDataTable(v);
+                                chart.draw(data, options);
+                            }
+                        });
 
-                // The Geochart
-                var chart = new google.visualization.GeoChart(document.getElementById("geo-location-city-chart"));
-                var chartHolder = angular.element("#geo-location-city-chart");
-                var parentWidth = angular.element("#geo-location-city-chart").parent().width();
-                chartHolder.width(parentWidth);
-                var options = {};
-                $http.get('/data/dashboard-demographics-city-data.json').success(function(data) {
-                    data.unshift(['City', 'Sessions', '% Sessions']);
-                    scope.cityChartData = data;
-                    options = {
-                        region: 'VN',
-                        displayMode: 'markers',
-                        resolution: 'provinces',
-                        width: Number(parentWidth),
-                        height: '100%',
-                        colorAxis: {colors: ['#fff', '#22BAA0']}
-                    };
-                });
-                scope.$watch('cityChartData', function(v) {
-                    if (!!v){
-                        var data = google.visualization.arrayToDataTable(v);
-                        chart.draw(data, options);
+                        $(window).bind('resizeEnd', function(){
+                            var chartHolder = angular.element("#geo-location-city-chart");
+                            var parentWidth = chartHolder.parent().width();
+                            chartHolder.width(parentWidth);
+                            options = {
+                                region: 'VN',
+                                displayMode: 'markers',
+                                resolution: 'provinces',
+                                width: Number(parentWidth),
+                                height: '100%',
+                                colorAxis: {colors: ['#fff', '#22BAA0']}
+                            };
+                            var data = google.visualization.arrayToDataTable(scope.cityChartData);
+                            chart.draw(data, options);
+                        });
+                        $(window).resize(function() {
+                            if(this.resizeTO) clearTimeout(this.resizeTO);
+                            this.resizeTO = setTimeout(function() {
+                                $(this).trigger('resizeEnd');
+                            }, 250);
+                        });
                     }
-                });
-
-                $(window).bind('resizeEnd', function(){
-                    var chartHolder = angular.element("#geo-location-city-chart");
-                    var parentWidth = chartHolder.parent().width();
-                    chartHolder.width(parentWidth);
-                    options = {
-                        region: 'VN',
-                        displayMode: 'markers',
-                        resolution: 'provinces',
-                        width: Number(parentWidth),
-                        height: '100%',
-                        colorAxis: {colors: ['#fff', '#22BAA0']}
-                    };
-                    var data = google.visualization.arrayToDataTable(scope.cityChartData);
-                    chart.draw(data, options);
-                });
-                $(window).resize(function() {
-                    if(this.resizeTO) clearTimeout(this.resizeTO);
-                    this.resizeTO = setTimeout(function() {
-                        $(this).trigger('resizeEnd');
-                    }, 250);
                 });
             }
 
-            $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
-                if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){
-                    renderGeoLocation();
-                }
-            });
+            try {
+                $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
+                    if ($rootScope.currentAppId && $rootScope.dateFrom && $rootScope.dateTo){
+                        renderGeoLocation();
+                    }
+                });
 
-            scope.$on("datepickerChanged", renderGeoLocation);
-            scope.$on("appSelectChanged", renderGeoLocation);
+                scope.$on("datepickerChanged", renderGeoLocation);
+                scope.$on("appSelectChanged", renderGeoLocation);
+            }
+            catch(error){
+                console.log("> ERROR: " + error);
+            }
         }
     }
 }]);
@@ -1040,6 +1078,7 @@ directivesModule.directive('reportingTechDevicesContent', ['$http', '$rootScope'
         restrict: 'E',
         templateUrl: '/views/reporting/reporting-tech-devices-content.html',
         link: function (scope, element, attrs) {
+            scope.hasNoData = false;
             scope.techDevicesTableData = null;
             scope.tableTotalSessions = 0;
             scope.tableTotalNewUsers = 0;
@@ -1051,13 +1090,18 @@ directivesModule.directive('reportingTechDevicesContent', ['$http', '$rootScope'
                 var queryString = '/track/device?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
 
                 $http.get(queryString).success(function(data) {
-                    scope.techDevicesTableData = data;
-                    // Calculate the total / average values
-                    scope.tableTotalSessions = 0;
-                    scope.tableTotalNewUsers = 0;
-                    for (var i = 0; i < data.length; i++){
-                        scope.tableTotalSessions += data[i].sessions;
-                        scope.tableTotalNewUsers += data[i].newUsers;
+                    if (!data.length){
+                        scope.hasNoData = true;
+                    } else {
+                        scope.hasNoData = false;
+                        scope.techDevicesTableData = data;
+                        // Calculate the total / average values
+                        scope.tableTotalSessions = 0;
+                        scope.tableTotalNewUsers = 0;
+                        for (var i = 0; i < data.length; i++){
+                            scope.tableTotalSessions += data[i].sessions;
+                            scope.tableTotalNewUsers += data[i].newUsers;
+                        }
                     }
                 });
             }
@@ -1081,6 +1125,7 @@ directivesModule.directive('reportingTechBrowserOsContent', ['$http', '$rootScop
         restrict: 'E',
         templateUrl: '/views/reporting/reporting-tech-browser-os-content.html',
         link: function (scope, element, attrs) {
+            scope.hasNoData = false;
             scope.techBrowserTableData = null;
             scope.tableBrowserTotalSessions = 0;
             scope.tableBrowserTotalNewUsers = 0;
@@ -1093,10 +1138,9 @@ directivesModule.directive('reportingTechBrowserOsContent', ['$http', '$rootScop
                 var dateTo = $rootScope.dateTo.getTime();
                 var currentAppId = $rootScope.currentAppId;
 
+                // get BROWSER data
                 var browserQueryString = '/track/browser?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
                 $http.get(browserQueryString).success(function(data) {
-                    console.log("browser:");
-                    console.log(data);
                     scope.techBrowserTableData = data;
                     // Calculate the total / average values
                     scope.tableBrowserTotalSessions = 0;
@@ -1105,19 +1149,27 @@ directivesModule.directive('reportingTechBrowserOsContent', ['$http', '$rootScop
                         scope.tableBrowserTotalSessions += data[i].sessions;
                         scope.tableBrowserTotalNewUsers += data[i].newUsers;
                     }
+
+                    // get OS data
+                    var osQueryString = '/track/os?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
+                    $http.get(osQueryString).success(function(data) {
+                        scope.techOsTableData = data;
+                        if (!scope.techBrowserTableData.length || !scope.techOsTableData){
+                            scope.hasNoData = true;
+                        } else {
+                            scope.hasNoData = false;
+                            // Calculate the total / average values
+                            scope.tableOsTotalSessions = 0;
+                            scope.tableOsTotalNewUsers = 0;
+                            for (var i = 0; i < data.length; i++){
+                                scope.tableOsTotalSessions += data[i].sessions;
+                                scope.tableOsTotalNewUsers += data[i].newUsers;
+                            }
+                        }
+                    });
                 });
 
-                var osQueryString = '/track/os?appId='+ currentAppId +'&from=' + dateFrom + '&to=' + dateTo;
-                $http.get(osQueryString).success(function(data) {
-                    scope.techOsTableData = data;
-                    // Calculate the total / average values
-                    scope.tableOsTotalSessions = 0;
-                    scope.tableOsTotalNewUsers = 0;
-                    for (var i = 0; i < data.length; i++){
-                        scope.tableOsTotalSessions += data[i].sessions;
-                        scope.tableOsTotalNewUsers += data[i].newUsers;
-                    }
-                });
+
             }
 
             $rootScope.$watchGroup(['currentAppId', 'dateFrom', 'dateTo'], function(){
