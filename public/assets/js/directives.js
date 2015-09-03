@@ -698,6 +698,7 @@ directivesModule.directive('reportingPagesOverviewContent', ['$http', '$rootScop
                         scope.hasNoData = true;
                     }
                     else {
+                        scope.hasNoData = false;
                         scope.zaPagesOverviewData = data;
 
                         // Calculate the total / average values
@@ -776,16 +777,15 @@ directivesModule.directive('reportingPagesOverviewContent', ['$http', '$rootScop
                                 scope.hasNoData = true;
                             } else {
                                 scope.hasNoData = false;
-                            }
-
-                            // Calculate the total / average values
-                            scope.tableTotalPageviews = 0;
-                            scope.tableTotalUniquePageviews = 0;
-                            scope.tableTotalEntrances = 0;
-                            for (var i = 0; i < data.length; i++){
-                                scope.tableTotalPageviews += data[i].pageviews;
-                                scope.tableTotalUniquePageviews += data[i].uniquePageviews;
-                                scope.tableTotalEntrances += data[i].entrances;
+                                // Calculate the total / average values
+                                scope.tableTotalPageviews = 0;
+                                scope.tableTotalUniquePageviews = 0;
+                                scope.tableTotalEntrances = 0;
+                                for (var i = 0; i < data.length; i++){
+                                    scope.tableTotalPageviews += data[i].pageviews;
+                                    scope.tableTotalUniquePageviews += data[i].uniquePageviews;
+                                    scope.tableTotalEntrances += data[i].entrances;
+                                }
                             }
                         });
                     }
