@@ -259,21 +259,26 @@ controllersModule.controller('ChatController', ['$scope', '$rootScope', '$http',
             $scope.currentOpponentConversation.$watch(function(data){
                 if (data.event == "child_added"){
                     var key = data.key;
-                    var newMessage = $scope.currentOpponentConversation.$getRecord(key);
-                    if (newMessage.sender !== $rootScope.userProfile.username){
-                        toastr.options = {
-                            "positionClass": "toast-top-center",
-                            "onclick": function(){
-                                classie.add(menuRight2, 'cbp-spmenu-open');
-                                var newConversationWithThatUser = ChatService.Conversation.getConversationWithThatUser($rootScope.userProfile.username, newMessage.sender);
-                                newConversationWithThatUser.$loaded(function(data){
-                                    $scope.currentOpponentConversation = newConversationWithThatUser;
-                                    $scope.currentOpponent = newMessage.sender;
-                                });
-                            }
-                        };
-                        toastr.success(newMessage.msg, newMessage.sender);
-                    }
+                    var newMessage = ChatService.Message.getMessage($rootScope.userProfile.username, $scope.currentOpponent, key);
+                    newMessage.$loaded(function(message){
+                        if (newMessage.sender !== $rootScope.userProfile.username){
+                            toastr.options = {
+                                "positionClass": "toast-top-center",
+                                "onclick": function(){
+                                    classie.add(menuRight2, 'cbp-spmenu-open');
+                                    var newConversationWithThatUser = ChatService.Conversation.getConversationWithThatUser($rootScope.userProfile.username, newMessage.sender);
+                                    newConversationWithThatUser.$loaded(function(data){
+                                        $scope.currentOpponentConversation = newConversationWithThatUser;
+                                        $scope.currentOpponent = newMessage.sender;
+                                    });
+                                }
+                            };
+                            // Play message notification sound
+                            document.getElementById("message-notification").play();
+                            // Display notification
+                            toastr.success(newMessage.msg, newMessage.sender);
+                        }
+                    });
                 }
             });
         });

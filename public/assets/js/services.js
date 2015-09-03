@@ -41,7 +41,14 @@ servicesModule.factory('ChatService', ['$rootScope', '$firebaseArray', '$firebas
         }
     };
 
+    var Message = {
+        getMessage: function(thisUsername, thatUsername, messageId){
+            return $firebaseObject(firebaseRef.child('users').child(thisUsername).child('conversations').child(thatUsername).child(messageId));
+        }
+    };
+
     return {
-        Conversation: Conversation
+        Conversation: Conversation,
+        Message: Message
     };
 }]);
